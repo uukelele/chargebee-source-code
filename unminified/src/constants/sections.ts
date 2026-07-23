@@ -1,0 +1,19 @@
+import {SectionType} from '@/constants/enums';
+export const SUBSCRIPTION_SECTIONS = [
+  SectionType.SUBSCRIPTION_CANCELLATION,
+  SectionType.SUBSCRIPTION_DETAILS,
+  SectionType.EDIT_SUBSCRIPTION,
+  SectionType.EDIT_SUBSCRIPTION_CUSTOM_FIELDS,
+  SectionType.VIEW_SCHEDULED_CHANGES,
+  SectionType.CHOOSE_PAYMENT_METHOD_FOR_SUBSCRIPTION,
+];
+
+export const PAYMENT_METHOD_SECTIONS = [SectionType.VIEW_PAYMENT_SOURCE];
+
+export const SUPPORTED_SECTIONS_SEPARATE_CARDS = [
+  SectionType.SUBSCRIPTION_DETAILS,
+  SectionType.ACCOUNT_DETAILS,
+  SectionType.BILLING_HISTORY,
+  SectionType.ADDRESS,
+  SectionType.PAYMENT_SOURCES,
+];
