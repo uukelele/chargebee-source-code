@@ -1,0 +1,38 @@
+name: Update Chargebee source
+
+on:
+  schedule:
+    # every Monday at 04:00 UTC
+    - cron: "0 4 * * 1"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  decompile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Decompile latest bundle
+        run: python3 decompile.py
+
+      - name: Commit & push changes
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          VERSION=$(grep -oE '/assets/cbjs-[^/"]+' dist/chargebee.js | head -n1 | sed 's#/assets/##')
+          git commit -m "chore: update source code (${VERSION:-unknown})"
+          git push

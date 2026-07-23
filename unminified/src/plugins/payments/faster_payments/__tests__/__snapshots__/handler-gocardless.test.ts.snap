@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Gocardless FasterPayments Handler _transform() 1`] = `
+Object {
+  "paymentMethodType": "faster_payments",
+  "requiresRedirection": true,
+}
+`;
+
+exports[`Gocardless FasterPayments Handler _transform() 2`] = `
+Object {
+  "paymentMethodDetails": Object {
+    "billingAddress": Object {
+      "addressLine1": "123",
+      "city": "123",
+      "countryCode": "GB",
+      "zip": "123",
+    },
+    "companyName": undefined,
+    "directDebitBankAccount": Object {
+      "accountCountry": undefined,
+      "accountNumber": undefined,
+      "bankCode": undefined,
+      "iban": "GB123456789",
+      "institutionName": undefined,
+      "routingNumber": undefined,
+    },
+    "email": "siva@chargebee.com",
+    "firstName": "Sivanantham",
+    "lastName": "Gnanavel",
+  },
+  "paymentMethodType": "faster_payments",
+}
+`;
+
+exports[`Gocardless FasterPayments Handler _transform() 3`] = `
+Object {
+  "paymentMethodDetails": Object {
+    "billingAddress": Object {
+      "addressLine1": "123",
+      "city": "123",
+      "countryCode": "GB",
+      "zip": "123",
+    },
+    "companyName": "Chargebee",
+    "directDebitBankAccount": Object {
+      "accountCountry": "GB",
+      "accountNumber": "123",
+      "bankCode": undefined,
+      "iban": undefined,
+      "institutionName": "test",
+      "routingNumber": "123",
+    },
+    "email": "siva@chargebee.com",
+    "firstName": undefined,
+    "lastName": undefined,
+  },
+  "paymentMethodType": "faster_payments",
+}
+`;

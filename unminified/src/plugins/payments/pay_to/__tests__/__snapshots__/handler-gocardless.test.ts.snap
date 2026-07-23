@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Gocardless PayTo Handler _transform() 1`] = `
+Object {
+  "paymentMethodType": "pay_to",
+  "requiresRedirection": true,
+}
+`;
+
+exports[`Gocardless PayTo Handler _transform() 2`] = `
+Object {
+  "paymentMethodDetails": Object {
+    "billingAddress": Object {
+      "addressLine1": "123",
+      "city": "123",
+      "countryCode": "AU",
+      "zip": "123",
+    },
+    "companyName": "Chargebee",
+    "directDebitBankAccount": Object {
+      "accountCountry": "AU",
+      "accountNumber": "123",
+      "routingNumber": "123",
+    },
+    "email": "siva@chargebee.com",
+    "firstName": undefined,
+    "lastName": undefined,
+  },
+  "paymentMethodType": "pay_to",
+}
+`;
+
+exports[`Gocardless PayTo Handler _transform() 3`] = `
+Object {
+  "paymentMethodDetails": Object {
+    "billingAddress": Object {
+      "addressLine1": "123",
+      "city": "123",
+      "countryCode": "AU",
+      "zip": "123",
+    },
+    "companyName": undefined,
+    "directDebitBankAccount": Object {
+      "accountCountry": "AU",
+      "accountNumber": "123",
+      "routingNumber": "123",
+    },
+    "email": "siva@chargebee.com",
+    "firstName": "Chargebee",
+    "lastName": "Chargebee",
+  },
+  "paymentMethodType": "pay_to",
+}
+`;

@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Gocardless SEPA Instant Transfer Handler _transform() 1`] = `
+Object {
+  "paymentMethodType": "sepa_instant_transfer",
+  "requiresRedirection": true,
+}
+`;
+
+exports[`Gocardless SEPA Instant Transfer Handler _transform() 2`] = `
+Object {
+  "paymentMethodDetails": Object {
+    "billingAddress": Object {
+      "addressLine1": "123",
+      "city": "123",
+      "countryCode": "DE",
+      "zip": "123",
+    },
+    "companyName": undefined,
+    "directDebitBankAccount": Object {
+      "accountCountry": undefined,
+      "accountNumber": undefined,
+      "bankCode": undefined,
+      "iban": "DE123456789",
+      "institutionName": undefined,
+      "routingNumber": undefined,
+    },
+    "email": "siva@chargebee.com",
+    "firstName": "Sivanantham",
+    "lastName": "Gnanavel",
+  },
+  "paymentMethodType": "sepa_instant_transfer",
+}
+`;
+
+exports[`Gocardless SEPA Instant Transfer Handler _transform() 3`] = `
+Object {
+  "paymentMethodDetails": Object {
+    "billingAddress": Object {
+      "addressLine1": "123",
+      "city": "123",
+      "countryCode": "DE",
+      "zip": "123",
+    },
+    "companyName": "Chargebee",
+    "directDebitBankAccount": Object {
+      "accountCountry": "DE",
+      "accountNumber": "123",
+      "bankCode": "123",
+      "iban": undefined,
+      "institutionName": "test",
+      "routingNumber": undefined,
+    },
+    "email": "siva@chargebee.com",
+    "firstName": undefined,
+    "lastName": undefined,
+  },
+  "paymentMethodType": "sepa_instant_transfer",
+}
+`;
