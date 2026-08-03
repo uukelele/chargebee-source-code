@@ -374,6 +374,16 @@ export default abstract class AbstractGooglePayHandler {
     );
   }
 
+  protected createHiddenIframe(name: string): HTMLIFrameElement {
+    const iframe = document.createElement('iframe');
+    iframe.id = `cb-hidden-frame-${Helpers.genUuid()}`;
+    iframe.name = name;
+    iframe.style.display = 'none';
+    iframe.style.height = '1px';
+    iframe.style.width = '1px';
+    return iframe;
+  }
+
   protected createIframe() {
     const gateway: string = this.getPaymentIntent().gateway;
     this.lightbox = new LightBox(gateway);

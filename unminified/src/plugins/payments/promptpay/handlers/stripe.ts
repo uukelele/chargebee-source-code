@@ -13,8 +13,6 @@ export default class StripePromptPayHandler extends PromptPayHandler {
   }
 
   initPayment() {
-    return Promise.resolve({
-      paymentMethodType: PaymentMethodType.PROMPTPAY,
-    });
+    return super.initPayment();
   }
 }

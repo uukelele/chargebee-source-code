@@ -344,6 +344,8 @@ export interface ConfirmApiPayload {
   paymentIntentId: string;
   businessEntityId?: string;
   referenceId?: string;
+  gatewayAccountId?: string;
+  paymentMethodType?: PaymentMethodType;
 }
 
 export interface TokenizationCardPayload {

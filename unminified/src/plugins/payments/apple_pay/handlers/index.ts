@@ -61,6 +61,7 @@ export default class ApplepayHandler extends PaymentIntentHandler implements App
         gateway === Gateway.ADYEN ||
         gateway === Gateway.MOLLIE ||
         gateway === Gateway.VANTIV ||
+        gateway === Gateway.WORLDPAY ||
         gateway === Gateway.MOYASAR
       ) {
         return true;

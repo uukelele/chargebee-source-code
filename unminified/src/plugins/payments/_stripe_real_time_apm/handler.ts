@@ -1,6 +1,6 @@
 import {CbError} from '@/hosted_fields/common/errors';
 import PaymentIntentHandler from '@/internal/payment-intent/handler';
-import {PaymentAttempt, PaymentAttemptStatus} from '@/internal/payment-intent/types';
+import {PaymentAttempt, PaymentAttemptStatus, PaymentMethodType} from '@/internal/payment-intent/types';
 import {loadScriptUsingPredicate} from '@/extensions/three_domain_secure/common/utils';
 import LightBox from '@/extensions/three_domain_secure/common/lightbox';
 import {isStripeV3Available} from '@/utils/payments/stripe';
@@ -37,10 +37,16 @@ import {isStripeV3Available} from '@/utils/payments/stripe';
 
 const STRIPE_JS_URL = 'https://js.stripe.com/v3/';
 
+// Pix (QR blocked in cross-origin iframes) and PayTo (informational mandate action)
+// can't be completed inline by Stripe.js, so we poll Stripe directly for these.
+const STRIPE_POLL_INTERVAL_MS = 3000;
+const STRIPE_POLL_MAX_DURATION_MS = 15 * 60 * 1000;
+
 export default class StripeRealTimeApmHandler extends PaymentIntentHandler {
   protected stripe: any;
   private gatewayCredential: {publishable_key: string};
   private qrLightbox: LightBox | null = null;
+  private stripePollTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
   constructor(...args) {
     super(...args);
@@ -64,7 +70,10 @@ export default class StripeRealTimeApmHandler extends PaymentIntentHandler {
       .then(() => this.fetchAndCacheCredential())
       .then(() => {
         if (!this.gatewayCredential || !this.gatewayCredential.publishable_key) {
-          throw new CbError({name: 'GATEWAY_ERROR', message: 'Stripe gateway credential or publishable key is missing'});
+          throw new CbError({
+            name: 'GATEWAY_ERROR',
+            message: 'Stripe gateway credential or publishable key is missing',
+          });
         }
         this.stripe = window['Stripe'](this.gatewayCredential.publishable_key);
         if (!this.stripe) {
@@ -88,7 +97,7 @@ export default class StripeRealTimeApmHandler extends PaymentIntentHandler {
     iframe.src = url;
   }
 
-  private openQrDialog(qrCodeImageUrl: string): void {
+  private openDialog(bodyHtml: string): void {
     if (this.qrLightbox) {
       this.qrLightbox.close();
       this.qrLightbox.destroy();
@@ -103,12 +112,16 @@ export default class StripeRealTimeApmHandler extends PaymentIntentHandler {
       const doc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
       if (doc) {
         doc.open();
-        doc.write(this.getQrHtml(qrCodeImageUrl));
+        doc.write(bodyHtml);
         doc.close();
       }
       this.qrLightbox && this.qrLightbox.hideLoader();
     };
     iframe.src = 'about:blank';
+  }
+
+  private openQrDialog(qrCodeImageUrl: string): void {
+    this.openDialog(this.getQrHtml(qrCodeImageUrl));
   }
 
   private getQrHtml(qrCodeImageUrl: string): string {
@@ -124,11 +137,72 @@ export default class StripeRealTimeApmHandler extends PaymentIntentHandler {
   }
 
   private closeQrDialog(): void {
+    if (this.stripePollTimeoutId) {
+      clearTimeout(this.stripePollTimeoutId);
+      this.stripePollTimeoutId = null;
+    }
     if (this.qrLightbox) {
       this.qrLightbox.close();
       this.qrLightbox.destroy();
       this.qrLightbox = null;
     }
+  }
+
+  private retrieveStripeIntentStatus(clientSecret: string): Promise<{status?: string; error?: any}> {
+    if (clientSecret.indexOf('seti_') === 0) {
+      return this.stripe
+        .retrieveSetupIntent(clientSecret)
+        .then((result: any) => ({status: result.setupIntent && result.setupIntent.status, error: result.error}));
+    }
+    return this.stripe
+      .retrievePaymentIntent(clientSecret)
+      .then((result: any) => ({status: result.paymentIntent && result.paymentIntent.status, error: result.error}));
+  }
+
+  // Fallback for APMs whose next_action Stripe.js cannot complete inline (Pix QR is
+  // blocked in cross-origin iframes; PayTo is an informational mandate action).
+  // Renders the QR (if present) and polls Stripe directly, so we proceed the moment
+  // Stripe confirms the intent — independent of the payment_intent.succeeded webhook.
+  // Falls back to backend polling if Stripe hasn't settled within the poll window.
+  private awaitStripeCompletion(clientSecret: string, qrCodeImageUrl?: string): Promise<any> {
+    if (qrCodeImageUrl) {
+      this.openQrDialog(qrCodeImageUrl);
+    }
+    const startTime = Date.now();
+    const backendFallback = () =>
+      this.pollForAuthCompletion().then((data: any) => {
+        this.setPaymentIntent(data.payment_intent);
+        return this.handlePaymentAttemptStatus(this.getPaymentAttempt().status);
+      });
+
+    const poll = (): Promise<any> =>
+      this.retrieveStripeIntentStatus(clientSecret).then((result) => {
+        if (result.error) {
+          this.closeQrDialog();
+          throw new CbError({
+            name: 'GATEWAY_ERROR',
+            message: (result.error && result.error.message) || 'Stripe action failed',
+          });
+        }
+        const status = result.status;
+        if (status === 'succeeded' || status === 'requires_capture') {
+          this.closeQrDialog();
+          return this.handlePaymentAttemptStatus(PaymentAttemptStatus.AUTHORIZED);
+        }
+        if (status === 'requires_payment_method' || status === 'canceled') {
+          this.closeQrDialog();
+          throw new CbError({name: 'GATEWAY_ERROR', message: 'Payment failed or was canceled'});
+        }
+        if (Date.now() - startTime > STRIPE_POLL_MAX_DURATION_MS) {
+          this.closeQrDialog();
+          return backendFallback();
+        }
+        return new Promise((resolve) => {
+          this.stripePollTimeoutId = setTimeout(resolve, STRIPE_POLL_INTERVAL_MS);
+        }).then(poll);
+      });
+
+    return poll();
   }
 
   private handleQrFlow(qrCodeImageUrl: string): Promise<any> {
@@ -160,6 +234,13 @@ export default class StripeRealTimeApmHandler extends PaymentIntentHandler {
             .handleNextAction({clientSecret})
             .then((result: any) => {
               if (result && result.error) {
+                // Pix/PayTo: Stripe.js can't complete the action inline, so poll Stripe
+                // directly (showing the QR for Pix) and proceed as soon as it confirms.
+                const pi = this.getPaymentIntent();
+                const pmType = pi && pi.payment_method_type;
+                if (pmType === PaymentMethodType.PIX || pmType === PaymentMethodType.PAY_TO) {
+                  return this.awaitStripeCompletion(clientSecret, qrCodeImageUrl);
+                }
                 // Fallback: render QR ourselves if available
                 if (qrCodeImageUrl) {
                   return this.handleQrFlow(qrCodeImageUrl).then((data: any) => {
@@ -170,6 +251,7 @@ export default class StripeRealTimeApmHandler extends PaymentIntentHandler {
                 const errMsg = (result.error && result.error.message) || 'Stripe action failed';
                 throw new CbError({name: 'GATEWAY_ERROR', message: errMsg});
               }
+
               return this.pollForAuthCompletion().then((data: any) => {
                 this.setPaymentIntent(data.payment_intent);
                 return this.handlePaymentAttemptStatus(this.getPaymentAttempt().status);

@@ -175,6 +175,8 @@ export function constructPaymentIntentApiPayload(
   const paymentIntentId = paymentIntent.id;
   const businessEntityId = paymentIntent.business_entity_id;
   const referenceId = paymentIntent.reference_id;
+  const paymentMethodType = paymentIntent.payment_method_type;
+  const gatewayAccountId = paymentIntent.gateway_account_id;
 
   // Apply locale from cbInstance if not already set
   if (payload) {
@@ -194,6 +196,8 @@ export function constructPaymentIntentApiPayload(
   };
   if (referenceId) output.referenceId = referenceId;
   if (businessEntityId) output.businessEntityId = businessEntityId;
+  if (gatewayAccountId) output.gatewayAccountId = gatewayAccountId;
+  if (paymentMethodType) output.paymentMethodType = paymentMethodType;
 
   return output;
 }

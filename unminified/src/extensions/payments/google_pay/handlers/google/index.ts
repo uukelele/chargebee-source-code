@@ -11,6 +11,7 @@ import Errors, {CbError, ErrorType} from '@/hosted_fields/common/errors';
 import {ButtonOption, PaymentData, PaymentRequestOptions} from '@/plugins/payments/google_pay/types';
 import {safeGet, jsonify, isObjectEmpty, gwJsonify} from '@/utils/utility-functions';
 import {createAdyenInstance, adyenHandlePaymentAttempt} from '@/utils/payments/adyen';
+import {worldpayGPayDDC, worldpayHandleRequiresChallenge} from '@/utils/payments/worldpay';
 import IframeClientLoader from '@/hosted_fields/host/iframe-client-loader';
 import {Master as M} from '@/hosted_fields/common/enums';
 import Ids from '@/constants/ids';
@@ -132,6 +133,11 @@ export default class DirectGooglePayHandler extends AbstractGooglePayHandler {
           gateway: 'checkoutltd',
           gatewayMerchantId: this.gatewayCredential.google_pay.public_key,
         };
+      case Gateway.WORLDPAY:
+        return {
+          gateway: 'worldpay',
+          gatewayMerchantId: this.gatewayCredential.google_pay && this.gatewayCredential.google_pay.gateway_merchant_id,
+        };
     }
   }
 
@@ -242,7 +248,21 @@ export default class DirectGooglePayHandler extends AbstractGooglePayHandler {
                     this.setPaymentData(this.transformPaymentData(paymentData));
                     let fPaymentData = this.fetchTokenFromPaymentData(paymentData);
                     if (fPaymentData.token) {
-                      return this.confirmPayment(this.constructConfirmPIPayload(fPaymentData.token));
+                      const confirmPayload = this.constructConfirmPIPayload(fPaymentData.token);
+                      if (this.getPaymentIntent().gateway === Gateway.WORLDPAY) {
+                        return worldpayGPayDDC(this)
+                          .then((sessionId) => {
+                            return this.confirmPayment({...confirmPayload, additionalInfo: {dfReferenceId: sessionId}});
+                          })
+                          .catch((err) => {
+                            if (err && err.name === 'WORLDPAY_DDC_TIMEOUT') {
+                              throw err;
+                            }
+                            // 3DS credentials not configured — skip DDC and proceed without dfReferenceId
+                            return this.confirmPayment(confirmPayload);
+                          });
+                      }
+                      return this.confirmPayment(confirmPayload);
                     } else {
                       throw new CbError(Errors.missingTokenInfoInPaymentData);
                     }
@@ -349,6 +369,8 @@ export default class DirectGooglePayHandler extends AbstractGooglePayHandler {
         return this.checkoutComHandlePaymentAttempt(paymentAttempt);
       case Gateway.VANTIV:
         return this.vantivHandlePaymentAttempt(paymentAttempt);
+      case Gateway.WORLDPAY:
+        return this.worldpayGPayHandlePaymentAttempt(paymentAttempt);
       default:
         return this.stripeHandlePaymentAttempt(paymentAttempt);
     }
@@ -362,6 +384,29 @@ export default class DirectGooglePayHandler extends AbstractGooglePayHandler {
         case PaymentAttemptStatus.AUTHORIZED: {
           this.callSuccess();
           return true;
+        }
+        case PaymentAttemptStatus.REFUSED:
+        default: {
+          throw this.intentError();
+        }
+      }
+    });
+  }
+
+  // --- Worldpay Google Pay 3DS (Cardinal Commerce / 3DS Flex) ---
+  // Worldpay uses PAYMENT_GATEWAY tokenization so it cannot determine whether the
+  // underlying card is PAN_ONLY or CRYPTOGRAM_3DS. Worldpay therefore requires
+  // 3DS parameters in ALL Google Pay transactions and may return REQUIRES_CHALLENGE.
+  protected worldpayGPayHandlePaymentAttempt(paymentAttempt: PaymentAttempt): Promise<any> {
+    return Promise.resolve(true).then(() => {
+      switch (paymentAttempt.status) {
+        case PaymentAttemptStatus.AUTHORIZED: {
+          this.callSuccess();
+          return true;
+        }
+        case PaymentAttemptStatus.REQUIRES_CHALLENGE: {
+          const challengeJWT = paymentAttempt.action_payload && paymentAttempt.action_payload.challengeJWT;
+          return worldpayHandleRequiresChallenge(this, challengeJWT);
         }
         case PaymentAttemptStatus.REFUSED:
         default: {
@@ -494,6 +539,7 @@ export default class DirectGooglePayHandler extends AbstractGooglePayHandler {
           token: encryptBlueSnapGpayPayment(JSON.stringify(paymentData)),
         };
       case Gateway.NMI:
+      case Gateway.WORLDPAY:
         return {
           token: paymentData.paymentMethodData.tokenizationData.token,
         };
@@ -541,7 +587,8 @@ export default class DirectGooglePayHandler extends AbstractGooglePayHandler {
       this.getPaymentIntent().gateway === Gateway.ADYEN ||
       this.getPaymentIntent().gateway === Gateway.CHECKOUT_COM ||
       this.getPaymentIntent().gateway === Gateway.VANTIV ||
-      this.getPaymentIntent().gateway === Gateway.NMI
+      this.getPaymentIntent().gateway === Gateway.NMI ||
+      this.getPaymentIntent().gateway === Gateway.WORLDPAY
     ) {
       const tokenKey = this.getPaymentIntent().gateway === Gateway.CHECKOUT_COM ? 'googlePay' : 'tempToken';
       const returnObj: {paymentMethodType: string; paymentMethodDetails: any; shippingAddress?: any} = {

@@ -13,8 +13,6 @@ export default class StripePayNowHandler extends PayNowHandler {
   }
 
   initPayment() {
-    return Promise.resolve({
-      paymentMethodType: PaymentMethodType.PAYNOW,
-    });
+    return super.initPayment();
   }
 }

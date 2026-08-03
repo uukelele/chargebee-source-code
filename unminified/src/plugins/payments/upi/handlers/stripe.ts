@@ -51,7 +51,42 @@ export default class StripeUpiHandler extends StripeRealTimeApmHandler {
     // Sync paymentInfo so UpiHandler.initPayment() builds the full billing-aware payload.
     // PaymentIntentHandler.initiateAuthorization sets this.paymentInfo before calling initPayment().
     (this.upiHandler as any).paymentInfo = this.paymentInfo;
-    return this.upiHandler.initPayment();
+    return this.upiHandler.initPayment().then((paymentData: any) => {
+      // GATEENGG-27427: One-time Stripe UPI (Pay Now / one-time checkout) must not be vaulted.
+      // Map paymentType=ONETIME → backend retainPaymentMethod=false, the same signal Stripe
+      // Klarna/Alipay handlers use so OpenPay collects a one-time CIT PaymentIntent (no mandate).
+      // Scoped to Stripe UPI (this handler); Razorpay/dLocal UPI are untouched.
+      const paymentType = paymentData && paymentData.paymentType;
+      const retainPaymentMethod = (this.paymentInfo as {retainPaymentMethod?: boolean}).retainPaymentMethod;
+      if (
+        (typeof paymentType === 'string' && paymentType.toUpperCase() === 'ONETIME') ||
+        retainPaymentMethod === false
+      ) {
+        paymentData.retainPaymentMethod = false;
+      }
+      return paymentData;
+    });
+  }
+
+  private writeQrIframeDocument(iframe: HTMLIFrameElement, qrCodeImageUrl: string): void {
+    const doc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
+    if (!doc) {
+      return;
+    }
+    doc.open();
+    doc.write(
+      `<html><body style="display:flex;flex-direction:column;align-items:center;` +
+        `justify-content:flex-start;box-sizing:border-box;padding:24px 16px;` +
+        `font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;gap:16px;">` +
+        `<img src="${qrCodeImageUrl}" alt="UPI QR Code" style="max-width:240px;max-height:240px;"/>` +
+        `<div style="font-size:14px;color:#555;text-align:center;">` +
+        `Scan with your UPI app to complete payment.</div>` +
+        `</body></html>`
+    );
+    doc.close();
+    if (this.qrLightboxUpi) {
+      this.qrLightboxUpi.hideLoader();
+    }
   }
 
   private openQr(qrCodeImageUrl: string): void {
@@ -61,21 +96,7 @@ export default class StripeUpiHandler extends StripeRealTimeApmHandler {
     iframe.style.cssText =
       'width:400px;height:420px;min-width:400px;min-height:420px;max-width:400px;max-height:420px;';
     iframe.onload = () => {
-      const doc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
-      if (doc) {
-        doc.open();
-        doc.write(
-          `<html><body style="display:flex;flex-direction:column;align-items:center;` +
-            `justify-content:flex-start;box-sizing:border-box;padding:24px 16px;` +
-            `font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;gap:16px;">` +
-            `<img src="${qrCodeImageUrl}" alt="UPI QR Code" style="max-width:240px;max-height:240px;"/>` +
-            `<div style="font-size:14px;color:#555;text-align:center;">` +
-            `Scan with your UPI app to complete payment.</div>` +
-            `</body></html>`
-        );
-        doc.close();
-      }
-      this.qrLightboxUpi && this.qrLightboxUpi.hideLoader();
+      this.writeQrIframeDocument(iframe, qrCodeImageUrl);
     };
     iframe.src = 'about:blank';
   }
@@ -110,75 +131,107 @@ export default class StripeUpiHandler extends StripeRealTimeApmHandler {
     }));
   }
 
-  private completeChargebeePayment(): Promise<any> {
-    return this.confirmPayment().catch((err: any) => {
-      const msg: string = (err && err.message) || '';
-      // Two CB server errors indicate the PI was already authorized by a webhook before
-      // this client-side confirm arrived (a race that is common in predev/prod where
-      // the Stripe webhook is publicly reachable):
-      //   - "Payment intent is authorized" — PaymentIntentErrorCodes explicit check
-      //   - "Invalid Attempt status"       — OpenPayPaymentAttempt initiate3DS switch default
-      //     when the active attempt is already AUTHORIZED (not INITED/REQUIRES_*).
-      // In both cases we retrieve to verify authorization before treating as success.
-      if (msg === 'Payment intent is authorized' || msg === 'Invalid Attempt status') {
-        return retrievePaymentIntent(this.getPaymentIntent().id).then((data: any) => {
-          this.setPaymentIntent(data.payment_intent);
-          const attempt = this.getPaymentAttempt();
-          if (attempt && attempt.status === PaymentAttemptStatus.AUTHORIZED) {
-            return this.handlePaymentAttemptStatus(attempt.status);
-          }
-          throw err instanceof CbError ? err : new CbError(err);
-        });
+  private isWebhookRaceConfirmError(err: any): boolean {
+    const msg: string = (err && err.message) || '';
+    // On mobile the hosted-instructions return path and our Stripe poll can both drive
+    // completion; whichever loses the race confirms an already-authorized/consumed intent.
+    // These strings are only returned once the intent is terminally good; confirmAfterWebhookRace
+    // re-verifies via a fresh retrieve and only succeeds on an AUTHORIZED attempt.
+    return (
+      msg === 'Payment intent is authorized' ||
+      msg === 'Payment intent is consumed' ||
+      msg === 'Invalid Attempt status'
+    );
+  }
+
+  private confirmAfterWebhookRace(err: any): Promise<any> {
+    return retrievePaymentIntent(this.getPaymentIntent().id).then((data: any) => {
+      this.setPaymentIntent(data.payment_intent);
+      const attempt = this.getPaymentAttempt();
+      if (attempt && attempt.status === PaymentAttemptStatus.AUTHORIZED) {
+        return this.handlePaymentAttemptStatus(attempt.status);
       }
       throw err instanceof CbError ? err : new CbError(err);
     });
   }
 
-  private pollStripeUntilDone(clientSecret: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const startTime = Date.now();
-
-      const poll = () => {
-        if (Date.now() - startTime > MAX_POLL_DURATION_MS) {
-          this.closeQr();
-          return reject(new CbError({name: 'GATEWAY_ERROR', message: 'UPI payment timed out after 5 minutes'}));
-        }
-
-        this.retrieveStripeIntent(clientSecret)
-          .then((result: any) => {
-            if (result.error) {
-              this.closeQr();
-              return reject(new CbError({name: 'GATEWAY_ERROR', message: result.error.message}));
-            }
-
-            if (result.status === 'succeeded' || result.status === 'requires_capture') {
-              return this.completeChargebeePayment().then(
-                (data: any) => {
-                  this.closeQr();
-                  resolve(data);
-                },
-                (err: any) => {
-                  this.closeQr();
-                  reject(err);
-                }
-              );
-            }
-
-            if (result.status === 'requires_payment_method' || result.status === 'canceled') {
-              this.closeQr();
-              return reject(new CbError({name: 'PAYMENT_INTENT_FAILED', message: 'UPI payment failed or expired'}));
-            }
-
-            this.pollTimeoutId = setTimeout(poll, POLL_INTERVAL_MS);
-          })
-          .catch((err: any) => {
-            this.closeQr();
-            reject(err instanceof CbError ? err : new CbError(err));
-          });
-      };
-
-      this.pollTimeoutId = setTimeout(poll, POLL_INTERVAL_MS);
+  private completeChargebeePayment(): Promise<any> {
+    return this.confirmPayment().catch((err: any) => {
+      if (this.isWebhookRaceConfirmError(err)) {
+        return this.confirmAfterWebhookRace(err);
+      }
+      throw err instanceof CbError ? err : new CbError(err);
     });
+  }
+
+  private isTerminalStripeSuccess(status: string | undefined): boolean {
+    return status === 'succeeded' || status === 'requires_capture';
+  }
+
+  private isTerminalStripeFailure(status: string | undefined): boolean {
+    return status === 'requires_payment_method' || status === 'canceled';
+  }
+
+  private async pollStripeOnce(clientSecret: string): Promise<any> {
+    const result = await this.retrieveStripeIntent(clientSecret);
+
+    if (result.error) {
+      this.closeQr();
+      throw new CbError({name: 'GATEWAY_ERROR', message: result.error.message});
+    }
+
+    if (this.isTerminalStripeSuccess(result.status)) {
+      try {
+        const data = await this.completeChargebeePayment();
+        this.closeQr();
+        return data;
+      } catch (err) {
+        this.closeQr();
+        throw err;
+      }
+    }
+
+    if (this.isTerminalStripeFailure(result.status)) {
+      this.closeQr();
+      throw new CbError({name: 'PAYMENT_INTENT_FAILED', message: 'UPI payment failed or expired'});
+    }
+
+    return undefined;
+  }
+
+  private delayPoll(ms: number): Promise<void> {
+    return new Promise((resolve) => {
+      this.pollTimeoutId = setTimeout(resolve, ms);
+    });
+  }
+
+  private pollStripeUntilDone(clientSecret: string): Promise<any> {
+    const startTime = Date.now();
+
+    const poll = async (): Promise<any> => {
+      if (Date.now() - startTime > MAX_POLL_DURATION_MS) {
+        this.closeQr();
+        throw new CbError({name: 'GATEWAY_ERROR', message: 'UPI payment timed out after 5 minutes'});
+      }
+
+      try {
+        const data = await this.pollStripeOnce(clientSecret);
+        if (data !== undefined) {
+          return data;
+        }
+      } catch (err) {
+        if (err instanceof CbError) {
+          throw err;
+        }
+        this.closeQr();
+        throw new CbError(err);
+      }
+
+      await this.delayPoll(POLL_INTERVAL_MS);
+      return poll();
+    };
+
+    return this.delayPoll(POLL_INTERVAL_MS).then(() => poll());
   }
 
   protected handlePaymentAttempt(paymentAttempt: PaymentAttempt): Promise<any> {

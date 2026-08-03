@@ -1,198 +1,198 @@
 var map = {
 	"./Common": [
-		360,
-		4
+		358,
+		5
 	],
 	"./Common/": [
-		360,
-		4
+		358,
+		5
 	],
 	"./Common/Factory/HandlerFactory": [
-		515,
-		4,
-		312
+		516,
+		5,
+		316
 	],
 	"./Common/Factory/HandlerFactory.ts": [
-		515,
-		4,
-		312
+		516,
+		5,
+		316
 	],
 	"./Common/RawCard3DSHandler": [
-		420,
-		4,
-		375
+		419,
+		5,
+		380
 	],
 	"./Common/RawCard3DSHandler.ts": [
-		420,
-		4,
-		375
+		419,
+		5,
+		380
 	],
 	"./Common/UnifiedGatewaySDKHandler": [
-		421,
-		4,
-		376
+		420,
+		5,
+		381
 	],
 	"./Common/UnifiedGatewaySDKHandler.ts": [
-		421,
-		4,
-		376
+		420,
+		5,
+		381
 	],
 	"./Common/index": [
-		360,
-		4
+		358,
+		5
 	],
 	"./Common/index.ts": [
-		360,
-		4
+		358,
+		5
 	],
 	"./Common/types": [
 		397,
-		377
+		382
 	],
 	"./Common/types.ts": [
 		397,
-		377
+		382
 	],
 	"./abstract": [
 		316,
-		316
+		321
 	],
 	"./abstract.ts": [
 		316,
-		316
+		321
 	],
 	"./adyen": [
-		463,
+		462,
 		14,
 		50
 	],
 	"./adyen/": [
-		463,
+		462,
 		14,
 		50
 	],
 	"./adyen/index": [
-		463,
+		462,
 		14,
 		50
 	],
 	"./adyen/index.ts": [
-		463,
+		462,
 		14,
 		50
 	],
 	"./adyen/types": [
 		656,
-		378
+		383
 	],
 	"./adyen/types.ts": [
 		656,
-		378
+		383
 	],
 	"./bank_of_america": [
-		411,
+		410,
 		71
 	],
 	"./bank_of_america/": [
-		411,
+		410,
 		71
 	],
 	"./bank_of_america/index": [
-		411,
+		410,
 		71
 	],
 	"./bank_of_america/index.ts": [
-		411,
+		410,
 		71
 	],
 	"./bluesnap": [
-		406,
+		405,
 		56
 	],
 	"./bluesnap/": [
-		406,
+		405,
 		56
 	],
 	"./bluesnap/BluesnapGatewayConfig": [
-		462,
-		326
+		461,
+		331
 	],
 	"./bluesnap/BluesnapGatewayConfig.ts": [
-		462,
-		326
+		461,
+		331
 	],
 	"./bluesnap/index": [
-		406,
+		405,
 		56
 	],
 	"./bluesnap/index.ts": [
-		406,
+		405,
 		56
 	],
 	"./bluesnap/types": [
 		657,
-		379
+		384
 	],
 	"./bluesnap/types.ts": [
 		657,
-		379
+		384
 	],
 	"./braintree": [
-		464,
-		2,
+		463,
+		3,
 		13,
 		76
 	],
 	"./braintree/": [
-		464,
-		2,
+		463,
+		3,
 		13,
 		76
 	],
 	"./braintree/index": [
-		464,
-		2,
+		463,
+		3,
 		13,
 		76
 	],
 	"./braintree/index.ts": [
-		464,
-		2,
+		463,
+		3,
 		13,
 		76
 	],
 	"./braintree/redirect": [
 		257,
-		2,
-		327
+		3,
+		332
 	],
 	"./braintree/redirect.ts": [
 		257,
-		2,
-		327
+		3,
+		332
 	],
 	"./braintree/types": [
-		359,
-		380
+		357,
+		385
 	],
 	"./braintree/types.ts": [
-		359,
-		380
+		357,
+		385
 	],
 	"./chargebee_payments": [
-		417,
+		416,
 		38
 	],
 	"./chargebee_payments/": [
-		417,
+		416,
 		38
 	],
 	"./chargebee_payments/index": [
-		417,
+		416,
 		38
 	],
 	"./chargebee_payments/index.ts": [
-		417,
+		416,
 		38
 	],
 	"./checkout": [
@@ -228,195 +228,195 @@ var map = {
 		57
 	],
 	"./deutsche_bank": [
-		422,
+		421,
 		42
 	],
 	"./deutsche_bank/": [
-		422,
+		421,
 		42
 	],
 	"./deutsche_bank/index": [
-		422,
+		421,
 		42
 	],
 	"./deutsche_bank/index.ts": [
-		422,
+		421,
 		42
 	],
 	"./ebanx": [
-		413,
+		412,
 		65
 	],
 	"./ebanx/": [
-		413,
+		412,
 		65
 	],
 	"./ebanx/index": [
-		413,
+		412,
 		65
 	],
 	"./ebanx/index.ts": [
-		413,
+		412,
 		65
 	],
 	"./ecentric": [
-		423,
+		422,
 		43
 	],
 	"./ecentric/": [
-		423,
+		422,
 		43
 	],
 	"./ecentric/index": [
-		423,
+		422,
 		43
 	],
 	"./ecentric/index.ts": [
-		423,
+		422,
 		43
 	],
 	"./global_payments": [
-		418,
+		417,
 		66
 	],
 	"./global_payments/": [
-		418,
+		417,
 		66
 	],
 	"./global_payments/index": [
-		418,
+		417,
 		66
 	],
 	"./global_payments/index.ts": [
-		418,
+		417,
 		66
 	],
 	"./ingenico_direct": [
-		407,
+		406,
 		72
 	],
 	"./ingenico_direct/": [
-		407,
+		406,
 		72
 	],
 	"./ingenico_direct/index": [
-		407,
+		406,
 		72
 	],
 	"./ingenico_direct/index.ts": [
-		407,
+		406,
 		72
 	],
 	"./mollie": [
-		409,
+		408,
 		73
 	],
 	"./mollie/": [
-		409,
+		408,
 		73
 	],
 	"./mollie/index": [
-		409,
+		408,
 		73
 	],
 	"./mollie/index.ts": [
-		409,
+		408,
 		73
 	],
 	"./nmi": [
-		424,
+		423,
 		44
 	],
 	"./nmi/": [
-		424,
+		423,
 		44
 	],
 	"./nmi/index": [
-		424,
+		423,
 		44
 	],
 	"./nmi/index.ts": [
-		424,
+		423,
 		44
 	],
 	"./pay_com": [
-		414,
+		413,
 		45
 	],
 	"./pay_com/": [
-		414,
+		413,
 		45
 	],
 	"./pay_com/index": [
-		414,
+		413,
 		45
 	],
 	"./pay_com/index.ts": [
-		414,
+		413,
 		45
 	],
 	"./payfurl": [
-		412,
+		411,
 		55
 	],
 	"./payfurl/": [
-		412,
+		411,
 		55
 	],
 	"./payfurl/index": [
-		412,
+		411,
 		55
 	],
 	"./payfurl/index.ts": [
-		412,
+		411,
 		55
 	],
 	"./razorpay": [
-		410,
+		409,
 		58
 	],
 	"./razorpay/": [
-		410,
+		409,
 		58
 	],
 	"./razorpay/index": [
-		410,
+		409,
 		58
 	],
 	"./razorpay/index.ts": [
-		410,
+		409,
 		58
 	],
 	"./spreedly": [
-		415,
+		414,
 		67
 	],
 	"./spreedly/": [
-		415,
+		414,
 		67
 	],
 	"./spreedly/index": [
-		415,
+		414,
 		67
 	],
 	"./spreedly/index.ts": [
-		415,
+		414,
 		67
 	],
 	"./spreedly_global": [
-		416,
+		415,
 		68
 	],
 	"./spreedly_global/": [
-		416,
+		415,
 		68
 	],
 	"./spreedly_global/index": [
-		416,
+		415,
 		68
 	],
 	"./spreedly_global/index.ts": [
-		416,
+		415,
 		68
 	],
 	"./stripe": [
@@ -436,35 +436,35 @@ var map = {
 		69
 	],
 	"./vantiv": [
-		419,
+		418,
 		70
 	],
 	"./vantiv/": [
-		419,
+		418,
 		70
 	],
 	"./vantiv/index": [
-		419,
+		418,
 		70
 	],
 	"./vantiv/index.ts": [
-		419,
+		418,
 		70
 	],
 	"./worldpay": [
-		408,
+		407,
 		59
 	],
 	"./worldpay/": [
-		408,
+		407,
 		59
 	],
 	"./worldpay/index": [
-		408,
+		407,
 		59
 	],
 	"./worldpay/index.ts": [
-		408,
+		407,
 		59
 	]
 };
