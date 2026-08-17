@@ -5,7 +5,7 @@ import {CommunicationMessage, ActionInnerMessage} from '@/hosted_fields/common/t
 import actionHolder from '@/hosted_fields/common/holder';
 import Errors, {CbError} from '@/hosted_fields/common/errors';
 import t from '@/hosted_fields/common/locale';
-import {iframePostMessage, jsonify, jsonifyError, logTargetWindow} from '@/utils/utility-functions';
+import {iframePostMessage, jsonify, jsonifyError, logTargetWindow, sendKVL} from '@/utils/utility-functions';
 import Ids from '@/constants/ids';
 import Logger from '@/utils/logger_old';
 import {debugMode} from '@/constants/environment';
@@ -77,8 +77,17 @@ export default class Receiver {
         () => (this.windowType == WindowType.Component ? comMessage.srcWindowName == Ids.MASTER_FRAME : true),
         t(Errors.receiveMessageError)
       );
-      actionHolder
-        .resolve(message)
+      const handled = actionHolder.resolve(message);
+      // Unknown action (e.g. fetchCardData in a Payment Component iframe that also
+      // loaded Host Receiver) — do not reply; another listener may handle it.
+      if (handled === undefined || typeof handled.then !== 'function') {
+        sendKVL({
+          error: 'Action not handled',
+          error_data: jsonify(message),
+        });
+        return;
+      }
+      handled
         .then((data) => {
           if ((message.options && message.options.noReply) || comMessage.srcWindowName === comMessage.targetWindowName)
             return;

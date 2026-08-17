@@ -966,7 +966,6 @@ export default class CbInstance {
         if (!this.componentLoader) {
           this.componentLoader = new ComponentsAndFieldsLoader.default();
         }
-        this.setReferrerModule('components_fields');
         return this.componentLoader.loaderPromise;
       }
     );

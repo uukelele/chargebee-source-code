@@ -62,13 +62,9 @@ export default class ApplepayHandler extends PaymentIntentHandler implements App
         gateway === Gateway.MOLLIE ||
         gateway === Gateway.VANTIV ||
         gateway === Gateway.WORLDPAY ||
-        gateway === Gateway.MOYASAR
+        gateway === Gateway.MOYASAR ||
+        gateway === Gateway.STRIPE
       ) {
-        return true;
-      }
-      // Stripe supports QR flow on specific browsers
-      const STRIPE_SUPPORTED_BROWSERS: ReadonlyArray<BrowserName> = [BROWSERS.CHROME, BROWSERS.EDGE, BROWSERS.OPERA];
-      if (gateway === Gateway.STRIPE && STRIPE_SUPPORTED_BROWSERS.includes(browserName)) {
         return true;
       }
     }
