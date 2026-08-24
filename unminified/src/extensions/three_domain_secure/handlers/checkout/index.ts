@@ -44,6 +44,9 @@ export default class CheckoutCom3DSHandler extends AbstractThreeDSecureHandler {
           customerBillingAddress: this.getCustomerBillingAddress(),
           customer: this.getCustomerInfo(),
           plan: this.hasAdditionalData() && this.paymentInfo.additionalData.plan,
+          // paynow / one-time-checkout flows send paymentType (ONETIME) so Checkout.com resolves a
+          // non-Recurring payment_type; recurring flows omit it and the card is saved by default.
+          paymentType: this.hasAdditionalData() && this.paymentInfo.additionalData.paymentType,
           shippingAddress: this.getShippingAddress(),
         };
 

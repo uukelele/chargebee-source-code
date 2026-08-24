@@ -293,7 +293,6 @@ export default class PaymentIntentHandler extends RedirectHandler {
     return sendToMasterIframe(M.Actions.FetchGatewayCredential, constructPaymentIntentApiPayload(this.paymentIntent));
   }
 
-  
   protected createPaypalVaultSetupToken(customerId?: string): Promise<any> {
     const payload = constructPaymentIntentApiPayload(this.paymentIntent);
     if (customerId) {
@@ -379,6 +378,18 @@ export default class PaymentIntentHandler extends RedirectHandler {
     );
   }
 
+  // Customer dismissed in-progress auth UI (e.g. QR lightbox): cancel callback + stop PI poll.
+  protected abandonPendingAuthorization() {
+    if (this.callbackTriggered) {
+      return;
+    }
+    this.callbackTriggered = true;
+    // `error: true` makes pollPaymentIntent3DSResult reject the in-flight waiter
+    // (without it the waiter resolves and challengeFlow continues incorrectly).
+    this.stopPoll({error: true});
+    this.callbackHandler.triggerCancelCallback();
+  }
+
   protected pollForAuthCompletion() {
     const paymentIntentId = this.paymentIntent.id;
     return sendToMasterIframe(
@@ -391,4 +402,8 @@ export default class PaymentIntentHandler extends RedirectHandler {
       }
     ).finally(() => this.closeTab());
   }
+}
+
+export function retrievePaymentIntent(paymentIntentId: string): Promise<PaymentIntentResponse> {
+  return sendToMasterIframe(M.Actions.RetrievePaymentIntent, {paymentIntentId}) as Promise<any>;
 }

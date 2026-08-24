@@ -26,6 +26,9 @@ export default class Handler {
 
   static queued: boolean;
 
+  /** Shared promise for /retrieve_js_info → setStyle (pcConfigurationVersion, layout, etc.). */
+  static styleLoaded: Promise<any> | null = null;
+
   static init({iframeOnly = false, enableRedirectMode = false} = {}) {
     this.isBusy = false;
     const windowManager = (options?) => new CbWindowManager(options);
@@ -65,7 +68,13 @@ export default class Handler {
   }
 
   static loadStyle() {
-    return Handler.getJSInfo().then((info: JsInfo) => Helpers.getCbInstance().setStyle(info));
+    if (!Handler.styleLoaded) {
+      Handler.styleLoaded = Handler.getJSInfo().then((info: JsInfo) => {
+        Helpers.getCbInstance().setStyle(info);
+        return info;
+      });
+    }
+    return Handler.styleLoaded;
   }
 
   static submit(page: Page) {

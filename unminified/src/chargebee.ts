@@ -79,6 +79,7 @@ export class Chargebee {
       cbContainer.cbInstance = null;
       if (cbContainer) cbContainer.remove();
     }
+    Handler.styleLoaded = null;
     this.inited = false;
   }
 

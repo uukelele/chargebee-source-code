@@ -1040,12 +1040,22 @@ export default class CbInstance {
     return Handler.getJSInfo();
   }
 
+  /**
+   * Ensures /retrieve_js_info has been applied (style + pcConfigurationVersion).
+   * Safe to call multiple times; shares the same loadStyle promise.
+   * @internal
+   */
+  ensureSiteInfo(): Promise<JsInfo> {
+    return Handler.loadStyle();
+  }
+
   /** @internal */
   setStyle(style: JsInfo) {
     if (style) {
       this.styleConfig.image = style.image && style.image.url;
       this.styleConfig.color = style.color;
       this.styleConfig.layout = style.default_hp_layout;
+      this.options.pcConfigurationVersion = style.pc_configuration_version;
     }
   }
 

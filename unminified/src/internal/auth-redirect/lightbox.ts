@@ -64,6 +64,8 @@ export default class LightBox {
   private task: Promise<any>;
 
   private isOpened: boolean = false;
+  private isDismissed: boolean = false;
+  private closeHandler: () => void;
 
   private url: string;
   private formXHTML: string;
@@ -123,6 +125,39 @@ export default class LightBox {
 
   createIframe(name: string) {
     return this.createIFrameInWrapper('name', name);
+  }
+
+  /**
+   * Opt-in dismiss cleanup for QR lightboxes.
+   * Close UI lives in the QR modal HTML; this only runs when dismiss() is called.
+   * 3DS flows leave this unset so the challenge cannot be dismissed mid-auth.
+   */
+  enableDismiss(onDismiss?: () => void) {
+    this.closeHandler = onDismiss;
+  }
+
+  /**
+   * Closes and destroys the lightbox, then notifies the dismiss handler once.
+   * Safe to call multiple times.
+   */
+  dismiss() {
+    if (this.isDismissed) {
+      return;
+    }
+    this.isDismissed = true;
+    this.close();
+    this.destroy();
+    if (this.closeHandler) {
+      this.closeHandler();
+    }
+  }
+
+  /**
+   * True after dismiss() has run. Use to ignore async work (e.g. QR height fit)
+   * that completes after the customer closed the frame.
+   */
+  hasBeenDismissed(): boolean {
+    return this.isDismissed;
   }
 
   private createFormInHidden(): HTMLFormElement {
