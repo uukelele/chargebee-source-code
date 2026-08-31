@@ -13,6 +13,7 @@ export interface ApiActionInterface {
   static?: boolean;
   recaptcha?: boolean;
   skipBusinessEntityId?: boolean;
+  skipBrandId?: boolean;
 }
 
 export interface ApiClientInterface {
@@ -31,6 +32,7 @@ export interface ApiConfigInterface {
 }
 
 export const BUSINESS_ENTITY_HEADER = 'chargebee-business-entity-id';
+export const BRAND_ID_HEADER = 'chargebee-brand-id';
 export const BROWSER_FINGERPRINT_HEADER = 'cb-browser-fingerprint';
 export const HARDWARE_FINGERPRINT_HEADER = 'cb-hardware-fingerprint';
 export const DEVICE_ID_HEADER = 'cb-device-id';

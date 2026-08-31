@@ -1,1187 +1,1351 @@
 var map = {
 	"./_stripe_qr_poll/handler": [
-		448,
+		452,
 		9,
-		307
+		329
 	],
 	"./_stripe_qr_poll/handler.ts": [
-		448,
+		452,
 		9,
-		307
+		329
 	],
 	"./_stripe_real_time_apm/handler": [
-		337,
+		338,
 		9,
-		1
+		2
 	],
 	"./_stripe_real_time_apm/handler.ts": [
-		337,
+		338,
 		9,
-		1
+		2
 	],
 	"./alipay/actions": [
-		566,
+		578,
 		9,
-		116
+		119
 	],
 	"./alipay/actions/": [
-		566,
+		578,
 		9,
-		116
+		119
 	],
 	"./alipay/actions/index": [
-		566,
+		578,
 		9,
-		116
+		119
 	],
 	"./alipay/actions/index.ts": [
-		566,
+		578,
 		9,
-		116
+		119
 	],
 	"./alipay/actions/interface": [
-		663,
+		685,
 		9,
-		382
+		417
 	],
 	"./alipay/actions/interface.ts": [
-		663,
+		685,
 		9,
-		382
+		417
 	],
 	"./alipay/api": [
-		449,
+		453,
 		9,
-		169
+		180
 	],
 	"./alipay/api/": [
-		449,
+		453,
 		9,
-		169
+		180
 	],
 	"./alipay/api/index": [
-		449,
+		453,
 		9,
-		169
+		180
 	],
 	"./alipay/api/index.ts": [
-		449,
+		453,
 		9,
-		169
+		180
 	],
 	"./alipay/handlers": [
-		352,
+		347,
 		9,
-		170
+		181
 	],
 	"./alipay/handlers/": [
-		352,
+		347,
 		9,
-		170
+		181
 	],
 	"./alipay/handlers/adyen": [
-		664,
+		686,
 		9,
-		288
+		310
 	],
 	"./alipay/handlers/adyen.ts": [
-		664,
+		686,
 		9,
-		288
+		310
+	],
+	"./alipay/handlers/checkout_com": [
+		687,
+		9,
+		370
+	],
+	"./alipay/handlers/checkout_com.ts": [
+		687,
+		9,
+		370
 	],
 	"./alipay/handlers/index": [
-		352,
+		347,
 		9,
-		170
+		181
 	],
 	"./alipay/handlers/index.ts": [
-		352,
+		347,
 		9,
-		170
+		181
 	],
 	"./alipay/handlers/stripe": [
-		665,
+		688,
 		9,
-		348
+		371
 	],
 	"./alipay/handlers/stripe.ts": [
-		665,
+		688,
 		9,
-		348
+		371
 	],
 	"./alipay/loader": [
-		481,
+		489,
 		9,
-		117
+		120
 	],
 	"./alipay/loader/": [
-		481,
+		489,
 		9,
-		117
+		120
 	],
 	"./alipay/loader/index": [
-		481,
+		489,
 		9,
-		117
+		120
 	],
 	"./alipay/loader/index.ts": [
-		481,
+		489,
 		9,
-		117
+		120
 	],
 	"./alipay/loader/interface": [
-		666,
+		689,
 		9,
-		383
+		418
 	],
 	"./alipay/loader/interface.ts": [
-		666,
+		689,
 		9,
-		383
+		418
 	],
 	"./alipay/types": [
-		567,
+		579,
 		9,
-		171
+		182
 	],
 	"./alipay/types/": [
-		567,
+		579,
 		9,
-		171
+		182
 	],
 	"./alipay/types/index": [
-		567,
+		579,
 		9,
-		171
+		182
 	],
 	"./alipay/types/index.ts": [
-		567,
+		579,
 		9,
-		171
+		182
 	],
 	"./alipay_hk/actions": [
-		568,
+		580,
 		9,
-		118
+		121
 	],
 	"./alipay_hk/actions/": [
-		568,
+		580,
 		9,
-		118
+		121
 	],
 	"./alipay_hk/actions/index": [
-		568,
+		580,
 		9,
-		118
+		121
 	],
 	"./alipay_hk/actions/index.ts": [
-		568,
+		580,
 		9,
-		118
+		121
 	],
 	"./alipay_hk/actions/interface": [
-		667,
+		690,
 		9,
-		384
+		419
 	],
 	"./alipay_hk/actions/interface.ts": [
-		667,
+		690,
 		9,
-		384
+		419
 	],
 	"./alipay_hk/api": [
-		450,
+		454,
 		9,
-		172
+		183
 	],
 	"./alipay_hk/api/": [
-		450,
+		454,
 		9,
-		172
+		183
 	],
 	"./alipay_hk/api/index": [
-		450,
+		454,
 		9,
-		172
+		183
 	],
 	"./alipay_hk/api/index.ts": [
-		450,
+		454,
 		9,
-		172
+		183
 	],
 	"./alipay_hk/handlers": [
-		369,
+		355,
 		9,
-		173
+		184
 	],
 	"./alipay_hk/handlers/": [
-		369,
+		355,
 		9,
-		173
+		184
 	],
 	"./alipay_hk/handlers/adyen": [
-		668,
+		691,
 		9,
-		289
+		311
 	],
 	"./alipay_hk/handlers/adyen.ts": [
-		668,
+		691,
 		9,
-		289
+		311
+	],
+	"./alipay_hk/handlers/checkout_com": [
+		692,
+		9,
+		372
+	],
+	"./alipay_hk/handlers/checkout_com.ts": [
+		692,
+		9,
+		372
 	],
 	"./alipay_hk/handlers/index": [
-		369,
+		355,
 		9,
-		173
+		184
 	],
 	"./alipay_hk/handlers/index.ts": [
-		369,
+		355,
 		9,
-		173
+		184
 	],
 	"./alipay_hk/loader": [
-		482,
+		490,
 		9,
-		119
+		122
 	],
 	"./alipay_hk/loader/": [
-		482,
+		490,
 		9,
-		119
+		122
 	],
 	"./alipay_hk/loader/index": [
-		482,
+		490,
 		9,
-		119
+		122
 	],
 	"./alipay_hk/loader/index.ts": [
-		482,
+		490,
 		9,
-		119
+		122
 	],
 	"./alipay_hk/loader/interface": [
-		669,
+		693,
 		9,
-		385
+		420
 	],
 	"./alipay_hk/loader/interface.ts": [
-		669,
+		693,
 		9,
-		385
+		420
 	],
 	"./alipay_hk/types": [
-		569,
+		581,
 		9,
-		174
+		185
 	],
 	"./alipay_hk/types/": [
-		569,
+		581,
 		9,
-		174
+		185
 	],
 	"./alipay_hk/types/index": [
-		569,
+		581,
 		9,
-		174
+		185
 	],
 	"./alipay_hk/types/index.ts": [
-		569,
+		581,
 		9,
-		174
+		185
 	],
 	"./amazon_payments/actions": [
-		515,
+		527,
 		9,
-		120
+		123
 	],
 	"./amazon_payments/actions/": [
-		515,
+		527,
 		9,
-		120
+		123
 	],
 	"./amazon_payments/actions/index": [
-		515,
+		527,
 		9,
-		120
+		123
 	],
 	"./amazon_payments/actions/index.ts": [
-		515,
+		527,
 		9,
-		120
+		123
 	],
 	"./amazon_payments/actions/interface": [
-		670,
+		694,
 		9,
-		386
+		421
 	],
 	"./amazon_payments/actions/interface.ts": [
-		670,
+		694,
 		9,
-		386
+		421
 	],
 	"./amazon_payments/api": [
-		401,
+		405,
 		9,
-		175
+		186
 	],
 	"./amazon_payments/api/": [
-		401,
+		405,
 		9,
-		175
+		186
 	],
 	"./amazon_payments/api/index": [
-		401,
+		405,
 		9,
-		175
+		186
 	],
 	"./amazon_payments/api/index.ts": [
-		401,
+		405,
 		9,
-		175
+		186
 	],
 	"./amazon_payments/handlers": [
-		353,
+		357,
 		9,
-		176
+		187
 	],
 	"./amazon_payments/handlers/": [
-		353,
+		357,
 		9,
-		176
+		187
 	],
 	"./amazon_payments/handlers/amazon_payments": [
-		671,
+		695,
 		9,
-		325
+		346
 	],
 	"./amazon_payments/handlers/amazon_payments.ts": [
-		671,
+		695,
 		9,
-		325
+		346
 	],
 	"./amazon_payments/handlers/index": [
-		353,
+		357,
 		9,
-		176
+		187
 	],
 	"./amazon_payments/handlers/index.ts": [
-		353,
+		357,
 		9,
-		176
+		187
 	],
 	"./amazon_payments/handlers/redirect": [
 		258,
 		9,
-		346
+		368
 	],
 	"./amazon_payments/handlers/redirect.ts": [
 		258,
 		9,
-		346
+		368
 	],
 	"./amazon_payments/handlers/stripe": [
-		672,
+		696,
 		9,
-		282
+		305
 	],
 	"./amazon_payments/handlers/stripe.ts": [
-		672,
+		696,
 		9,
-		282
+		305
 	],
 	"./amazon_payments/loader": [
-		484,
+		492,
 		9,
-		121
+		124
 	],
 	"./amazon_payments/loader/": [
-		484,
+		492,
 		9,
-		121
+		124
 	],
 	"./amazon_payments/loader/index": [
-		484,
+		492,
 		9,
-		121
+		124
 	],
 	"./amazon_payments/loader/index.ts": [
-		484,
+		492,
 		9,
-		121
+		124
 	],
 	"./amazon_payments/loader/interface": [
-		673,
+		697,
 		9,
-		387
+		422
 	],
 	"./amazon_payments/loader/interface.ts": [
-		673,
+		697,
 		9,
-		387
+		422
 	],
 	"./amazon_payments/types": [
-		570,
+		582,
 		9,
-		177
+		188
 	],
 	"./amazon_payments/types/": [
-		570,
+		582,
 		9,
-		177
+		188
 	],
 	"./amazon_payments/types/index": [
-		570,
+		582,
 		9,
-		177
+		188
 	],
 	"./amazon_payments/types/index.ts": [
-		570,
+		582,
 		9,
-		177
+		188
 	],
 	"./apple_pay/actions": [
-		514,
+		526,
 		9,
-		122
+		125
 	],
 	"./apple_pay/actions/": [
-		514,
+		526,
 		9,
-		122
+		125
 	],
 	"./apple_pay/actions/index": [
-		514,
+		526,
 		9,
-		122
+		125
 	],
 	"./apple_pay/actions/index.ts": [
-		514,
+		526,
 		9,
-		122
+		125
 	],
 	"./apple_pay/actions/interface": [
-		674,
+		698,
 		9,
-		388
+		423
 	],
 	"./apple_pay/actions/interface.ts": [
-		674,
+		698,
 		9,
-		388
+		423
 	],
 	"./apple_pay/api": [
-		400,
+		404,
 		9,
-		178
+		189
 	],
 	"./apple_pay/api/": [
-		400,
+		404,
 		9,
-		178
+		189
 	],
 	"./apple_pay/api/index": [
-		400,
+		404,
 		9,
-		178
+		189
 	],
 	"./apple_pay/api/index.ts": [
-		400,
+		404,
 		9,
-		178
+		189
 	],
 	"./apple_pay/handlers": [
 		343,
 		9,
-		82
+		84
 	],
 	"./apple_pay/handlers/": [
 		343,
 		9,
-		82
+		84
 	],
 	"./apple_pay/handlers/adyen": [
-		675,
+		676,
 		9,
-		309,
-		287
+		62,
+		42
 	],
 	"./apple_pay/handlers/adyen.ts": [
-		675,
+		676,
 		9,
-		309,
-		287
+		62,
+		42
 	],
 	"./apple_pay/handlers/braintree": [
-		676,
+		699,
 		9,
-		285
+		308
 	],
 	"./apple_pay/handlers/braintree.ts": [
-		676,
+		699,
 		9,
-		285
+		308
+	],
+	"./apple_pay/handlers/chargebee_payments": [
+		700,
+		9,
+		62,
+		42,
+		424
+	],
+	"./apple_pay/handlers/chargebee_payments.ts": [
+		700,
+		9,
+		62,
+		42,
+		424
 	],
 	"./apple_pay/handlers/common": [
-		571,
+		583,
 		9,
 		13
 	],
 	"./apple_pay/handlers/common.ts": [
-		571,
+		583,
 		9,
 		13
 	],
 	"./apple_pay/handlers/deutsche_bank": [
-		677,
+		701,
 		9,
-		302
+		324
 	],
 	"./apple_pay/handlers/deutsche_bank.ts": [
-		677,
+		701,
 		9,
-		302
+		324
 	],
 	"./apple_pay/handlers/index": [
 		343,
 		9,
-		82
+		84
 	],
 	"./apple_pay/handlers/index.ts": [
 		343,
 		9,
-		82
+		84
 	],
 	"./apple_pay/handlers/moyasar": [
-		678,
+		702,
 		9,
 		13,
-		389
+		425
 	],
 	"./apple_pay/handlers/moyasar.ts": [
-		678,
+		702,
 		9,
 		13,
-		389
+		425
 	],
 	"./apple_pay/handlers/stripe": [
-		679,
+		703,
 		9,
-		283
+		306
 	],
 	"./apple_pay/handlers/stripe.ts": [
-		679,
+		703,
 		9,
-		283
+		306
 	],
 	"./apple_pay/loader": [
-		521,
+		533,
 		9,
 		10
 	],
 	"./apple_pay/loader/": [
-		521,
+		533,
 		9,
 		10
 	],
 	"./apple_pay/loader/index": [
-		521,
+		533,
 		9,
 		10
 	],
 	"./apple_pay/loader/index.ts": [
-		521,
+		533,
 		9,
 		10
 	],
 	"./apple_pay/loader/interface": [
-		680,
+		704,
 		9,
-		390
+		426
 	],
 	"./apple_pay/loader/interface.ts": [
-		680,
+		704,
 		9,
-		390
+		426
 	],
 	"./apple_pay/types": [
 		335,
 		9,
-		179
+		190
 	],
 	"./apple_pay/types/": [
 		335,
 		9,
-		179
+		190
 	],
 	"./apple_pay/types/index": [
 		335,
 		9,
-		179
+		190
 	],
 	"./apple_pay/types/index.ts": [
 		335,
 		9,
-		179
+		190
 	],
 	"./apple_pay/utils": [
-		393,
+		397,
 		9,
-		391
+		427
 	],
 	"./apple_pay/utils.ts": [
-		393,
+		397,
 		9,
-		391
+		427
 	],
 	"./bancontact/actions": [
-		526,
+		538,
 		9,
 		18
 	],
 	"./bancontact/actions/": [
-		526,
+		538,
 		9,
 		18
 	],
 	"./bancontact/actions/index": [
-		526,
+		538,
 		9,
 		18
 	],
 	"./bancontact/actions/index.ts": [
-		526,
+		538,
 		9,
 		18
 	],
 	"./bancontact/actions/interface": [
-		681,
+		705,
 		9,
-		392
+		428
 	],
 	"./bancontact/actions/interface.ts": [
-		681,
+		705,
 		9,
-		392
+		428
 	],
 	"./bancontact/api": [
-		432,
+		436,
 		9,
-		180
+		191
 	],
 	"./bancontact/api/": [
-		432,
+		436,
 		9,
-		180
+		191
 	],
 	"./bancontact/api/index": [
-		432,
+		436,
 		9,
-		180
+		191
 	],
 	"./bancontact/api/index.ts": [
-		432,
+		436,
 		9,
-		180
+		191
 	],
 	"./bancontact/handlers": [
 		342,
 		9,
-		181
+		192
 	],
 	"./bancontact/handlers/": [
 		342,
 		9,
-		181
+		192
 	],
 	"./bancontact/handlers/adyen": [
-		682,
+		706,
 		9,
-		349
+		373
 	],
 	"./bancontact/handlers/adyen.ts": [
-		682,
+		706,
 		9,
-		349
+		373
 	],
 	"./bancontact/handlers/checkout_com": [
-		683,
+		707,
 		9,
-		350
+		374
 	],
 	"./bancontact/handlers/checkout_com.ts": [
-		683,
+		707,
 		9,
-		350
+		374
 	],
 	"./bancontact/handlers/index": [
 		342,
 		9,
-		181
+		192
 	],
 	"./bancontact/handlers/index.ts": [
 		342,
 		9,
-		181
+		192
 	],
 	"./bancontact/handlers/mollie": [
-		684,
+		708,
 		9,
-		312
+		333
 	],
 	"./bancontact/handlers/mollie.ts": [
-		684,
+		708,
 		9,
-		312
+		333
 	],
 	"./bancontact/handlers/stripe": [
-		685,
+		709,
 		9,
-		351
+		375
 	],
 	"./bancontact/handlers/stripe.ts": [
-		685,
+		709,
 		9,
-		351
+		375
 	],
 	"./bancontact/loader": [
-		475,
+		483,
 		9,
-		123
+		126
 	],
 	"./bancontact/loader/": [
-		475,
+		483,
 		9,
-		123
+		126
 	],
 	"./bancontact/loader/index": [
-		475,
+		483,
 		9,
-		123
+		126
 	],
 	"./bancontact/loader/index.ts": [
-		475,
+		483,
 		9,
-		123
+		126
 	],
 	"./bancontact/loader/interface": [
-		686,
+		710,
 		9,
-		393
+		429
 	],
 	"./bancontact/loader/interface.ts": [
-		686,
+		710,
 		9,
-		393
+		429
 	],
 	"./bancontact/types": [
-		572,
+		584,
 		9,
-		182
+		193
 	],
 	"./bancontact/types/": [
-		572,
+		584,
 		9,
-		182
+		193
 	],
 	"./bancontact/types/index": [
-		572,
+		584,
 		9,
-		182
+		193
 	],
 	"./bancontact/types/index.ts": [
-		572,
+		584,
 		9,
-		182
+		193
 	],
 	"./bizum/handlers": [
 		386,
 		9,
-		1,
-		183
+		2,
+		194
 	],
 	"./bizum/handlers/": [
 		386,
 		9,
-		1,
-		183
+		2,
+		194
 	],
 	"./bizum/handlers/index": [
 		386,
 		9,
-		1,
-		183
+		2,
+		194
 	],
 	"./bizum/handlers/index.ts": [
 		386,
 		9,
-		1,
-		183
+		2,
+		194
 	],
 	"./bizum/handlers/stripe": [
-		687,
+		711,
 		9,
-		1,
-		352
+		2,
+		376
 	],
 	"./bizum/handlers/stripe.ts": [
-		687,
+		711,
 		9,
-		1,
-		352
+		2,
+		376
 	],
 	"./bizum/loader": [
-		505,
+		513,
 		9,
-		1,
-		124
+		2,
+		127
 	],
 	"./bizum/loader/": [
-		505,
+		513,
 		9,
-		1,
-		124
+		2,
+		127
 	],
 	"./bizum/loader/index": [
-		505,
+		513,
 		9,
-		1,
-		124
+		2,
+		127
 	],
 	"./bizum/loader/index.ts": [
-		505,
+		513,
 		9,
-		1,
-		124
+		2,
+		127
 	],
 	"./bizum/loader/interface": [
-		688,
+		712,
 		9,
-		394
+		430
 	],
 	"./bizum/loader/interface.ts": [
-		688,
+		712,
 		9,
-		394
+		430
 	],
 	"./bizum/types": [
-		573,
+		585,
 		9,
-		184
+		195
 	],
 	"./bizum/types/": [
-		573,
+		585,
 		9,
-		184
+		195
 	],
 	"./bizum/types/index": [
-		573,
+		585,
 		9,
-		184
+		195
 	],
 	"./bizum/types/index.ts": [
-		573,
+		585,
 		9,
-		184
+		195
 	],
 	"./boleto/actions": [
-		574,
+		586,
 		9,
-		185
+		196
 	],
 	"./boleto/actions/": [
-		574,
+		586,
 		9,
-		185
+		196
 	],
 	"./boleto/actions/index": [
-		574,
+		586,
 		9,
-		185
+		196
 	],
 	"./boleto/actions/index.ts": [
-		574,
+		586,
 		9,
-		185
+		196
 	],
 	"./boleto/actions/interface": [
-		689,
+		713,
 		9,
-		395
+		431
 	],
 	"./boleto/actions/interface.ts": [
-		689,
+		713,
 		9,
-		395
+		431
 	],
 	"./boleto/handlers": [
-		376,
+		378,
 		9,
-		114
+		117
 	],
 	"./boleto/handlers/": [
-		376,
+		378,
 		9,
-		114
+		117
 	],
 	"./boleto/handlers/index": [
-		376,
+		378,
 		9,
-		114
+		117
 	],
 	"./boleto/handlers/index.ts": [
-		376,
+		378,
 		9,
-		114
+		117
 	],
 	"./boleto/handlers/stripe": [
-		690,
+		714,
 		9,
-		321
+		342
 	],
 	"./boleto/handlers/stripe.ts": [
-		690,
+		714,
 		9,
-		321
+		342
 	],
 	"./boleto/loader": [
-		491,
+		499,
 		9,
-		92
+		94
 	],
 	"./boleto/loader/": [
-		491,
+		499,
 		9,
-		92
+		94
 	],
 	"./boleto/loader/index": [
-		491,
+		499,
 		9,
-		92
+		94
 	],
 	"./boleto/loader/index.ts": [
-		491,
+		499,
 		9,
-		92
+		94
 	],
 	"./boleto/loader/interface": [
-		691,
+		715,
 		9,
-		396
+		432
 	],
 	"./boleto/loader/interface.ts": [
-		691,
+		715,
 		9,
-		396
+		432
 	],
 	"./boleto/types": [
-		575,
+		587,
 		9,
-		186
+		197
 	],
 	"./boleto/types/": [
-		575,
+		587,
 		9,
-		186
+		197
 	],
 	"./boleto/types/index": [
-		575,
+		587,
 		9,
-		186
+		197
 	],
 	"./boleto/types/index.ts": [
-		575,
+		587,
 		9,
-		186
+		197
 	],
 	"./cash_app_pay/actions": [
-		576,
+		588,
 		9,
-		125
+		128
 	],
 	"./cash_app_pay/actions/": [
-		576,
+		588,
 		9,
-		125
+		128
 	],
 	"./cash_app_pay/actions/index": [
-		576,
+		588,
 		9,
-		125
+		128
 	],
 	"./cash_app_pay/actions/index.ts": [
-		576,
+		588,
 		9,
-		125
+		128
 	],
 	"./cash_app_pay/actions/interface": [
-		692,
+		716,
 		9,
-		397
+		433
 	],
 	"./cash_app_pay/actions/interface.ts": [
-		692,
+		716,
 		9,
-		397
+		433
 	],
 	"./cash_app_pay/api": [
-		451,
+		455,
 		9,
-		187
+		198
 	],
 	"./cash_app_pay/api/": [
-		451,
+		455,
 		9,
-		187
+		198
 	],
 	"./cash_app_pay/api/index": [
-		451,
+		455,
 		9,
-		187
+		198
 	],
 	"./cash_app_pay/api/index.ts": [
-		451,
+		455,
 		9,
-		187
+		198
 	],
 	"./cash_app_pay/handlers": [
-		359,
+		364,
 		9,
-		76
+		78
 	],
 	"./cash_app_pay/handlers/": [
-		359,
+		364,
 		9,
-		76
+		78
 	],
 	"./cash_app_pay/handlers/adyen": [
-		693,
+		717,
 		9,
-		278
+		301
 	],
 	"./cash_app_pay/handlers/adyen.ts": [
-		693,
+		717,
 		9,
-		278
+		301
 	],
 	"./cash_app_pay/handlers/index": [
-		359,
+		364,
 		9,
-		76
+		78
 	],
 	"./cash_app_pay/handlers/index.ts": [
-		359,
+		364,
 		9,
-		76
+		78
 	],
 	"./cash_app_pay/handlers/stripe": [
-		694,
+		718,
 		9,
-		280
+		303
 	],
 	"./cash_app_pay/handlers/stripe.ts": [
-		694,
+		718,
 		9,
-		280
+		303
 	],
 	"./cash_app_pay/loader": [
-		508,
+		516,
 		9,
-		72
+		74
 	],
 	"./cash_app_pay/loader/": [
-		508,
+		516,
 		9,
-		72
+		74
 	],
 	"./cash_app_pay/loader/index": [
-		508,
+		516,
 		9,
-		72
+		74
 	],
 	"./cash_app_pay/loader/index.ts": [
-		508,
+		516,
 		9,
-		72
+		74
 	],
 	"./cash_app_pay/loader/interface": [
-		695,
+		719,
 		9,
-		398
+		434
 	],
 	"./cash_app_pay/loader/interface.ts": [
-		695,
+		719,
 		9,
-		398
+		434
 	],
 	"./cash_app_pay/types": [
-		577,
+		589,
 		9,
-		188
+		199
 	],
 	"./cash_app_pay/types/": [
-		577,
+		589,
 		9,
-		188
+		199
 	],
 	"./cash_app_pay/types/index": [
-		577,
+		589,
 		9,
-		188
+		199
 	],
 	"./cash_app_pay/types/index.ts": [
-		577,
+		589,
 		9,
-		188
+		199
+	],
+	"./dana/actions": [
+		590,
+		9,
+		129
+	],
+	"./dana/actions/": [
+		590,
+		9,
+		129
+	],
+	"./dana/actions/index": [
+		590,
+		9,
+		129
+	],
+	"./dana/actions/index.ts": [
+		590,
+		9,
+		129
+	],
+	"./dana/actions/interface": [
+		720,
+		9,
+		435
+	],
+	"./dana/actions/interface.ts": [
+		720,
+		9,
+		435
+	],
+	"./dana/api": [
+		456,
+		9,
+		200
+	],
+	"./dana/api/": [
+		456,
+		9,
+		200
+	],
+	"./dana/api/index": [
+		456,
+		9,
+		200
+	],
+	"./dana/api/index.ts": [
+		456,
+		9,
+		200
+	],
+	"./dana/handlers": [
+		390,
+		9,
+		201
+	],
+	"./dana/handlers/": [
+		390,
+		9,
+		201
+	],
+	"./dana/handlers/checkout_com": [
+		721,
+		9,
+		377
+	],
+	"./dana/handlers/checkout_com.ts": [
+		721,
+		9,
+		377
+	],
+	"./dana/handlers/index": [
+		390,
+		9,
+		201
+	],
+	"./dana/handlers/index.ts": [
+		390,
+		9,
+		201
+	],
+	"./dana/loader": [
+		518,
+		9,
+		130
+	],
+	"./dana/loader/": [
+		518,
+		9,
+		130
+	],
+	"./dana/loader/index": [
+		518,
+		9,
+		130
+	],
+	"./dana/loader/index.ts": [
+		518,
+		9,
+		130
+	],
+	"./dana/loader/interface": [
+		722,
+		9,
+		436
+	],
+	"./dana/loader/interface.ts": [
+		722,
+		9,
+		436
+	],
+	"./dana/types": [
+		591,
+		9,
+		202
+	],
+	"./dana/types/": [
+		591,
+		9,
+		202
+	],
+	"./dana/types/index": [
+		591,
+		9,
+		202
+	],
+	"./dana/types/index.ts": [
+		591,
+		9,
+		202
 	],
 	"./direct_debit/actions": [
-		513,
+		525,
 		9,
-		126
+		131
 	],
 	"./direct_debit/actions/": [
-		513,
+		525,
 		9,
-		126
+		131
 	],
 	"./direct_debit/actions/index": [
-		513,
+		525,
 		9,
-		126
+		131
 	],
 	"./direct_debit/actions/index.ts": [
-		513,
+		525,
 		9,
-		126
+		131
 	],
 	"./direct_debit/actions/interface": [
-		696,
+		723,
 		9,
-		399
+		437
 	],
 	"./direct_debit/actions/interface.ts": [
-		696,
+		723,
 		9,
-		399
+		437
 	],
 	"./direct_debit/api": [
-		399,
+		403,
 		9,
-		189
+		203
 	],
 	"./direct_debit/api/": [
-		399,
+		403,
 		9,
-		189
+		203
 	],
 	"./direct_debit/api/index": [
-		399,
+		403,
 		9,
-		189
+		203
 	],
 	"./direct_debit/api/index.ts": [
-		399,
+		403,
 		9,
-		189
+		203
 	],
 	"./direct_debit/handlers": [
 		310,
@@ -1194,372 +1358,384 @@ var map = {
 		9
 	],
 	"./direct_debit/handlers/AUD/ezidebit": [
-		578,
+		592,
 		9,
 		0,
-		94
+		96
 	],
 	"./direct_debit/handlers/AUD/ezidebit.ts": [
-		578,
+		592,
 		9,
 		0,
-		94
+		96
 	],
 	"./direct_debit/handlers/AUD/gocardless": [
-		579,
+		593,
 		9,
 		0,
-		95
+		97
 	],
 	"./direct_debit/handlers/AUD/gocardless.ts": [
-		579,
+		593,
 		9,
 		0,
-		95
+		97
 	],
 	"./direct_debit/handlers/AUD/stripe": [
-		580,
+		594,
 		9,
 		0,
-		96
+		98
 	],
 	"./direct_debit/handlers/AUD/stripe.ts": [
-		580,
+		594,
 		9,
 		0,
-		96
+		98
 	],
 	"./direct_debit/handlers/CAD/gocardless": [
-		581,
+		595,
 		9,
 		0,
-		97
+		99
 	],
 	"./direct_debit/handlers/CAD/gocardless.ts": [
-		581,
+		595,
 		9,
 		0,
-		97
+		99
 	],
 	"./direct_debit/handlers/EUR": [
-		346,
+		350,
 		9,
 		7
 	],
 	"./direct_debit/handlers/EUR/": [
-		346,
+		350,
 		9,
 		7
 	],
 	"./direct_debit/handlers/EUR/adyen": [
-		582,
+		596,
 		9,
-		83
+		85
 	],
 	"./direct_debit/handlers/EUR/adyen.ts": [
-		582,
+		596,
 		9,
-		83
+		85
 	],
 	"./direct_debit/handlers/EUR/bluesnap": [
-		583,
+		597,
 		9,
 		0,
-		98
+		100
 	],
 	"./direct_debit/handlers/EUR/bluesnap.ts": [
-		583,
+		597,
 		9,
 		0,
-		98
+		100
 	],
 	"./direct_debit/handlers/EUR/chargebee_payments": [
-		584,
+		598,
 		9,
 		0,
-		99
+		101
 	],
 	"./direct_debit/handlers/EUR/chargebee_payments.ts": [
-		584,
+		598,
 		9,
 		0,
-		99
+		101
 	],
 	"./direct_debit/handlers/EUR/checkout_com": [
-		585,
+		599,
 		9,
 		0,
-		100
+		102
 	],
 	"./direct_debit/handlers/EUR/checkout_com.ts": [
-		585,
+		599,
 		9,
 		0,
-		100
+		102
 	],
 	"./direct_debit/handlers/EUR/deutsche_bank": [
-		586,
+		600,
 		9,
 		0,
-		101
+		103
 	],
 	"./direct_debit/handlers/EUR/deutsche_bank.ts": [
-		586,
+		600,
 		9,
 		0,
-		101
+		103
 	],
 	"./direct_debit/handlers/EUR/gocardless": [
-		587,
+		601,
 		9,
 		0,
-		102
+		104
 	],
 	"./direct_debit/handlers/EUR/gocardless.ts": [
-		587,
+		601,
 		9,
 		0,
-		102
+		104
 	],
 	"./direct_debit/handlers/EUR/index": [
-		346,
+		350,
 		9,
 		7
 	],
 	"./direct_debit/handlers/EUR/index.ts": [
-		346,
+		350,
 		9,
 		7
 	],
 	"./direct_debit/handlers/EUR/mollie": [
-		588,
+		602,
 		9,
-		84
+		86
 	],
 	"./direct_debit/handlers/EUR/mollie.ts": [
-		588,
+		602,
 		9,
-		84
+		86
 	],
 	"./direct_debit/handlers/EUR/stripe": [
-		589,
+		603,
 		9,
-		85
+		87
 	],
 	"./direct_debit/handlers/EUR/stripe.ts": [
-		589,
+		603,
 		9,
-		85
+		87
 	],
 	"./direct_debit/handlers/GBP/adyen": [
-		590,
+		604,
 		9,
 		0,
-		103
+		105
 	],
 	"./direct_debit/handlers/GBP/adyen.ts": [
-		590,
+		604,
 		9,
 		0,
-		103
+		105
 	],
 	"./direct_debit/handlers/GBP/chargebee_payments": [
-		591,
+		605,
 		9,
 		0,
-		104
+		106
 	],
 	"./direct_debit/handlers/GBP/chargebee_payments.ts": [
-		591,
+		605,
 		9,
 		0,
-		104
+		106
 	],
 	"./direct_debit/handlers/GBP/gocardless": [
-		592,
+		606,
 		9,
 		0,
-		105
+		107
 	],
 	"./direct_debit/handlers/GBP/gocardless.ts": [
-		592,
+		606,
 		9,
 		0,
-		105
+		107
 	],
 	"./direct_debit/handlers/GBP/mollie": [
-		593,
+		607,
 		9,
 		0,
-		106
+		108
 	],
 	"./direct_debit/handlers/GBP/mollie.ts": [
-		593,
+		607,
 		9,
 		0,
-		106
+		108
 	],
 	"./direct_debit/handlers/GBP/stripe": [
-		594,
+		608,
 		9,
 		0,
-		107
+		109
 	],
 	"./direct_debit/handlers/GBP/stripe.ts": [
-		594,
+		608,
 		9,
 		0,
-		107
+		109
 	],
 	"./direct_debit/handlers/NZD/ezidebit": [
-		595,
+		609,
 		9,
 		0,
-		108
+		110
 	],
 	"./direct_debit/handlers/NZD/ezidebit.ts": [
-		595,
+		609,
 		9,
 		0,
-		108
+		110
 	],
 	"./direct_debit/handlers/NZD/gocardless": [
-		596,
+		610,
 		9,
 		0,
-		109
+		111
 	],
 	"./direct_debit/handlers/NZD/gocardless.ts": [
-		596,
+		610,
 		9,
 		0,
-		109
+		111
 	],
 	"./direct_debit/handlers/SEK/gocardless": [
-		597,
+		611,
 		9,
 		0,
-		110
+		112
 	],
 	"./direct_debit/handlers/SEK/gocardless.ts": [
-		597,
+		611,
 		9,
 		0,
-		110
+		112
 	],
 	"./direct_debit/handlers/USD": [
-		336,
+		337,
 		9,
 		8
 	],
 	"./direct_debit/handlers/USD/": [
-		336,
+		337,
 		9,
 		8
 	],
 	"./direct_debit/handlers/USD/adyen": [
-		598,
+		612,
 		9,
-		86
+		88
 	],
 	"./direct_debit/handlers/USD/adyen.ts": [
-		598,
+		612,
 		9,
-		86
+		88
 	],
 	"./direct_debit/handlers/USD/authorize_net": [
-		599,
+		613,
 		9,
-		87
+		89
 	],
 	"./direct_debit/handlers/USD/authorize_net.ts": [
-		599,
+		613,
 		9,
-		87
+		89
 	],
 	"./direct_debit/handlers/USD/bluesnap": [
-		600,
+		614,
 		9,
 		0,
-		111
+		113
 	],
 	"./direct_debit/handlers/USD/bluesnap.ts": [
-		600,
+		614,
 		9,
 		0,
-		111
+		113
 	],
 	"./direct_debit/handlers/USD/braintree": [
-		601,
+		615,
 		9,
 		0,
-		48
+		49
 	],
 	"./direct_debit/handlers/USD/braintree.ts": [
-		601,
+		615,
 		9,
 		0,
-		48
+		49
 	],
 	"./direct_debit/handlers/USD/chargebee_payments": [
-		602,
+		616,
 		9,
-		88
+		90
 	],
 	"./direct_debit/handlers/USD/chargebee_payments.ts": [
-		602,
+		616,
 		9,
-		88
+		90
 	],
 	"./direct_debit/handlers/USD/checkout_com": [
-		603,
+		617,
 		9,
-		46
+		47
 	],
 	"./direct_debit/handlers/USD/checkout_com.ts": [
-		603,
+		617,
 		9,
-		46
+		47
 	],
 	"./direct_debit/handlers/USD/cybersource": [
-		604,
+		618,
 		9,
-		89
+		91
 	],
 	"./direct_debit/handlers/USD/cybersource.ts": [
-		604,
+		618,
 		9,
-		89
+		91
 	],
 	"./direct_debit/handlers/USD/gocardless": [
-		605,
+		619,
 		9,
 		0,
-		112
+		114
 	],
 	"./direct_debit/handlers/USD/gocardless.ts": [
-		605,
+		619,
 		9,
 		0,
-		112
+		114
 	],
 	"./direct_debit/handlers/USD/index": [
-		336,
+		337,
 		9,
 		8
 	],
 	"./direct_debit/handlers/USD/index.ts": [
-		336,
+		337,
 		9,
 		8
 	],
+	"./direct_debit/handlers/USD/nmi": [
+		620,
+		9,
+		0,
+		115
+	],
+	"./direct_debit/handlers/USD/nmi.ts": [
+		620,
+		9,
+		0,
+		115
+	],
 	"./direct_debit/handlers/USD/stripe": [
-		606,
+		621,
 		9,
 		40
 	],
 	"./direct_debit/handlers/USD/stripe.ts": [
-		606,
+		621,
 		9,
 		40
 	],
@@ -1579,13 +1755,13 @@ var map = {
 		339,
 		9,
 		0,
-		127
+		132
 	],
 	"./direct_debit/handlers/common/gocardless.ts": [
 		339,
 		9,
 		0,
-		127
+		132
 	],
 	"./direct_debit/handlers/common/index": [
 		327,
@@ -1600,16 +1776,16 @@ var map = {
 		6
 	],
 	"./direct_debit/handlers/common/mollie": [
-		452,
+		457,
 		9,
 		0,
-		128
+		133
 	],
 	"./direct_debit/handlers/common/mollie.ts": [
-		452,
+		457,
 		9,
 		0,
-		128
+		133
 	],
 	"./direct_debit/handlers/index": [
 		310,
@@ -1624,4991 +1800,5461 @@ var map = {
 	"./direct_debit/helper/direct-debit-data-helper": [
 		333,
 		9,
-		400
+		438
 	],
 	"./direct_debit/helper/direct-debit-data-helper.ts": [
 		333,
 		9,
-		400
+		438
 	],
 	"./direct_debit/helper/direct-debit-data-manager": [
-		332,
+		331,
 		9,
 		0
 	],
 	"./direct_debit/helper/direct-debit-data-manager/": [
-		332,
+		331,
 		9,
 		0
 	],
 	"./direct_debit/helper/direct-debit-data-manager/abstract": [
 		313,
 		9,
-		401
+		439
 	],
 	"./direct_debit/helper/direct-debit-data-manager/abstract.ts": [
 		313,
 		9,
-		401
+		439
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/adyen/adyen-bacs": [
-		559,
+		571,
 		9,
-		328
+		350
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/adyen/adyen-bacs.ts": [
-		559,
+		571,
 		9,
-		328
+		350
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/bluesnap/bluesnap-ach": [
-		554,
+		566,
 		9,
-		318
+		339
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/bluesnap/bluesnap-ach.ts": [
-		554,
+		566,
 		9,
-		318
+		339
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/bluesnap/bluesnap-sepa": [
-		552,
+		564,
 		9,
-		353
+		378
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/bluesnap/bluesnap-sepa.ts": [
-		552,
+		564,
+		9,
+		378
+	],
+	"./direct_debit/helper/direct-debit-data-manager/gateway/braintree/braintree-ach": [
+		567,
+		9,
+		351
+	],
+	"./direct_debit/helper/direct-debit-data-manager/gateway/braintree/braintree-ach.ts": [
+		567,
+		9,
+		351
+	],
+	"./direct_debit/helper/direct-debit-data-manager/gateway/chargebee_payments/chargbee_payments_sepa": [
+		573,
+		9,
+		379
+	],
+	"./direct_debit/helper/direct-debit-data-manager/gateway/chargebee_payments/chargbee_payments_sepa.ts": [
+		573,
+		9,
+		379
+	],
+	"./direct_debit/helper/direct-debit-data-manager/gateway/chargebee_payments/chargebee_payments_bacs": [
+		572,
+		9,
+		352
+	],
+	"./direct_debit/helper/direct-debit-data-manager/gateway/chargebee_payments/chargebee_payments_bacs.ts": [
+		572,
+		9,
+		352
+	],
+	"./direct_debit/helper/direct-debit-data-manager/gateway/checkout_com/checkout_com-sepa": [
+		565,
+		9,
+		380
+	],
+	"./direct_debit/helper/direct-debit-data-manager/gateway/checkout_com/checkout_com-sepa.ts": [
+		565,
+		9,
+		380
+	],
+	"./direct_debit/helper/direct-debit-data-manager/gateway/deutsche_bank/deutsche_bank-sepa": [
+		576,
+		9,
+		381
+	],
+	"./direct_debit/helper/direct-debit-data-manager/gateway/deutsche_bank/deutsche_bank-sepa.ts": [
+		576,
+		9,
+		381
+	],
+	"./direct_debit/helper/direct-debit-data-manager/gateway/ezidebit/ezidebit-becs": [
+		574,
+		9,
+		354
+	],
+	"./direct_debit/helper/direct-debit-data-manager/gateway/ezidebit/ezidebit-becs-nz": [
+		575,
 		9,
 		353
 	],
-	"./direct_debit/helper/direct-debit-data-manager/gateway/braintree/braintree-ach": [
-		555,
-		9,
-		329
-	],
-	"./direct_debit/helper/direct-debit-data-manager/gateway/braintree/braintree-ach.ts": [
-		555,
-		9,
-		329
-	],
-	"./direct_debit/helper/direct-debit-data-manager/gateway/chargebee_payments/chargbee_payments_sepa": [
-		561,
-		9,
-		354
-	],
-	"./direct_debit/helper/direct-debit-data-manager/gateway/chargebee_payments/chargbee_payments_sepa.ts": [
-		561,
-		9,
-		354
-	],
-	"./direct_debit/helper/direct-debit-data-manager/gateway/chargebee_payments/chargebee_payments_bacs": [
-		560,
-		9,
-		330
-	],
-	"./direct_debit/helper/direct-debit-data-manager/gateway/chargebee_payments/chargebee_payments_bacs.ts": [
-		560,
-		9,
-		330
-	],
-	"./direct_debit/helper/direct-debit-data-manager/gateway/checkout_com/checkout_com-sepa": [
-		553,
-		9,
-		355
-	],
-	"./direct_debit/helper/direct-debit-data-manager/gateway/checkout_com/checkout_com-sepa.ts": [
-		553,
-		9,
-		355
-	],
-	"./direct_debit/helper/direct-debit-data-manager/gateway/deutsche_bank/deutsche_bank-sepa": [
-		564,
-		9,
-		356
-	],
-	"./direct_debit/helper/direct-debit-data-manager/gateway/deutsche_bank/deutsche_bank-sepa.ts": [
-		564,
-		9,
-		356
-	],
-	"./direct_debit/helper/direct-debit-data-manager/gateway/ezidebit/ezidebit-becs": [
-		562,
-		9,
-		332
-	],
-	"./direct_debit/helper/direct-debit-data-manager/gateway/ezidebit/ezidebit-becs-nz": [
-		563,
-		9,
-		331
-	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/ezidebit/ezidebit-becs-nz.ts": [
-		563,
+		575,
 		9,
-		331
+		353
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/ezidebit/ezidebit-becs.ts": [
-		562,
+		574,
 		9,
-		332
+		354
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/gocardless/gocardless-ach": [
-		550,
+		562,
 		9,
-		333
+		355
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/gocardless/gocardless-ach.ts": [
-		550,
+		562,
 		9,
-		333
+		355
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/gocardless/gocardless-autogiro": [
-		551,
+		563,
 		9,
-		334
+		356
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/gocardless/gocardless-autogiro.ts": [
-		551,
+		563,
 		9,
-		334
+		356
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/gocardless/gocardless-bacs": [
-		546,
+		558,
 		9,
-		335
+		357
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/gocardless/gocardless-bacs.ts": [
-		546,
+		558,
 		9,
-		335
+		357
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/gocardless/gocardless-becs": [
-		547,
+		559,
 		9,
-		337
+		359
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/gocardless/gocardless-becs-nz": [
-		548,
+		560,
 		9,
-		336
+		358
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/gocardless/gocardless-becs-nz.ts": [
-		548,
+		560,
 		9,
-		336
+		358
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/gocardless/gocardless-becs.ts": [
-		547,
+		559,
 		9,
-		337
+		359
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/gocardless/gocardless-pad": [
-		549,
+		561,
 		9,
-		338
+		360
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/gocardless/gocardless-pad.ts": [
-		549,
+		561,
 		9,
-		338
+		360
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/gocardless/gocardless-sepa": [
-		545,
+		557,
 		9,
-		339
+		361
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/gocardless/gocardless-sepa.ts": [
-		545,
+		557,
 		9,
-		339
+		361
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/mollie/mollie-bacs": [
-		565,
+		577,
 		9,
-		357
+		382
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/mollie/mollie-bacs.ts": [
-		565,
+		577,
 		9,
-		357
+		382
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/stripe/stripe-bacs": [
-		556,
+		568,
 		9,
-		319
+		340
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/stripe/stripe-bacs.ts": [
-		556,
+		568,
 		9,
-		319
+		340
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/stripe/stripe-becs": [
-		557,
+		569,
 		9,
-		320
+		341
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/stripe/stripe-becs-nz": [
-		558,
+		570,
 		9,
-		340
+		362
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/stripe/stripe-becs-nz.ts": [
-		558,
+		570,
 		9,
-		340
+		362
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/stripe/stripe-becs.ts": [
-		557,
+		569,
 		9,
-		320
+		341
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/stripe/stripe-common": [
-		395,
+		399,
 		9,
-		402
+		440
 	],
 	"./direct_debit/helper/direct-debit-data-manager/gateway/stripe/stripe-common.ts": [
-		395,
+		399,
 		9,
-		402
+		440
 	],
 	"./direct_debit/helper/direct-debit-data-manager/index": [
-		332,
+		331,
 		9,
 		0
 	],
 	"./direct_debit/helper/direct-debit-data-manager/index.ts": [
-		332,
+		331,
 		9,
 		0
 	],
 	"./direct_debit/helper/financial-connections": [
-		607,
+		622,
 		9,
-		317
+		338
 	],
 	"./direct_debit/helper/financial-connections.ts": [
-		607,
+		622,
 		9,
-		317
+		338
 	],
 	"./direct_debit/helper/plaid-helper": [
-		453,
+		458,
 		9,
-		347
+		369
 	],
 	"./direct_debit/helper/plaid-helper.ts": [
-		453,
+		458,
 		9,
-		347
+		369
 	],
 	"./direct_debit/loader": [
-		487,
+		495,
 		9,
-		129
+		134
 	],
 	"./direct_debit/loader/": [
-		487,
+		495,
 		9,
-		129
+		134
 	],
 	"./direct_debit/loader/index": [
-		487,
+		495,
 		9,
-		129
+		134
 	],
 	"./direct_debit/loader/index.ts": [
-		487,
+		495,
 		9,
-		129
+		134
 	],
 	"./direct_debit/loader/interface": [
-		697,
+		724,
 		9,
-		403
+		441
 	],
 	"./direct_debit/loader/interface.ts": [
-		697,
+		724,
 		9,
-		403
+		441
 	],
 	"./direct_debit/types": [
-		348,
+		352,
 		9,
-		190
+		204
 	],
 	"./direct_debit/types/": [
-		348,
+		352,
 		9,
-		190
+		204
 	],
 	"./direct_debit/types/index": [
-		348,
+		352,
 		9,
-		190
+		204
 	],
 	"./direct_debit/types/index.ts": [
-		348,
+		352,
 		9,
-		190
+		204
 	],
 	"./dotpay/actions": [
-		529,
+		541,
 		9,
 		19
 	],
 	"./dotpay/actions/": [
-		529,
+		541,
 		9,
 		19
 	],
 	"./dotpay/actions/index": [
-		529,
+		541,
 		9,
 		19
 	],
 	"./dotpay/actions/index.ts": [
-		529,
+		541,
 		9,
 		19
 	],
 	"./dotpay/actions/interface": [
-		698,
+		725,
 		9,
-		404
+		442
 	],
 	"./dotpay/actions/interface.ts": [
-		698,
+		725,
 		9,
-		404
+		442
 	],
 	"./dotpay/api": [
-		435,
+		439,
 		9,
-		191
+		205
 	],
 	"./dotpay/api/": [
-		435,
+		439,
 		9,
-		191
+		205
 	],
 	"./dotpay/api/index": [
-		435,
+		439,
 		9,
-		191
+		205
 	],
 	"./dotpay/api/index.ts": [
-		435,
+		439,
 		9,
-		191
+		205
 	],
 	"./dotpay/handlers": [
-		398,
+		402,
 		9,
-		71
+		73
 	],
 	"./dotpay/handlers/": [
-		398,
+		402,
 		9,
-		71
+		73
 	],
 	"./dotpay/handlers/abstract": [
-		367,
+		372,
 		9,
-		344
+		366
 	],
 	"./dotpay/handlers/abstract.ts": [
-		367,
+		372,
 		9,
-		344
+		366
 	],
 	"./dotpay/handlers/adyen": [
-		366,
+		371,
 		9,
-		80
+		82
 	],
 	"./dotpay/handlers/adyen/": [
-		366,
+		371,
 		9,
-		80
+		82
 	],
 	"./dotpay/handlers/adyen/index": [
-		366,
+		371,
 		9,
-		80
+		82
 	],
 	"./dotpay/handlers/adyen/index.ts": [
-		366,
+		371,
 		9,
-		80
+		82
 	],
 	"./dotpay/handlers/index": [
-		398,
+		402,
 		9,
-		71
+		73
 	],
 	"./dotpay/handlers/index.ts": [
-		398,
+		402,
 		9,
-		71
+		73
 	],
 	"./dotpay/loader": [
-		477,
+		485,
 		9,
-		57
+		58
 	],
 	"./dotpay/loader/": [
-		477,
+		485,
 		9,
-		57
+		58
 	],
 	"./dotpay/loader/index": [
-		477,
+		485,
 		9,
-		57
+		58
 	],
 	"./dotpay/loader/index.ts": [
-		477,
+		485,
 		9,
-		57
+		58
 	],
 	"./dotpay/loader/interface": [
-		699,
+		726,
 		9,
-		405
+		443
 	],
 	"./dotpay/loader/interface.ts": [
-		699,
+		726,
 		9,
-		405
+		443
 	],
 	"./electronic_payment_standard/actions": [
-		540,
+		552,
 		9,
 		20
 	],
 	"./electronic_payment_standard/actions/": [
-		540,
+		552,
 		9,
 		20
 	],
 	"./electronic_payment_standard/actions/index": [
-		540,
+		552,
 		9,
 		20
 	],
 	"./electronic_payment_standard/actions/index.ts": [
-		540,
+		552,
 		9,
 		20
 	],
 	"./electronic_payment_standard/actions/interface": [
-		700,
+		727,
 		9,
-		406
+		444
 	],
 	"./electronic_payment_standard/actions/interface.ts": [
-		700,
+		727,
 		9,
-		406
+		444
 	],
 	"./electronic_payment_standard/api": [
-		446,
+		450,
 		9,
-		192
+		206
 	],
 	"./electronic_payment_standard/api/": [
-		446,
+		450,
 		9,
-		192
+		206
 	],
 	"./electronic_payment_standard/api/index": [
-		446,
+		450,
 		9,
-		192
+		206
 	],
 	"./electronic_payment_standard/api/index.ts": [
-		446,
+		450,
 		9,
-		192
+		206
 	],
 	"./electronic_payment_standard/handlers": [
-		355,
+		348,
 		9,
-		193
+		207
 	],
 	"./electronic_payment_standard/handlers/": [
-		355,
+		348,
 		9,
-		193
+		207
 	],
 	"./electronic_payment_standard/handlers/adyen": [
-		701,
+		728,
 		9,
-		290
+		312
 	],
 	"./electronic_payment_standard/handlers/adyen.ts": [
-		701,
+		728,
 		9,
-		290
+		312
+	],
+	"./electronic_payment_standard/handlers/checkout_com": [
+		729,
+		9,
+		383
+	],
+	"./electronic_payment_standard/handlers/checkout_com.ts": [
+		729,
+		9,
+		383
 	],
 	"./electronic_payment_standard/handlers/index": [
-		355,
+		348,
 		9,
-		193
+		207
 	],
 	"./electronic_payment_standard/handlers/index.ts": [
-		355,
+		348,
 		9,
-		193
+		207
 	],
 	"./electronic_payment_standard/handlers/mollie": [
-		702,
+		730,
 		9,
-		358
+		384
 	],
 	"./electronic_payment_standard/handlers/mollie.ts": [
-		702,
+		730,
 		9,
-		358
+		384
 	],
 	"./electronic_payment_standard/loader": [
-		499,
+		507,
 		9,
-		130
+		135
 	],
 	"./electronic_payment_standard/loader/": [
-		499,
+		507,
 		9,
-		130
+		135
 	],
 	"./electronic_payment_standard/loader/index": [
-		499,
+		507,
 		9,
-		130
+		135
 	],
 	"./electronic_payment_standard/loader/index.ts": [
-		499,
+		507,
 		9,
-		130
+		135
 	],
 	"./electronic_payment_standard/loader/interface": [
-		703,
+		731,
 		9,
-		407
+		445
 	],
 	"./electronic_payment_standard/loader/interface.ts": [
-		703,
+		731,
 		9,
-		407
+		445
 	],
 	"./electronic_payment_standard/types": [
-		608,
+		623,
 		9,
-		194
+		208
 	],
 	"./electronic_payment_standard/types/": [
-		608,
+		623,
 		9,
-		194
+		208
 	],
 	"./electronic_payment_standard/types/index": [
-		608,
+		623,
 		9,
-		194
+		208
 	],
 	"./electronic_payment_standard/types/index.ts": [
-		608,
+		623,
 		9,
-		194
+		208
 	],
 	"./faster_payments/__tests__/__snapshots__/handler-gocardless.test.ts.snap": [
-		838,
+		882,
 		7,
-		552
+		600
 	],
 	"./faster_payments/actions": [
-		533,
+		545,
 		9,
 		21
 	],
 	"./faster_payments/actions/": [
-		533,
+		545,
 		9,
 		21
 	],
 	"./faster_payments/actions/index": [
-		533,
+		545,
 		9,
 		21
 	],
 	"./faster_payments/actions/index.ts": [
-		533,
+		545,
 		9,
 		21
 	],
 	"./faster_payments/actions/interface": [
-		704,
+		732,
 		9,
-		408
+		446
 	],
 	"./faster_payments/actions/interface.ts": [
-		704,
+		732,
 		9,
-		408
+		446
 	],
 	"./faster_payments/api": [
-		439,
+		443,
 		9,
-		195
+		209
 	],
 	"./faster_payments/api/": [
-		439,
+		443,
 		9,
-		195
+		209
 	],
 	"./faster_payments/api/index": [
-		439,
+		443,
 		9,
-		195
+		209
 	],
 	"./faster_payments/api/index.ts": [
-		439,
+		443,
 		9,
-		195
+		209
 	],
 	"./faster_payments/handlers": [
-		373,
+		375,
 		9,
-		59
+		60
 	],
 	"./faster_payments/handlers/": [
-		373,
+		375,
 		9,
-		59
+		60
 	],
 	"./faster_payments/handlers/gocardless": [
-		705,
+		733,
 		9,
-		304
+		326
 	],
 	"./faster_payments/handlers/gocardless.ts": [
-		705,
+		733,
 		9,
-		304
+		326
 	],
 	"./faster_payments/handlers/index": [
-		373,
+		375,
 		9,
-		59
+		60
 	],
 	"./faster_payments/handlers/index.ts": [
-		373,
+		375,
 		9,
-		59
+		60
 	],
 	"./faster_payments/loader": [
-		488,
+		496,
 		9,
-		50
+		51
 	],
 	"./faster_payments/loader/": [
-		488,
+		496,
 		9,
-		50
+		51
 	],
 	"./faster_payments/loader/index": [
-		488,
+		496,
 		9,
-		50
+		51
 	],
 	"./faster_payments/loader/index.ts": [
-		488,
+		496,
 		9,
-		50
+		51
 	],
 	"./faster_payments/loader/interface": [
-		706,
+		734,
 		9,
-		409
+		447
 	],
 	"./faster_payments/loader/interface.ts": [
-		706,
+		734,
 		9,
-		409
+		447
 	],
 	"./faster_payments/types": [
-		609,
+		624,
 		9,
-		196
+		210
 	],
 	"./faster_payments/types/": [
-		609,
+		624,
 		9,
-		196
+		210
 	],
 	"./faster_payments/types/index": [
-		609,
+		624,
 		9,
-		196
+		210
 	],
 	"./faster_payments/types/index.ts": [
-		609,
+		624,
 		9,
-		196
+		210
 	],
 	"./gcash/actions": [
-		610,
+		625,
 		9,
-		131
+		136
 	],
 	"./gcash/actions/": [
-		610,
+		625,
 		9,
-		131
+		136
 	],
 	"./gcash/actions/index": [
-		610,
+		625,
 		9,
-		131
+		136
 	],
 	"./gcash/actions/index.ts": [
-		610,
+		625,
 		9,
-		131
+		136
 	],
 	"./gcash/actions/interface": [
-		707,
+		735,
 		9,
-		410
+		448
 	],
 	"./gcash/actions/interface.ts": [
-		707,
+		735,
 		9,
-		410
+		448
 	],
 	"./gcash/api": [
-		454,
+		459,
 		9,
-		197
+		211
 	],
 	"./gcash/api/": [
-		454,
+		459,
 		9,
-		197
+		211
 	],
 	"./gcash/api/index": [
-		454,
+		459,
 		9,
-		197
+		211
 	],
 	"./gcash/api/index.ts": [
-		454,
+		459,
 		9,
-		197
+		211
 	],
 	"./gcash/handlers": [
-		370,
+		356,
 		9,
-		198
+		212
 	],
 	"./gcash/handlers/": [
-		370,
+		356,
 		9,
-		198
+		212
 	],
 	"./gcash/handlers/adyen": [
-		708,
+		736,
 		9,
-		291
+		313
 	],
 	"./gcash/handlers/adyen.ts": [
-		708,
+		736,
 		9,
-		291
+		313
+	],
+	"./gcash/handlers/checkout_com": [
+		737,
+		9,
+		385
+	],
+	"./gcash/handlers/checkout_com.ts": [
+		737,
+		9,
+		385
 	],
 	"./gcash/handlers/index": [
-		370,
+		356,
 		9,
-		198
+		212
 	],
 	"./gcash/handlers/index.ts": [
-		370,
+		356,
 		9,
-		198
+		212
 	],
 	"./gcash/loader": [
-		483,
+		491,
 		9,
-		132
+		137
 	],
 	"./gcash/loader/": [
-		483,
+		491,
 		9,
-		132
+		137
 	],
 	"./gcash/loader/index": [
-		483,
+		491,
 		9,
-		132
+		137
 	],
 	"./gcash/loader/index.ts": [
-		483,
+		491,
 		9,
-		132
+		137
 	],
 	"./gcash/loader/interface": [
-		709,
+		738,
 		9,
-		411
+		449
 	],
 	"./gcash/loader/interface.ts": [
-		709,
+		738,
 		9,
-		411
+		449
 	],
 	"./gcash/types": [
-		611,
+		626,
 		9,
-		199
+		213
 	],
 	"./gcash/types/": [
-		611,
+		626,
 		9,
-		199
+		213
 	],
 	"./gcash/types/index": [
-		611,
+		626,
 		9,
-		199
+		213
 	],
 	"./gcash/types/index.ts": [
-		611,
+		626,
 		9,
-		199
+		213
 	],
 	"./giropay/actions": [
-		528,
+		540,
 		9,
 		22
 	],
 	"./giropay/actions/": [
-		528,
+		540,
 		9,
 		22
 	],
 	"./giropay/actions/index": [
-		528,
+		540,
 		9,
 		22
 	],
 	"./giropay/actions/index.ts": [
-		528,
+		540,
 		9,
 		22
 	],
 	"./giropay/actions/interface": [
-		710,
+		739,
 		9,
-		412
+		450
 	],
 	"./giropay/actions/interface.ts": [
-		710,
+		739,
 		9,
-		412
+		450
 	],
 	"./giropay/api": [
-		434,
+		438,
 		9,
-		200
+		214
 	],
 	"./giropay/api/": [
-		434,
+		438,
 		9,
-		200
+		214
 	],
 	"./giropay/api/index": [
-		434,
+		438,
 		9,
-		200
+		214
 	],
 	"./giropay/api/index.ts": [
-		434,
+		438,
 		9,
-		200
+		214
 	],
 	"./giropay/handlers": [
-		397,
+		401,
 		9,
 		4,
-		201
+		215
 	],
 	"./giropay/handlers/": [
-		397,
+		401,
 		9,
 		4,
-		201
+		215
 	],
 	"./giropay/handlers/abstract": [
-		520,
+		532,
 		9,
-		345
+		367
 	],
 	"./giropay/handlers/abstract.ts": [
-		520,
+		532,
 		9,
-		345
+		367
 	],
 	"./giropay/handlers/adyen": [
-		403,
+		407,
 		9,
 		4
 	],
 	"./giropay/handlers/adyen/": [
-		403,
+		407,
 		9,
 		4
 	],
 	"./giropay/handlers/adyen/index": [
-		403,
+		407,
 		9,
 		4
 	],
 	"./giropay/handlers/adyen/index.ts": [
-		403,
+		407,
 		9,
 		4
 	],
 	"./giropay/handlers/index": [
-		397,
+		401,
 		9,
 		4,
-		201
+		215
 	],
 	"./giropay/handlers/index.ts": [
-		397,
+		401,
 		9,
 		4,
-		201
+		215
 	],
 	"./giropay/loader": [
-		476,
+		484,
 		9,
 		4,
-		133
+		138
 	],
 	"./giropay/loader/": [
-		476,
+		484,
 		9,
 		4,
-		133
+		138
 	],
 	"./giropay/loader/index": [
-		476,
+		484,
 		9,
 		4,
-		133
+		138
 	],
 	"./giropay/loader/index.ts": [
-		476,
+		484,
 		9,
 		4,
-		133
+		138
 	],
 	"./giropay/loader/interface": [
-		711,
+		740,
 		9,
-		413
+		451
 	],
 	"./giropay/loader/interface.ts": [
-		711,
+		740,
 		9,
-		413
+		451
 	],
 	"./go_pay/actions": [
-		612,
+		627,
 		9,
-		134
+		139
 	],
 	"./go_pay/actions/": [
-		612,
+		627,
 		9,
-		134
+		139
 	],
 	"./go_pay/actions/index": [
-		612,
+		627,
 		9,
-		134
+		139
 	],
 	"./go_pay/actions/index.ts": [
-		612,
+		627,
 		9,
-		134
+		139
 	],
 	"./go_pay/actions/interface": [
-		712,
+		741,
 		9,
-		414
+		452
 	],
 	"./go_pay/actions/interface.ts": [
-		712,
+		741,
 		9,
-		414
+		452
 	],
 	"./go_pay/api": [
-		455,
+		460,
 		9,
-		202
+		216
 	],
 	"./go_pay/api/": [
-		455,
+		460,
 		9,
-		202
+		216
 	],
 	"./go_pay/api/index": [
-		455,
+		460,
 		9,
-		202
+		216
 	],
 	"./go_pay/api/index.ts": [
-		455,
+		460,
 		9,
-		202
+		216
 	],
 	"./go_pay/handlers": [
-		381,
+		382,
 		9,
-		203
+		217
 	],
 	"./go_pay/handlers/": [
-		381,
+		382,
 		9,
-		203
+		217
 	],
 	"./go_pay/handlers/adyen": [
-		713,
+		742,
 		9,
-		292
+		314
 	],
 	"./go_pay/handlers/adyen.ts": [
-		713,
+		742,
 		9,
-		292
+		314
 	],
 	"./go_pay/handlers/index": [
-		381,
+		382,
 		9,
-		203
+		217
 	],
 	"./go_pay/handlers/index.ts": [
-		381,
+		382,
 		9,
-		203
+		217
 	],
 	"./go_pay/loader": [
-		496,
+		504,
 		9,
-		135
+		140
 	],
 	"./go_pay/loader/": [
-		496,
+		504,
 		9,
-		135
+		140
 	],
 	"./go_pay/loader/index": [
-		496,
+		504,
 		9,
-		135
+		140
 	],
 	"./go_pay/loader/index.ts": [
-		496,
+		504,
 		9,
-		135
+		140
 	],
 	"./go_pay/loader/interface": [
-		714,
+		743,
 		9,
-		415
+		453
 	],
 	"./go_pay/loader/interface.ts": [
-		714,
+		743,
 		9,
-		415
+		453
 	],
 	"./google_pay/actions": [
-		527,
+		539,
 		9,
 		23
 	],
 	"./google_pay/actions/": [
-		527,
+		539,
 		9,
 		23
 	],
 	"./google_pay/actions/index": [
-		527,
+		539,
 		9,
 		23
 	],
 	"./google_pay/actions/index.ts": [
-		527,
+		539,
 		9,
 		23
 	],
 	"./google_pay/actions/interface": [
-		715,
+		744,
 		9,
-		416
+		454
 	],
 	"./google_pay/actions/interface.ts": [
-		715,
+		744,
 		9,
-		416
+		454
 	],
 	"./google_pay/api": [
-		433,
+		437,
 		9,
-		204
+		218
 	],
 	"./google_pay/api/": [
-		433,
+		437,
 		9,
-		204
+		218
 	],
 	"./google_pay/api/index": [
-		433,
+		437,
 		9,
-		204
+		218
 	],
 	"./google_pay/api/index.ts": [
-		433,
+		437,
 		9,
-		204
+		218
 	],
 	"./google_pay/loader": [
-		651,
+		672,
 		9,
 		12
 	],
 	"./google_pay/loader/": [
-		651,
+		672,
 		9,
 		12
 	],
 	"./google_pay/loader/index": [
-		651,
+		672,
 		9,
 		12
 	],
 	"./google_pay/loader/index.ts": [
-		651,
+		672,
 		9,
 		12
 	],
 	"./google_pay/loader/interface": [
-		716,
+		745,
 		9,
-		417
+		455
 	],
 	"./google_pay/loader/interface.ts": [
-		716,
+		745,
 		9,
-		417
+		455
 	],
 	"./google_pay/types": [
-		613,
+		628,
 		9,
-		205
+		219
 	],
 	"./google_pay/types/": [
-		613,
+		628,
 		9,
-		205
+		219
 	],
 	"./google_pay/types/index": [
-		613,
+		628,
 		9,
-		205
+		219
 	],
 	"./google_pay/types/index.ts": [
-		613,
+		628,
 		9,
-		205
+		219
 	],
 	"./grab_pay/actions": [
-		614,
+		629,
 		9,
-		136
+		141
 	],
 	"./grab_pay/actions/": [
-		614,
+		629,
 		9,
-		136
+		141
 	],
 	"./grab_pay/actions/index": [
-		614,
+		629,
 		9,
-		136
+		141
 	],
 	"./grab_pay/actions/index.ts": [
-		614,
+		629,
 		9,
-		136
+		141
 	],
 	"./grab_pay/actions/interface": [
-		717,
+		746,
 		9,
-		418
+		456
 	],
 	"./grab_pay/actions/interface.ts": [
-		717,
+		746,
 		9,
-		418
+		456
 	],
 	"./grab_pay/api": [
-		456,
+		461,
 		9,
-		206
+		220
 	],
 	"./grab_pay/api/": [
-		456,
+		461,
 		9,
-		206
+		220
 	],
 	"./grab_pay/api/index": [
-		456,
+		461,
 		9,
-		206
+		220
 	],
 	"./grab_pay/api/index.ts": [
-		456,
+		461,
 		9,
-		206
+		220
 	],
 	"./grab_pay/handlers": [
-		382,
+		383,
 		9,
-		207
+		221
 	],
 	"./grab_pay/handlers/": [
-		382,
+		383,
 		9,
-		207
+		221
 	],
 	"./grab_pay/handlers/adyen": [
-		718,
+		747,
 		9,
-		293
+		315
 	],
 	"./grab_pay/handlers/adyen.ts": [
-		718,
+		747,
 		9,
-		293
+		315
 	],
 	"./grab_pay/handlers/index": [
-		382,
+		383,
 		9,
-		207
+		221
 	],
 	"./grab_pay/handlers/index.ts": [
-		382,
+		383,
 		9,
-		207
+		221
 	],
 	"./grab_pay/loader": [
-		497,
+		505,
 		9,
-		137
+		142
 	],
 	"./grab_pay/loader/": [
-		497,
+		505,
 		9,
-		137
+		142
 	],
 	"./grab_pay/loader/index": [
-		497,
+		505,
 		9,
-		137
+		142
 	],
 	"./grab_pay/loader/index.ts": [
-		497,
+		505,
 		9,
-		137
+		142
 	],
 	"./grab_pay/loader/interface": [
-		719,
+		748,
 		9,
-		419
+		457
 	],
 	"./grab_pay/loader/interface.ts": [
-		719,
+		748,
 		9,
-		419
+		457
 	],
 	"./iDeal/actions": [
-		523,
+		535,
 		9,
 		24
 	],
 	"./iDeal/actions/": [
-		523,
+		535,
 		9,
 		24
 	],
 	"./iDeal/actions/index": [
-		523,
+		535,
 		9,
 		24
 	],
 	"./iDeal/actions/index.ts": [
-		523,
+		535,
 		9,
 		24
 	],
 	"./iDeal/actions/interface": [
-		720,
+		749,
 		9,
-		420
+		458
 	],
 	"./iDeal/actions/interface.ts": [
-		720,
+		749,
 		9,
-		420
+		458
 	],
 	"./iDeal/api": [
-		429,
+		433,
 		9,
-		208
+		222
 	],
 	"./iDeal/api/": [
-		429,
+		433,
 		9,
-		208
+		222
 	],
 	"./iDeal/api/index": [
-		429,
+		433,
 		9,
-		208
+		222
 	],
 	"./iDeal/api/index.ts": [
-		429,
+		433,
 		9,
-		208
+		222
 	],
 	"./iDeal/loader": [
-		652,
+		673,
 		9,
 		14
 	],
 	"./iDeal/loader/": [
-		652,
+		673,
 		9,
 		14
 	],
 	"./iDeal/loader/index": [
-		652,
+		673,
 		9,
 		14
 	],
 	"./iDeal/loader/index.ts": [
-		652,
+		673,
 		9,
 		14
 	],
 	"./iDeal/loader/interface": [
-		721,
+		750,
 		9,
-		421
+		459
 	],
 	"./iDeal/loader/interface.ts": [
-		721,
+		750,
 		9,
-		421
+		459
 	],
 	"./iDeal/types": [
-		615,
+		630,
 		9,
-		209
+		223
 	],
 	"./iDeal/types/": [
-		615,
+		630,
 		9,
-		209
+		223
 	],
 	"./iDeal/types/index": [
-		615,
+		630,
 		9,
-		209
+		223
 	],
 	"./iDeal/types/index.ts": [
-		615,
+		630,
 		9,
-		209
+		223
 	],
 	"./kakao_pay/actions": [
-		616,
+		631,
 		9,
-		138
+		143
 	],
 	"./kakao_pay/actions/": [
-		616,
+		631,
 		9,
-		138
+		143
 	],
 	"./kakao_pay/actions/index": [
-		616,
+		631,
 		9,
-		138
+		143
 	],
 	"./kakao_pay/actions/index.ts": [
-		616,
+		631,
 		9,
-		138
+		143
 	],
 	"./kakao_pay/actions/interface": [
-		722,
+		751,
 		9,
-		422
+		460
 	],
 	"./kakao_pay/actions/interface.ts": [
-		722,
+		751,
 		9,
-		422
+		460
 	],
 	"./kakao_pay/api": [
-		457,
+		462,
 		9,
-		210
+		224
 	],
 	"./kakao_pay/api/": [
-		457,
+		462,
 		9,
-		210
+		224
 	],
 	"./kakao_pay/api/index": [
-		457,
+		462,
 		9,
-		210
+		224
 	],
 	"./kakao_pay/api/index.ts": [
-		457,
+		462,
 		9,
-		210
+		224
 	],
 	"./kakao_pay/handlers": [
-		356,
+		349,
 		9,
-		211
+		225
 	],
 	"./kakao_pay/handlers/": [
-		356,
+		349,
 		9,
-		211
+		225
 	],
 	"./kakao_pay/handlers/adyen": [
-		723,
+		752,
 		9,
-		294
+		316
 	],
 	"./kakao_pay/handlers/adyen.ts": [
-		723,
+		752,
 		9,
-		294
+		316
+	],
+	"./kakao_pay/handlers/checkout_com": [
+		753,
+		9,
+		386
+	],
+	"./kakao_pay/handlers/checkout_com.ts": [
+		753,
+		9,
+		386
 	],
 	"./kakao_pay/handlers/index": [
-		356,
+		349,
 		9,
-		211
+		225
 	],
 	"./kakao_pay/handlers/index.ts": [
-		356,
+		349,
 		9,
-		211
+		225
 	],
 	"./kakao_pay/handlers/stripe": [
-		724,
+		754,
 		9,
-		359
+		387
 	],
 	"./kakao_pay/handlers/stripe.ts": [
-		724,
+		754,
 		9,
-		359
+		387
 	],
 	"./kakao_pay/loader": [
-		500,
+		508,
 		9,
-		139
+		144
 	],
 	"./kakao_pay/loader/": [
-		500,
+		508,
 		9,
-		139
+		144
 	],
 	"./kakao_pay/loader/index": [
-		500,
+		508,
 		9,
-		139
+		144
 	],
 	"./kakao_pay/loader/index.ts": [
-		500,
+		508,
 		9,
-		139
+		144
 	],
 	"./kakao_pay/loader/interface": [
-		725,
+		755,
 		9,
-		423
+		461
 	],
 	"./kakao_pay/loader/interface.ts": [
-		725,
+		755,
 		9,
-		423
+		461
 	],
 	"./kakao_pay/types": [
-		617,
+		632,
 		9,
-		212
+		226
 	],
 	"./kakao_pay/types/": [
-		617,
+		632,
 		9,
-		212
+		226
 	],
 	"./kakao_pay/types/index": [
-		617,
+		632,
 		9,
-		212
+		226
 	],
 	"./kakao_pay/types/index.ts": [
-		617,
+		632,
 		9,
-		212
+		226
 	],
 	"./kbc_payment_button/actions": [
-		541,
+		553,
 		9,
 		25
 	],
 	"./kbc_payment_button/actions/": [
-		541,
+		553,
 		9,
 		25
 	],
 	"./kbc_payment_button/actions/index": [
-		541,
+		553,
 		9,
 		25
 	],
 	"./kbc_payment_button/actions/index.ts": [
-		541,
+		553,
 		9,
 		25
 	],
 	"./kbc_payment_button/actions/interface": [
-		726,
+		756,
 		9,
-		424
+		462
 	],
 	"./kbc_payment_button/actions/interface.ts": [
-		726,
+		756,
 		9,
-		424
+		462
 	],
 	"./kbc_payment_button/api": [
-		447,
+		451,
 		9,
-		213
+		227
 	],
 	"./kbc_payment_button/api/": [
-		447,
+		451,
 		9,
-		213
+		227
 	],
 	"./kbc_payment_button/api/index": [
-		447,
+		451,
 		9,
-		213
+		227
 	],
 	"./kbc_payment_button/api/index.ts": [
-		447,
+		451,
 		9,
-		213
+		227
 	],
 	"./kbc_payment_button/handlers": [
-		383,
+		384,
 		9,
-		214
+		228
 	],
 	"./kbc_payment_button/handlers/": [
-		383,
+		384,
 		9,
-		214
+		228
 	],
 	"./kbc_payment_button/handlers/index": [
-		383,
+		384,
 		9,
-		214
+		228
 	],
 	"./kbc_payment_button/handlers/index.ts": [
-		383,
+		384,
 		9,
-		214
+		228
 	],
 	"./kbc_payment_button/handlers/mollie": [
-		727,
+		757,
 		9,
-		360
+		388
 	],
 	"./kbc_payment_button/handlers/mollie.ts": [
-		727,
+		757,
 		9,
-		360
+		388
 	],
 	"./kbc_payment_button/loader": [
-		498,
+		506,
 		9,
-		140
+		145
 	],
 	"./kbc_payment_button/loader/": [
-		498,
+		506,
 		9,
-		140
+		145
 	],
 	"./kbc_payment_button/loader/index": [
-		498,
+		506,
 		9,
-		140
+		145
 	],
 	"./kbc_payment_button/loader/index.ts": [
-		498,
+		506,
 		9,
-		140
+		145
 	],
 	"./kbc_payment_button/loader/interface": [
-		728,
+		758,
 		9,
-		425
+		463
 	],
 	"./kbc_payment_button/loader/interface.ts": [
-		728,
+		758,
 		9,
-		425
+		463
 	],
 	"./kbc_payment_button/types": [
-		618,
+		633,
 		9,
-		215
+		229
 	],
 	"./kbc_payment_button/types/": [
-		618,
+		633,
 		9,
-		215
+		229
 	],
 	"./kbc_payment_button/types/index": [
-		618,
+		633,
 		9,
-		215
+		229
 	],
 	"./kbc_payment_button/types/index.ts": [
-		618,
+		633,
 		9,
-		215
+		229
 	],
 	"./klarna/actions": [
-		619,
+		634,
 		9,
-		141
+		146
 	],
 	"./klarna/actions/": [
-		619,
+		634,
 		9,
-		141
+		146
 	],
 	"./klarna/actions/index": [
-		619,
+		634,
 		9,
-		141
+		146
 	],
 	"./klarna/actions/index.ts": [
-		619,
+		634,
 		9,
-		141
+		146
 	],
 	"./klarna/actions/interface": [
-		729,
+		759,
 		9,
-		426
+		464
 	],
 	"./klarna/actions/interface.ts": [
-		729,
+		759,
 		9,
-		426
+		464
 	],
 	"./klarna/api": [
-		458,
+		463,
 		9,
-		216
+		230
 	],
 	"./klarna/api/": [
-		458,
+		463,
 		9,
-		216
+		230
 	],
 	"./klarna/api/index": [
-		458,
+		463,
 		9,
-		216
+		230
 	],
 	"./klarna/api/index.ts": [
-		458,
+		463,
 		9,
-		216
+		230
 	],
 	"./klarna/handlers": [
-		354,
+		359,
 		9,
-		79
+		81
 	],
 	"./klarna/handlers/": [
-		354,
+		359,
 		9,
-		79
+		81
 	],
 	"./klarna/handlers/adyen": [
-		730,
+		760,
 		9,
-		313
+		334
 	],
 	"./klarna/handlers/adyen.ts": [
-		730,
+		760,
 		9,
-		313
+		334
 	],
 	"./klarna/handlers/index": [
-		354,
+		359,
 		9,
-		79
+		81
 	],
 	"./klarna/handlers/index.ts": [
-		354,
+		359,
 		9,
-		79
+		81
 	],
 	"./klarna/handlers/stripe": [
-		731,
+		761,
 		9,
-		306
+		328
 	],
 	"./klarna/handlers/stripe.ts": [
-		731,
+		761,
 		9,
-		306
+		328
 	],
 	"./klarna/loader": [
-		493,
+		501,
 		9,
-		74
+		76
 	],
 	"./klarna/loader/": [
-		493,
+		501,
 		9,
-		74
+		76
 	],
 	"./klarna/loader/index": [
-		493,
+		501,
 		9,
-		74
+		76
 	],
 	"./klarna/loader/index.ts": [
-		493,
+		501,
 		9,
-		74
+		76
 	],
 	"./klarna/loader/interface": [
-		732,
+		762,
 		9,
-		427
+		465
 	],
 	"./klarna/loader/interface.ts": [
-		732,
+		762,
 		9,
-		427
+		465
 	],
 	"./klarna/types": [
-		620,
+		635,
 		9,
-		217
+		231
 	],
 	"./klarna/types/": [
-		620,
+		635,
 		9,
-		217
+		231
 	],
 	"./klarna/types/index": [
-		620,
+		635,
 		9,
-		217
+		231
 	],
 	"./klarna/types/index.ts": [
-		620,
+		635,
 		9,
-		217
+		231
 	],
 	"./klarna_pay_now/actions": [
-		536,
+		548,
 		9,
 		26
 	],
 	"./klarna_pay_now/actions/": [
-		536,
+		548,
 		9,
 		26
 	],
 	"./klarna_pay_now/actions/index": [
-		536,
+		548,
 		9,
 		26
 	],
 	"./klarna_pay_now/actions/index.ts": [
-		536,
+		548,
 		9,
 		26
 	],
 	"./klarna_pay_now/actions/interface": [
-		733,
+		763,
 		9,
-		428
+		466
 	],
 	"./klarna_pay_now/actions/interface.ts": [
-		733,
+		763,
 		9,
-		428
+		466
 	],
 	"./klarna_pay_now/api": [
-		442,
+		446,
 		9,
-		218
+		232
 	],
 	"./klarna_pay_now/api/": [
-		442,
+		446,
 		9,
-		218
+		232
 	],
 	"./klarna_pay_now/api/index": [
-		442,
+		446,
 		9,
-		218
+		232
 	],
 	"./klarna_pay_now/api/index.ts": [
-		442,
+		446,
 		9,
-		218
+		232
 	],
 	"./klarna_pay_now/handlers": [
-		377,
+		379,
 		9,
-		219
+		233
 	],
 	"./klarna_pay_now/handlers/": [
-		377,
+		379,
 		9,
-		219
+		233
 	],
 	"./klarna_pay_now/handlers/adyen": [
-		734,
+		764,
 		9,
-		361
+		389
 	],
 	"./klarna_pay_now/handlers/adyen.ts": [
-		734,
+		764,
 		9,
-		361
+		389
 	],
 	"./klarna_pay_now/handlers/index": [
-		377,
+		379,
 		9,
-		219
+		233
 	],
 	"./klarna_pay_now/handlers/index.ts": [
-		377,
+		379,
 		9,
-		219
+		233
 	],
 	"./klarna_pay_now/loader": [
-		492,
+		500,
 		9,
-		142
+		147
 	],
 	"./klarna_pay_now/loader/": [
-		492,
+		500,
 		9,
-		142
+		147
 	],
 	"./klarna_pay_now/loader/index": [
-		492,
+		500,
 		9,
-		142
+		147
 	],
 	"./klarna_pay_now/loader/index.ts": [
-		492,
+		500,
 		9,
-		142
+		147
 	],
 	"./klarna_pay_now/loader/interface": [
-		735,
+		765,
 		9,
-		429
+		467
 	],
 	"./klarna_pay_now/loader/interface.ts": [
-		735,
+		765,
 		9,
-		429
+		467
 	],
 	"./klarna_pay_now/types": [
-		621,
+		636,
 		9,
-		220
+		234
 	],
 	"./klarna_pay_now/types/": [
-		621,
+		636,
 		9,
-		220
+		234
 	],
 	"./klarna_pay_now/types/index": [
-		621,
+		636,
 		9,
-		220
+		234
 	],
 	"./klarna_pay_now/types/index.ts": [
-		621,
+		636,
 		9,
-		220
+		234
 	],
 	"./naver_pay/actions": [
-		622,
+		637,
 		9,
-		143
+		148
 	],
 	"./naver_pay/actions/": [
-		622,
+		637,
 		9,
-		143
+		148
 	],
 	"./naver_pay/actions/index": [
-		622,
+		637,
 		9,
-		143
+		148
 	],
 	"./naver_pay/actions/index.ts": [
-		622,
+		637,
 		9,
-		143
+		148
 	],
 	"./naver_pay/actions/interface": [
-		736,
+		766,
 		9,
-		430
+		468
 	],
 	"./naver_pay/actions/interface.ts": [
-		736,
+		766,
 		9,
-		430
+		468
 	],
 	"./naver_pay/api": [
-		459,
+		464,
 		9,
-		221
+		235
 	],
 	"./naver_pay/api/": [
-		459,
+		464,
 		9,
-		221
+		235
 	],
 	"./naver_pay/api/index": [
-		459,
+		464,
 		9,
-		221
+		235
 	],
 	"./naver_pay/api/index.ts": [
-		459,
+		464,
 		9,
-		221
+		235
 	],
 	"./naver_pay/handlers": [
-		357,
+		361,
 		9,
-		222
+		236
 	],
 	"./naver_pay/handlers/": [
-		357,
+		361,
 		9,
-		222
+		236
 	],
 	"./naver_pay/handlers/adyen": [
-		737,
+		767,
 		9,
-		295
+		317
 	],
 	"./naver_pay/handlers/adyen.ts": [
-		737,
+		767,
 		9,
-		295
+		317
 	],
 	"./naver_pay/handlers/index": [
-		357,
+		361,
 		9,
-		222
+		236
 	],
 	"./naver_pay/handlers/index.ts": [
-		357,
+		361,
 		9,
-		222
+		236
 	],
 	"./naver_pay/handlers/stripe": [
-		738,
+		768,
 		9,
-		362
+		390
 	],
 	"./naver_pay/handlers/stripe.ts": [
-		738,
+		768,
 		9,
-		362
+		390
 	],
 	"./naver_pay/loader": [
-		501,
+		509,
 		9,
-		144
+		149
 	],
 	"./naver_pay/loader/": [
-		501,
+		509,
 		9,
-		144
+		149
 	],
 	"./naver_pay/loader/index": [
-		501,
+		509,
 		9,
-		144
+		149
 	],
 	"./naver_pay/loader/index.ts": [
-		501,
+		509,
 		9,
-		144
+		149
 	],
 	"./naver_pay/loader/interface": [
-		739,
+		769,
 		9,
-		431
+		469
 	],
 	"./naver_pay/loader/interface.ts": [
-		739,
+		769,
 		9,
-		431
+		469
 	],
 	"./naver_pay/types": [
-		623,
+		638,
 		9,
-		223
+		237
 	],
 	"./naver_pay/types/": [
-		623,
+		638,
 		9,
-		223
+		237
 	],
 	"./naver_pay/types/index": [
-		623,
+		638,
 		9,
-		223
+		237
 	],
 	"./naver_pay/types/index.ts": [
-		623,
+		638,
 		9,
-		223
+		237
 	],
 	"./netbanking_emandates/actions": [
-		531,
+		543,
 		9,
 		27
 	],
 	"./netbanking_emandates/actions/": [
-		531,
+		543,
 		9,
 		27
 	],
 	"./netbanking_emandates/actions/index": [
-		531,
+		543,
 		9,
 		27
 	],
 	"./netbanking_emandates/actions/index.ts": [
-		531,
+		543,
 		9,
 		27
 	],
 	"./netbanking_emandates/actions/interface": [
-		740,
+		770,
 		9,
-		432
+		470
 	],
 	"./netbanking_emandates/actions/interface.ts": [
-		740,
+		770,
 		9,
-		432
+		470
 	],
 	"./netbanking_emandates/api": [
-		437,
+		441,
 		9,
-		224
+		238
 	],
 	"./netbanking_emandates/api/": [
-		437,
+		441,
 		9,
-		224
+		238
 	],
 	"./netbanking_emandates/api/index": [
-		437,
+		441,
 		9,
-		224
+		238
 	],
 	"./netbanking_emandates/api/index.ts": [
-		437,
+		441,
 		9,
-		224
+		238
 	],
 	"./netbanking_emandates/handlers": [
-		368,
+		373,
 		9,
-		113
+		116
 	],
 	"./netbanking_emandates/handlers/": [
-		368,
+		373,
 		9,
-		113
+		116
 	],
 	"./netbanking_emandates/handlers/index": [
-		368,
+		373,
 		9,
-		113
+		116
 	],
 	"./netbanking_emandates/handlers/index.ts": [
-		368,
+		373,
 		9,
-		113
+		116
 	],
 	"./netbanking_emandates/handlers/razorpay": [
-		741,
+		771,
 		9,
-		315
+		336
 	],
 	"./netbanking_emandates/handlers/razorpay.ts": [
-		741,
+		771,
 		9,
-		315
+		336
 	],
 	"./netbanking_emandates/loader": [
-		480,
+		488,
 		9,
-		90
+		92
 	],
 	"./netbanking_emandates/loader/": [
-		480,
+		488,
 		9,
-		90
+		92
 	],
 	"./netbanking_emandates/loader/index": [
-		480,
+		488,
 		9,
-		90
+		92
 	],
 	"./netbanking_emandates/loader/index.ts": [
-		480,
+		488,
 		9,
-		90
+		92
 	],
 	"./netbanking_emandates/loader/interface": [
-		742,
+		772,
 		9,
-		433
+		471
 	],
 	"./netbanking_emandates/loader/interface.ts": [
-		742,
+		772,
 		9,
-		433
+		471
 	],
 	"./netbanking_emandates/types": [
-		624,
+		639,
 		9,
-		225
+		239
 	],
 	"./netbanking_emandates/types/": [
-		624,
+		639,
 		9,
-		225
+		239
 	],
 	"./netbanking_emandates/types/index": [
-		624,
+		639,
 		9,
-		225
+		239
 	],
 	"./netbanking_emandates/types/index.ts": [
-		624,
+		639,
 		9,
-		225
+		239
 	],
 	"./online_banking_poland/actions": [
-		537,
+		549,
 		9,
 		28
 	],
 	"./online_banking_poland/actions/": [
-		537,
+		549,
 		9,
 		28
 	],
 	"./online_banking_poland/actions/index": [
-		537,
+		549,
 		9,
 		28
 	],
 	"./online_banking_poland/actions/index.ts": [
-		537,
+		549,
 		9,
 		28
 	],
 	"./online_banking_poland/actions/interface": [
-		743,
+		773,
 		9,
-		434
+		472
 	],
 	"./online_banking_poland/actions/interface.ts": [
-		743,
+		773,
 		9,
-		434
+		472
 	],
 	"./online_banking_poland/api": [
-		443,
+		447,
 		9,
-		226
+		240
 	],
 	"./online_banking_poland/api/": [
-		443,
+		447,
 		9,
-		226
+		240
 	],
 	"./online_banking_poland/api/index": [
-		443,
+		447,
 		9,
-		226
+		240
 	],
 	"./online_banking_poland/api/index.ts": [
-		443,
+		447,
 		9,
-		226
+		240
 	],
 	"./online_banking_poland/handlers": [
-		378,
+		380,
 		9,
-		227
+		241
 	],
 	"./online_banking_poland/handlers/": [
-		378,
+		380,
 		9,
-		227
+		241
 	],
 	"./online_banking_poland/handlers/adyen": [
-		744,
+		774,
 		9,
-		322
+		343
 	],
 	"./online_banking_poland/handlers/adyen.ts": [
-		744,
+		774,
 		9,
-		322
+		343
 	],
 	"./online_banking_poland/handlers/index": [
-		378,
+		380,
 		9,
-		227
+		241
 	],
 	"./online_banking_poland/handlers/index.ts": [
-		378,
+		380,
 		9,
-		227
+		241
 	],
 	"./online_banking_poland/loader": [
-		494,
+		502,
 		9,
-		145
+		150
 	],
 	"./online_banking_poland/loader/": [
-		494,
+		502,
 		9,
-		145
+		150
 	],
 	"./online_banking_poland/loader/index": [
-		494,
+		502,
 		9,
-		145
+		150
 	],
 	"./online_banking_poland/loader/index.ts": [
-		494,
+		502,
 		9,
-		145
+		150
 	],
 	"./online_banking_poland/loader/interface": [
-		745,
+		775,
 		9,
-		435
+		473
 	],
 	"./online_banking_poland/loader/interface.ts": [
-		745,
+		775,
 		9,
-		435
+		473
 	],
 	"./online_banking_poland/types": [
-		625,
+		640,
 		9,
-		228
+		242
 	],
 	"./online_banking_poland/types/": [
-		625,
+		640,
 		9,
-		228
+		242
 	],
 	"./online_banking_poland/types/index": [
-		625,
+		640,
 		9,
-		228
+		242
 	],
 	"./online_banking_poland/types/index.ts": [
-		625,
+		640,
 		9,
-		228
+		242
 	],
 	"./pay_by_bank/actions": [
-		538,
+		550,
 		9,
 		29
 	],
 	"./pay_by_bank/actions/": [
-		538,
+		550,
 		9,
 		29
 	],
 	"./pay_by_bank/actions/index": [
-		538,
+		550,
 		9,
 		29
 	],
 	"./pay_by_bank/actions/index.ts": [
-		538,
+		550,
 		9,
 		29
 	],
 	"./pay_by_bank/actions/interface": [
-		746,
+		776,
 		9,
-		436
+		474
 	],
 	"./pay_by_bank/actions/interface.ts": [
-		746,
+		776,
 		9,
-		436
+		474
 	],
 	"./pay_by_bank/api": [
-		444,
+		448,
 		9,
-		229
+		243
 	],
 	"./pay_by_bank/api/": [
-		444,
+		448,
 		9,
-		229
+		243
 	],
 	"./pay_by_bank/api/index": [
-		444,
+		448,
 		9,
-		229
+		243
 	],
 	"./pay_by_bank/api/index.ts": [
-		444,
+		448,
 		9,
-		229
+		243
 	],
 	"./pay_by_bank/handlers": [
-		365,
+		370,
 		9,
-		230
+		244
 	],
 	"./pay_by_bank/handlers/": [
-		365,
+		370,
 		9,
-		230
+		244
 	],
 	"./pay_by_bank/handlers/index": [
-		365,
+		370,
 		9,
-		230
+		244
 	],
 	"./pay_by_bank/handlers/index.ts": [
-		365,
+		370,
 		9,
-		230
+		244
 	],
 	"./pay_by_bank/handlers/mollie": [
-		747,
+		777,
 		9,
-		363
+		391
 	],
 	"./pay_by_bank/handlers/mollie.ts": [
-		747,
+		777,
 		9,
-		363
+		391
 	],
 	"./pay_by_bank/handlers/stripe": [
-		748,
+		778,
 		9,
-		1,
-		437
+		2,
+		475
 	],
 	"./pay_by_bank/handlers/stripe.ts": [
-		748,
+		778,
 		9,
-		1,
-		437
+		2,
+		475
 	],
 	"./pay_by_bank/loader": [
-		472,
+		480,
 		9,
-		146
+		151
 	],
 	"./pay_by_bank/loader/": [
-		472,
+		480,
 		9,
-		146
+		151
 	],
 	"./pay_by_bank/loader/index": [
-		472,
+		480,
 		9,
-		146
+		151
 	],
 	"./pay_by_bank/loader/index.ts": [
-		472,
+		480,
 		9,
-		146
+		151
 	],
 	"./pay_by_bank/loader/interface": [
-		749,
+		779,
 		9,
-		438
+		476
 	],
 	"./pay_by_bank/loader/interface.ts": [
-		749,
+		779,
 		9,
-		438
+		476
 	],
 	"./pay_by_bank/types": [
-		626,
+		641,
 		9,
-		231
+		245
 	],
 	"./pay_by_bank/types/": [
-		626,
+		641,
 		9,
-		231
+		245
 	],
 	"./pay_by_bank/types/index": [
-		626,
+		641,
 		9,
-		231
+		245
 	],
 	"./pay_by_bank/types/index.ts": [
-		626,
+		641,
 		9,
-		231
+		245
 	],
 	"./pay_co/actions": [
-		627,
+		642,
 		9,
-		147
+		152
 	],
 	"./pay_co/actions/": [
-		627,
+		642,
 		9,
-		147
+		152
 	],
 	"./pay_co/actions/index": [
-		627,
+		642,
 		9,
-		147
+		152
 	],
 	"./pay_co/actions/index.ts": [
-		627,
+		642,
 		9,
-		147
+		152
 	],
 	"./pay_co/actions/interface": [
-		750,
+		780,
 		9,
-		439
+		477
 	],
 	"./pay_co/actions/interface.ts": [
-		750,
+		780,
 		9,
-		439
+		477
 	],
 	"./pay_co/api": [
-		460,
+		465,
 		9,
-		232
+		246
 	],
 	"./pay_co/api/": [
-		460,
+		465,
 		9,
-		232
+		246
 	],
 	"./pay_co/api/index": [
-		460,
+		465,
 		9,
-		232
+		246
 	],
 	"./pay_co/api/index.ts": [
-		460,
+		465,
 		9,
-		232
+		246
 	],
 	"./pay_co/handlers": [
-		391,
+		395,
 		9,
-		233
+		247
 	],
 	"./pay_co/handlers/": [
-		391,
+		395,
 		9,
-		233
+		247
 	],
 	"./pay_co/handlers/adyen": [
-		751,
+		781,
 		9,
-		296
+		318
 	],
 	"./pay_co/handlers/adyen.ts": [
-		751,
+		781,
 		9,
-		296
+		318
 	],
 	"./pay_co/handlers/index": [
-		391,
+		395,
 		9,
-		233
+		247
 	],
 	"./pay_co/handlers/index.ts": [
-		391,
+		395,
 		9,
-		233
+		247
 	],
 	"./pay_co/loader": [
-		512,
+		524,
 		9,
-		148
+		153
 	],
 	"./pay_co/loader/": [
-		512,
+		524,
 		9,
-		148
+		153
 	],
 	"./pay_co/loader/index": [
-		512,
+		524,
 		9,
-		148
+		153
 	],
 	"./pay_co/loader/index.ts": [
-		512,
+		524,
 		9,
-		148
+		153
 	],
 	"./pay_co/loader/interface": [
-		752,
+		782,
 		9,
-		440
+		478
 	],
 	"./pay_co/loader/interface.ts": [
-		752,
+		782,
 		9,
-		440
+		478
 	],
 	"./pay_to/__tests__/__snapshots__/handler-gocardless.test.ts.snap": [
-		839,
+		883,
 		7,
-		553
+		601
 	],
 	"./pay_to/actions": [
-		534,
+		546,
 		9,
 		30
 	],
 	"./pay_to/actions/": [
-		534,
+		546,
 		9,
 		30
 	],
 	"./pay_to/actions/index": [
-		534,
+		546,
 		9,
 		30
 	],
 	"./pay_to/actions/index.ts": [
-		534,
+		546,
 		9,
 		30
 	],
 	"./pay_to/actions/interface": [
-		753,
+		783,
 		9,
-		441
+		479
 	],
 	"./pay_to/actions/interface.ts": [
-		753,
+		783,
 		9,
-		441
+		479
 	],
 	"./pay_to/api": [
-		440,
+		444,
 		9,
-		234
+		248
 	],
 	"./pay_to/api/": [
-		440,
+		444,
 		9,
-		234
+		248
 	],
 	"./pay_to/api/index": [
-		440,
+		444,
 		9,
-		234
+		248
 	],
 	"./pay_to/api/index.ts": [
-		440,
+		444,
 		9,
-		234
+		248
 	],
 	"./pay_to/handlers": [
-		374,
+		376,
 		9,
-		235
+		249
 	],
 	"./pay_to/handlers/": [
-		374,
+		376,
 		9,
-		235
+		249
 	],
 	"./pay_to/handlers/gocardless": [
-		754,
+		784,
 		9,
-		341
+		363
 	],
 	"./pay_to/handlers/gocardless.ts": [
-		754,
+		784,
 		9,
-		341
+		363
 	],
 	"./pay_to/handlers/index": [
-		374,
+		376,
 		9,
-		235
+		249
 	],
 	"./pay_to/handlers/index.ts": [
-		374,
+		376,
 		9,
-		235
+		249
 	],
 	"./pay_to/handlers/stripe": [
-		755,
+		785,
 		9,
-		1,
-		442
+		2,
+		480
 	],
 	"./pay_to/handlers/stripe.ts": [
-		755,
+		785,
 		9,
-		1,
-		442
+		2,
+		480
 	],
 	"./pay_to/loader": [
-		489,
+		497,
 		9,
-		149
+		154
 	],
 	"./pay_to/loader/": [
-		489,
+		497,
 		9,
-		149
+		154
 	],
 	"./pay_to/loader/index": [
-		489,
+		497,
 		9,
-		149
+		154
 	],
 	"./pay_to/loader/index.ts": [
-		489,
+		497,
 		9,
-		149
+		154
 	],
 	"./pay_to/loader/interface": [
-		756,
+		786,
 		9,
-		443
+		481
 	],
 	"./pay_to/loader/interface.ts": [
-		756,
+		786,
 		9,
-		443
+		481
 	],
 	"./payconiq_by_bancontact/api": [
-		628,
+		643,
 		9,
-		236
+		250
 	],
 	"./payconiq_by_bancontact/api/": [
-		628,
+		643,
 		9,
-		236
+		250
 	],
 	"./payconiq_by_bancontact/api/index": [
-		628,
+		643,
 		9,
-		236
+		250
 	],
 	"./payconiq_by_bancontact/api/index.ts": [
-		628,
+		643,
 		9,
-		236
+		250
 	],
 	"./payconiq_by_bancontact/handlers": [
-		379,
+		381,
 		9,
-		77
+		79
 	],
 	"./payconiq_by_bancontact/handlers/": [
-		379,
+		381,
 		9,
-		77
+		79
 	],
 	"./payconiq_by_bancontact/handlers/adyen": [
-		757,
+		787,
 		9,
-		311
+		332
 	],
 	"./payconiq_by_bancontact/handlers/adyen.ts": [
-		757,
+		787,
 		9,
-		311
+		332
 	],
 	"./payconiq_by_bancontact/handlers/index": [
-		379,
+		381,
 		9,
-		77
+		79
 	],
 	"./payconiq_by_bancontact/handlers/index.ts": [
-		379,
+		381,
 		9,
-		77
+		79
 	],
 	"./payconiq_by_bancontact/handlers/mollie": [
-		758,
+		788,
 		9,
-		308
+		330
 	],
 	"./payconiq_by_bancontact/handlers/mollie.ts": [
-		758,
+		788,
 		9,
-		308
+		330
 	],
 	"./payconiq_by_bancontact/loader": [
-		522,
+		534,
 		9,
 		11
 	],
 	"./payconiq_by_bancontact/loader/": [
-		522,
+		534,
 		9,
 		11
 	],
 	"./payconiq_by_bancontact/loader/index": [
-		522,
+		534,
 		9,
 		11
 	],
 	"./payconiq_by_bancontact/loader/index.ts": [
-		522,
+		534,
 		9,
 		11
 	],
 	"./payconiq_by_bancontact/loader/interface": [
-		759,
+		789,
 		9,
-		444
+		482
 	],
 	"./payconiq_by_bancontact/loader/interface.ts": [
-		759,
+		789,
 		9,
-		444
+		482
 	],
 	"./payconiq_by_bancontact/types": [
-		629,
+		644,
 		9,
-		237
+		251
 	],
 	"./payconiq_by_bancontact/types/": [
-		629,
+		644,
 		9,
-		237
+		251
 	],
 	"./payconiq_by_bancontact/types/index": [
-		629,
+		644,
 		9,
-		237
+		251
 	],
 	"./payconiq_by_bancontact/types/index.ts": [
-		629,
+		644,
 		9,
-		237
+		251
 	],
 	"./payme/handlers": [
-		384,
+		385,
 		9,
-		238
+		252
 	],
 	"./payme/handlers/": [
-		384,
+		385,
 		9,
-		238
+		252
 	],
 	"./payme/handlers/adyen": [
-		760,
+		790,
 		9,
-		297
+		319
 	],
 	"./payme/handlers/adyen.ts": [
-		760,
+		790,
 		9,
-		297
+		319
 	],
 	"./payme/handlers/index": [
-		384,
+		385,
 		9,
-		238
+		252
 	],
 	"./payme/handlers/index.ts": [
-		384,
+		385,
 		9,
-		238
+		252
 	],
 	"./payme/loader": [
-		503,
+		511,
 		9,
-		150
+		155
 	],
 	"./payme/loader/": [
-		503,
+		511,
 		9,
-		150
+		155
 	],
 	"./payme/loader/index": [
-		503,
+		511,
 		9,
-		150
+		155
 	],
 	"./payme/loader/index.ts": [
-		503,
+		511,
 		9,
-		150
+		155
 	],
 	"./payme/loader/interface": [
-		761,
+		791,
 		9,
-		445
+		483
 	],
 	"./payme/loader/interface.ts": [
-		761,
+		791,
 		9,
-		445
+		483
 	],
 	"./payme/types": [
-		630,
+		645,
 		9,
-		239
+		253
 	],
 	"./payme/types/": [
-		630,
+		645,
 		9,
-		239
+		253
 	],
 	"./payme/types/index": [
-		630,
+		645,
 		9,
-		239
+		253
 	],
 	"./payme/types/index.ts": [
-		630,
+		645,
 		9,
-		239
+		253
 	],
 	"./paynow/handlers": [
 		387,
 		9,
-		1,
-		240
+		2,
+		254
 	],
 	"./paynow/handlers/": [
 		387,
 		9,
-		1,
-		240
+		2,
+		254
 	],
 	"./paynow/handlers/index": [
 		387,
 		9,
-		1,
-		240
+		2,
+		254
 	],
 	"./paynow/handlers/index.ts": [
 		387,
 		9,
-		1,
-		240
+		2,
+		254
 	],
 	"./paynow/handlers/stripe": [
-		762,
+		792,
 		9,
-		1,
-		364
+		2,
+		392
 	],
 	"./paynow/handlers/stripe.ts": [
-		762,
+		792,
 		9,
-		1,
-		364
+		2,
+		392
 	],
 	"./paynow/loader": [
-		506,
+		514,
 		9,
-		1,
-		151
+		2,
+		156
 	],
 	"./paynow/loader/": [
-		506,
+		514,
 		9,
-		1,
-		151
+		2,
+		156
 	],
 	"./paynow/loader/index": [
-		506,
+		514,
 		9,
-		1,
-		151
+		2,
+		156
 	],
 	"./paynow/loader/index.ts": [
-		506,
+		514,
 		9,
-		1,
-		151
+		2,
+		156
 	],
 	"./paynow/loader/interface": [
-		763,
+		793,
 		9,
-		446
+		484
 	],
 	"./paynow/loader/interface.ts": [
-		763,
+		793,
 		9,
-		446
+		484
 	],
 	"./paynow/types": [
-		631,
+		646,
 		9,
-		241
+		255
 	],
 	"./paynow/types/": [
-		631,
+		646,
 		9,
-		241
+		255
 	],
 	"./paynow/types/index": [
-		631,
+		646,
 		9,
-		241
+		255
 	],
 	"./paynow/types/index.ts": [
-		631,
+		646,
 		9,
-		241
+		255
 	],
 	"./paypal_express_checkout/actions": [
-		530,
+		542,
 		9,
 		31
 	],
 	"./paypal_express_checkout/actions/": [
-		530,
+		542,
 		9,
 		31
 	],
 	"./paypal_express_checkout/actions/index": [
-		530,
+		542,
 		9,
 		31
 	],
 	"./paypal_express_checkout/actions/index.ts": [
-		530,
+		542,
 		9,
 		31
 	],
 	"./paypal_express_checkout/actions/interface": [
-		764,
+		794,
 		9,
-		447
+		485
 	],
 	"./paypal_express_checkout/actions/interface.ts": [
-		764,
+		794,
 		9,
-		447
+		485
 	],
 	"./paypal_express_checkout/api": [
-		436,
+		440,
 		9,
-		242
+		256
 	],
 	"./paypal_express_checkout/api/": [
-		436,
+		440,
 		9,
-		242
+		256
 	],
 	"./paypal_express_checkout/api/index": [
-		436,
+		440,
 		9,
-		242
+		256
 	],
 	"./paypal_express_checkout/api/index.ts": [
-		436,
+		440,
 		9,
-		242
+		256
 	],
 	"./paypal_express_checkout/handlers": [
-		338,
+		336,
 		9,
-		115
+		118
 	],
 	"./paypal_express_checkout/handlers/": [
-		338,
+		336,
 		9,
-		115
+		118
 	],
 	"./paypal_express_checkout/handlers/adyen": [
-		765,
+		795,
 		9,
-		286
+		309
 	],
 	"./paypal_express_checkout/handlers/adyen.ts": [
-		765,
+		795,
 		9,
-		286
+		309
 	],
 	"./paypal_express_checkout/handlers/braintree": [
-		766,
+		796,
 		9,
-		326
+		347
 	],
 	"./paypal_express_checkout/handlers/braintree.ts": [
-		766,
+		796,
 		9,
-		326
+		347
+	],
+	"./paypal_express_checkout/handlers/checkout_com": [
+		797,
+		9,
+		348
+	],
+	"./paypal_express_checkout/handlers/checkout_com.ts": [
+		797,
+		9,
+		348
 	],
 	"./paypal_express_checkout/handlers/deutsche_bank": [
-		767,
+		798,
 		9,
-		327
+		349
 	],
 	"./paypal_express_checkout/handlers/deutsche_bank.ts": [
-		767,
+		798,
 		9,
-		327
+		349
 	],
 	"./paypal_express_checkout/handlers/index": [
-		338,
+		336,
 		9,
-		115
+		118
 	],
 	"./paypal_express_checkout/handlers/index.ts": [
-		338,
+		336,
 		9,
-		115
+		118
 	],
 	"./paypal_express_checkout/handlers/paypal": [
-		768,
+		799,
 		9,
 		3,
-		58,
-		448
+		59,
+		486
 	],
 	"./paypal_express_checkout/handlers/paypal.ts": [
-		768,
+		799,
 		9,
 		3,
-		58,
-		448
+		59,
+		486
 	],
 	"./paypal_express_checkout/handlers/paypal_express_checkout": [
-		655,
+		677,
 		9,
 		3,
-		58
+		59
 	],
 	"./paypal_express_checkout/handlers/paypal_express_checkout.ts": [
-		655,
+		677,
 		9,
 		3,
-		58
+		59
 	],
 	"./paypal_express_checkout/handlers/stripe": [
-		769,
+		800,
 		9,
-		303
+		325
 	],
 	"./paypal_express_checkout/handlers/stripe.ts": [
-		769,
+		800,
 		9,
-		303
+		325
 	],
 	"./paypal_express_checkout/loader": [
-		478,
+		486,
 		9,
-		93
+		95
 	],
 	"./paypal_express_checkout/loader/": [
-		478,
+		486,
 		9,
-		93
+		95
 	],
 	"./paypal_express_checkout/loader/index": [
-		478,
+		486,
 		9,
-		93
+		95
 	],
 	"./paypal_express_checkout/loader/index.ts": [
-		478,
+		486,
 		9,
-		93
+		95
 	],
 	"./paypal_express_checkout/loader/interface": [
-		770,
+		801,
 		9,
-		449
+		487
 	],
 	"./paypal_express_checkout/loader/interface.ts": [
-		770,
+		801,
 		9,
-		449
+		487
 	],
 	"./paypal_express_checkout/types": [
-		632,
+		647,
 		9,
-		243
+		257
 	],
 	"./paypal_express_checkout/types/": [
-		632,
+		647,
 		9,
-		243
+		257
 	],
 	"./paypal_express_checkout/types/index": [
-		632,
+		647,
 		9,
-		243
+		257
 	],
 	"./paypal_express_checkout/types/index.ts": [
-		632,
+		647,
 		9,
-		243
+		257
 	],
 	"./paypay/actions": [
-		633,
+		648,
 		9,
-		152
+		157
 	],
 	"./paypay/actions/": [
-		633,
+		648,
 		9,
-		152
+		157
 	],
 	"./paypay/actions/index": [
-		633,
+		648,
 		9,
-		152
+		157
 	],
 	"./paypay/actions/index.ts": [
-		633,
+		648,
 		9,
-		152
+		157
 	],
 	"./paypay/actions/interface": [
-		771,
+		802,
 		9,
-		450
+		488
 	],
 	"./paypay/actions/interface.ts": [
-		771,
+		802,
 		9,
-		450
+		488
 	],
 	"./paypay/api": [
-		461,
+		466,
 		9,
-		244
+		258
 	],
 	"./paypay/api/": [
-		461,
+		466,
 		9,
-		244
+		258
 	],
 	"./paypay/api/index": [
-		461,
+		466,
 		9,
-		244
+		258
 	],
 	"./paypay/api/index.ts": [
-		461,
+		466,
 		9,
-		244
+		258
 	],
 	"./paypay/handlers": [
-		360,
+		365,
 		9,
-		245
+		259
 	],
 	"./paypay/handlers/": [
-		360,
+		365,
 		9,
-		245
+		259
 	],
 	"./paypay/handlers/adyen": [
-		772,
+		803,
 		9,
-		298
+		320
 	],
 	"./paypay/handlers/adyen.ts": [
-		772,
+		803,
 		9,
-		298
+		320
 	],
 	"./paypay/handlers/index": [
-		360,
+		365,
 		9,
-		245
+		259
 	],
 	"./paypay/handlers/index.ts": [
-		360,
+		365,
 		9,
-		245
+		259
 	],
 	"./paypay/handlers/stripe": [
-		773,
+		804,
 		9,
-		365
+		393
 	],
 	"./paypay/handlers/stripe.ts": [
-		773,
+		804,
 		9,
-		365
+		393
 	],
 	"./paypay/loader": [
-		510,
+		522,
 		9,
-		153
+		158
 	],
 	"./paypay/loader/": [
-		510,
+		522,
 		9,
-		153
+		158
 	],
 	"./paypay/loader/index": [
-		510,
+		522,
 		9,
-		153
+		158
 	],
 	"./paypay/loader/index.ts": [
-		510,
+		522,
 		9,
-		153
+		158
 	],
 	"./paypay/loader/interface": [
-		774,
+		805,
 		9,
-		451
+		489
 	],
 	"./paypay/loader/interface.ts": [
-		774,
+		805,
 		9,
-		451
+		489
 	],
 	"./paypay/types": [
-		634,
+		649,
 		9,
-		246
+		260
 	],
 	"./paypay/types/": [
-		634,
+		649,
 		9,
-		246
+		260
 	],
 	"./paypay/types/index": [
-		634,
+		649,
 		9,
-		246
+		260
 	],
 	"./paypay/types/index.ts": [
-		634,
+		649,
 		9,
-		246
+		260
 	],
 	"./pix/actions": [
-		542,
+		554,
 		9,
 		37
 	],
 	"./pix/actions/": [
-		542,
+		554,
 		9,
 		37
 	],
 	"./pix/actions/index": [
-		542,
+		554,
 		9,
 		37
 	],
 	"./pix/actions/index.ts": [
-		542,
+		554,
 		9,
 		37
 	],
 	"./pix/actions/interface": [
-		775,
+		806,
 		9,
-		452
+		490
 	],
 	"./pix/actions/interface.ts": [
-		775,
+		806,
 		9,
-		452
+		490
 	],
 	"./pix/handlers": [
-		372,
+		358,
 		9,
-		247
+		261
 	],
 	"./pix/handlers/": [
-		372,
+		358,
 		9,
-		247
+		261
 	],
 	"./pix/handlers/dlocal": [
-		776,
+		807,
 		9,
-		366
+		394
 	],
 	"./pix/handlers/dlocal.ts": [
-		776,
+		807,
 		9,
-		366
+		394
+	],
+	"./pix/handlers/ebanx": [
+		808,
+		9,
+		395
+	],
+	"./pix/handlers/ebanx.ts": [
+		808,
+		9,
+		395
 	],
 	"./pix/handlers/index": [
-		372,
+		358,
 		9,
-		247
+		261
 	],
 	"./pix/handlers/index.ts": [
-		372,
+		358,
 		9,
-		247
+		261
 	],
 	"./pix/handlers/stripe": [
-		777,
+		809,
 		9,
-		1,
-		453
+		2,
+		491
 	],
 	"./pix/handlers/stripe.ts": [
-		777,
+		809,
 		9,
-		1,
-		453
+		2,
+		491
 	],
 	"./pix/loader": [
-		486,
+		494,
 		9,
-		154
+		159
 	],
 	"./pix/loader/": [
-		486,
+		494,
 		9,
-		154
+		159
 	],
 	"./pix/loader/index": [
-		486,
+		494,
 		9,
-		154
+		159
 	],
 	"./pix/loader/index.ts": [
-		486,
+		494,
 		9,
-		154
+		159
 	],
 	"./pix/loader/interface": [
-		778,
+		810,
 		9,
-		454
+		492
 	],
 	"./pix/loader/interface.ts": [
-		778,
+		810,
 		9,
-		454
+		492
 	],
 	"./promptpay/handlers": [
 		388,
 		9,
-		1,
-		248
+		2,
+		262
 	],
 	"./promptpay/handlers/": [
 		388,
 		9,
-		1,
-		248
+		2,
+		262
 	],
 	"./promptpay/handlers/index": [
 		388,
 		9,
-		1,
-		248
+		2,
+		262
 	],
 	"./promptpay/handlers/index.ts": [
 		388,
 		9,
-		1,
-		248
+		2,
+		262
 	],
 	"./promptpay/handlers/stripe": [
-		779,
+		811,
 		9,
-		1,
-		367
+		2,
+		396
 	],
 	"./promptpay/handlers/stripe.ts": [
-		779,
+		811,
 		9,
-		1,
-		367
+		2,
+		396
 	],
 	"./promptpay/loader": [
-		507,
+		515,
 		9,
-		1,
-		155
+		2,
+		160
 	],
 	"./promptpay/loader/": [
-		507,
+		515,
 		9,
-		1,
-		155
+		2,
+		160
 	],
 	"./promptpay/loader/index": [
-		507,
+		515,
 		9,
-		1,
-		155
+		2,
+		160
 	],
 	"./promptpay/loader/index.ts": [
-		507,
+		515,
 		9,
-		1,
-		155
+		2,
+		160
 	],
 	"./promptpay/loader/interface": [
-		780,
+		812,
 		9,
-		455
+		493
 	],
 	"./promptpay/loader/interface.ts": [
-		780,
+		812,
 		9,
-		455
+		493
 	],
 	"./promptpay/types": [
-		635,
+		650,
 		9,
-		249
+		263
 	],
 	"./promptpay/types/": [
-		635,
+		650,
 		9,
-		249
+		263
 	],
 	"./promptpay/types/index": [
-		635,
+		650,
 		9,
-		249
+		263
 	],
 	"./promptpay/types/index.ts": [
-		635,
+		650,
 		9,
-		249
+		263
+	],
+	"./qpay/actions": [
+		651,
+		9,
+		161
+	],
+	"./qpay/actions/": [
+		651,
+		9,
+		161
+	],
+	"./qpay/actions/index": [
+		651,
+		9,
+		161
+	],
+	"./qpay/actions/index.ts": [
+		651,
+		9,
+		161
+	],
+	"./qpay/actions/interface": [
+		813,
+		9,
+		494
+	],
+	"./qpay/actions/interface.ts": [
+		813,
+		9,
+		494
+	],
+	"./qpay/api": [
+		467,
+		9,
+		264
+	],
+	"./qpay/api/": [
+		467,
+		9,
+		264
+	],
+	"./qpay/api/index": [
+		467,
+		9,
+		264
+	],
+	"./qpay/api/index.ts": [
+		467,
+		9,
+		264
+	],
+	"./qpay/handlers": [
+		393,
+		9,
+		265
+	],
+	"./qpay/handlers/": [
+		393,
+		9,
+		265
+	],
+	"./qpay/handlers/checkout_com": [
+		814,
+		9,
+		397
+	],
+	"./qpay/handlers/checkout_com.ts": [
+		814,
+		9,
+		397
+	],
+	"./qpay/handlers/index": [
+		393,
+		9,
+		265
+	],
+	"./qpay/handlers/index.ts": [
+		393,
+		9,
+		265
+	],
+	"./qpay/loader": [
+		521,
+		9,
+		162
+	],
+	"./qpay/loader/": [
+		521,
+		9,
+		162
+	],
+	"./qpay/loader/index": [
+		521,
+		9,
+		162
+	],
+	"./qpay/loader/index.ts": [
+		521,
+		9,
+		162
+	],
+	"./qpay/loader/interface": [
+		815,
+		9,
+		495
+	],
+	"./qpay/loader/interface.ts": [
+		815,
+		9,
+		495
+	],
+	"./qpay/types": [
+		652,
+		9,
+		266
+	],
+	"./qpay/types/": [
+		652,
+		9,
+		266
+	],
+	"./qpay/types/index": [
+		652,
+		9,
+		266
+	],
+	"./qpay/types/index.ts": [
+		652,
+		9,
+		266
 	],
 	"./revolut_pay/actions": [
-		636,
+		653,
 		9,
-		156
+		163
 	],
 	"./revolut_pay/actions/": [
-		636,
+		653,
 		9,
-		156
+		163
 	],
 	"./revolut_pay/actions/index": [
-		636,
+		653,
 		9,
-		156
+		163
 	],
 	"./revolut_pay/actions/index.ts": [
-		636,
+		653,
 		9,
-		156
+		163
 	],
 	"./revolut_pay/actions/interface": [
-		781,
+		816,
 		9,
-		456
+		496
 	],
 	"./revolut_pay/actions/interface.ts": [
-		781,
+		816,
 		9,
-		456
+		496
 	],
 	"./revolut_pay/api": [
-		462,
+		468,
 		9,
-		250
+		267
 	],
 	"./revolut_pay/api/": [
-		462,
+		468,
 		9,
-		250
+		267
 	],
 	"./revolut_pay/api/index": [
-		462,
+		468,
 		9,
-		250
+		267
 	],
 	"./revolut_pay/api/index.ts": [
-		462,
+		468,
 		9,
-		250
+		267
 	],
 	"./revolut_pay/handlers": [
 		389,
 		9,
-		251
+		268
 	],
 	"./revolut_pay/handlers/": [
 		389,
 		9,
-		251
+		268
 	],
 	"./revolut_pay/handlers/index": [
 		389,
 		9,
-		251
+		268
 	],
 	"./revolut_pay/handlers/index.ts": [
 		389,
 		9,
-		251
+		268
 	],
 	"./revolut_pay/handlers/stripe": [
-		782,
+		817,
 		9,
-		368
+		398
 	],
 	"./revolut_pay/handlers/stripe.ts": [
-		782,
+		817,
 		9,
-		368
+		398
 	],
 	"./revolut_pay/loader": [
-		509,
+		517,
 		9,
-		157
+		164
 	],
 	"./revolut_pay/loader/": [
-		509,
+		517,
 		9,
-		157
+		164
 	],
 	"./revolut_pay/loader/index": [
-		509,
+		517,
 		9,
-		157
+		164
 	],
 	"./revolut_pay/loader/index.ts": [
-		509,
+		517,
 		9,
-		157
+		164
 	],
 	"./revolut_pay/loader/interface": [
-		783,
+		818,
 		9,
-		457
+		497
 	],
 	"./revolut_pay/loader/interface.ts": [
-		783,
+		818,
 		9,
-		457
+		497
 	],
 	"./revolut_pay/types": [
-		637,
+		654,
 		9,
-		252
+		269
 	],
 	"./revolut_pay/types/": [
-		637,
+		654,
 		9,
-		252
+		269
 	],
 	"./revolut_pay/types/index": [
-		637,
+		654,
 		9,
-		252
+		269
 	],
 	"./revolut_pay/types/index.ts": [
-		637,
+		654,
 		9,
-		252
+		269
 	],
 	"./sepa_instant_transfer/__tests__/__snapshots__/handler-gocardless.test.ts.snap": [
-		843,
+		887,
 		7,
-		554
+		602
 	],
 	"./sepa_instant_transfer/actions": [
-		535,
+		547,
 		9,
 		32
 	],
 	"./sepa_instant_transfer/actions/": [
-		535,
+		547,
 		9,
 		32
 	],
 	"./sepa_instant_transfer/actions/index": [
-		535,
+		547,
 		9,
 		32
 	],
 	"./sepa_instant_transfer/actions/index.ts": [
-		535,
+		547,
 		9,
 		32
 	],
 	"./sepa_instant_transfer/actions/interface": [
-		784,
+		819,
 		9,
-		458
+		498
 	],
 	"./sepa_instant_transfer/actions/interface.ts": [
-		784,
+		819,
 		9,
-		458
+		498
 	],
 	"./sepa_instant_transfer/api": [
-		441,
+		445,
 		9,
-		253
+		270
 	],
 	"./sepa_instant_transfer/api/": [
-		441,
+		445,
 		9,
-		253
+		270
 	],
 	"./sepa_instant_transfer/api/index": [
-		441,
+		445,
 		9,
-		253
+		270
 	],
 	"./sepa_instant_transfer/api/index.ts": [
-		441,
+		445,
 		9,
-		253
+		270
 	],
 	"./sepa_instant_transfer/handlers": [
-		375,
+		377,
 		9,
-		60
+		61
 	],
 	"./sepa_instant_transfer/handlers/": [
-		375,
+		377,
 		9,
-		60
+		61
 	],
 	"./sepa_instant_transfer/handlers/gocardless": [
-		785,
+		820,
 		9,
-		305
+		327
 	],
 	"./sepa_instant_transfer/handlers/gocardless.ts": [
-		785,
+		820,
 		9,
-		305
+		327
 	],
 	"./sepa_instant_transfer/handlers/index": [
-		375,
+		377,
 		9,
-		60
+		61
 	],
 	"./sepa_instant_transfer/handlers/index.ts": [
-		375,
+		377,
 		9,
-		60
+		61
 	],
 	"./sepa_instant_transfer/loader": [
-		490,
+		498,
 		9,
-		51
+		52
 	],
 	"./sepa_instant_transfer/loader/": [
-		490,
+		498,
 		9,
-		51
+		52
 	],
 	"./sepa_instant_transfer/loader/index": [
-		490,
+		498,
 		9,
-		51
+		52
 	],
 	"./sepa_instant_transfer/loader/index.ts": [
-		490,
+		498,
 		9,
-		51
+		52
 	],
 	"./sepa_instant_transfer/loader/interface": [
-		786,
+		821,
 		9,
-		459
+		499
 	],
 	"./sepa_instant_transfer/loader/interface.ts": [
-		786,
+		821,
 		9,
-		459
+		499
 	],
 	"./sofort/actions": [
-		524,
+		536,
 		9,
 		33
 	],
 	"./sofort/actions/": [
-		524,
+		536,
 		9,
 		33
 	],
 	"./sofort/actions/index": [
-		524,
+		536,
 		9,
 		33
 	],
 	"./sofort/actions/index.ts": [
-		524,
+		536,
 		9,
 		33
 	],
 	"./sofort/actions/interface": [
-		787,
+		822,
 		9,
-		460
+		500
 	],
 	"./sofort/actions/interface.ts": [
-		787,
+		822,
 		9,
-		460
+		500
 	],
 	"./sofort/api": [
-		430,
+		434,
 		9,
-		254
+		271
 	],
 	"./sofort/api/": [
-		430,
+		434,
 		9,
-		254
+		271
 	],
 	"./sofort/api/index": [
-		430,
+		434,
 		9,
-		254
+		271
 	],
 	"./sofort/api/index.ts": [
-		430,
+		434,
 		9,
-		254
+		271
 	],
 	"./sofort/handlers": [
 		341,
 		9,
-		255
+		272
 	],
 	"./sofort/handlers/": [
 		341,
 		9,
-		255
+		272
 	],
 	"./sofort/handlers/adyen": [
-		788,
+		823,
 		9,
-		369
+		399
 	],
 	"./sofort/handlers/adyen.ts": [
-		788,
+		823,
 		9,
-		369
+		399
 	],
 	"./sofort/handlers/checkout_com": [
-		789,
+		824,
 		9,
-		370
+		400
 	],
 	"./sofort/handlers/checkout_com.ts": [
-		789,
+		824,
 		9,
-		370
+		400
 	],
 	"./sofort/handlers/index": [
 		341,
 		9,
-		255
+		272
 	],
 	"./sofort/handlers/index.ts": [
 		341,
 		9,
-		255
+		272
 	],
 	"./sofort/handlers/mollie": [
-		790,
+		825,
 		9,
-		314
+		335
 	],
 	"./sofort/handlers/mollie.ts": [
-		790,
+		825,
 		9,
-		314
+		335
 	],
 	"./sofort/handlers/stripe": [
-		791,
+		826,
 		9,
-		371
+		401
 	],
 	"./sofort/handlers/stripe.ts": [
-		791,
+		826,
 		9,
-		371
+		401
 	],
 	"./sofort/loader": [
-		470,
+		478,
 		9,
-		158
+		165
 	],
 	"./sofort/loader/": [
-		470,
+		478,
 		9,
-		158
+		165
 	],
 	"./sofort/loader/index": [
-		470,
+		478,
 		9,
-		158
+		165
 	],
 	"./sofort/loader/index.ts": [
-		470,
+		478,
 		9,
-		158
+		165
 	],
 	"./sofort/loader/interface": [
-		792,
+		827,
 		9,
-		461
+		501
 	],
 	"./sofort/loader/interface.ts": [
-		792,
+		827,
 		9,
-		461
+		501
 	],
 	"./sofort/types": [
-		638,
+		655,
 		9,
-		256
+		273
 	],
 	"./sofort/types/": [
-		638,
+		655,
 		9,
-		256
+		273
 	],
 	"./sofort/types/index": [
-		638,
+		655,
 		9,
-		256
+		273
 	],
 	"./sofort/types/index.ts": [
-		638,
+		655,
 		9,
-		256
+		273
 	],
 	"./south_korean_cards/actions": [
-		639,
+		656,
 		9,
-		159
+		166
 	],
 	"./south_korean_cards/actions/": [
-		639,
+		656,
 		9,
-		159
+		166
 	],
 	"./south_korean_cards/actions/index": [
-		639,
+		656,
 		9,
-		159
+		166
 	],
 	"./south_korean_cards/actions/index.ts": [
-		639,
+		656,
 		9,
-		159
+		166
 	],
 	"./south_korean_cards/actions/interface": [
-		793,
+		828,
 		9,
-		462
+		502
 	],
 	"./south_korean_cards/actions/interface.ts": [
-		793,
+		828,
 		9,
-		462
+		502
 	],
 	"./south_korean_cards/api": [
-		463,
+		469,
 		9,
-		257
+		274
 	],
 	"./south_korean_cards/api/": [
-		463,
+		469,
 		9,
-		257
+		274
 	],
 	"./south_korean_cards/api/index": [
-		463,
+		469,
 		9,
-		257
+		274
 	],
 	"./south_korean_cards/api/index.ts": [
-		463,
+		469,
 		9,
-		257
+		274
 	],
 	"./south_korean_cards/handlers": [
-		390,
+		394,
 		9,
-		258
+		275
 	],
 	"./south_korean_cards/handlers/": [
-		390,
+		394,
 		9,
-		258
+		275
 	],
 	"./south_korean_cards/handlers/index": [
-		390,
+		394,
 		9,
-		258
+		275
 	],
 	"./south_korean_cards/handlers/index.ts": [
-		390,
+		394,
 		9,
-		258
+		275
 	],
 	"./south_korean_cards/handlers/stripe": [
-		794,
+		829,
 		9,
-		372
+		402
 	],
 	"./south_korean_cards/handlers/stripe.ts": [
-		794,
+		829,
 		9,
-		372
+		402
 	],
 	"./south_korean_cards/loader": [
-		511,
+		523,
 		9,
-		160
+		167
 	],
 	"./south_korean_cards/loader/": [
-		511,
+		523,
 		9,
-		160
+		167
 	],
 	"./south_korean_cards/loader/index": [
-		511,
+		523,
 		9,
-		160
+		167
 	],
 	"./south_korean_cards/loader/index.ts": [
-		511,
+		523,
 		9,
-		160
+		167
 	],
 	"./south_korean_cards/loader/interface": [
-		795,
+		830,
 		9,
-		463
+		503
 	],
 	"./south_korean_cards/loader/interface.ts": [
-		795,
+		830,
 		9,
-		463
+		503
 	],
 	"./south_korean_cards/types": [
-		640,
+		657,
 		9,
-		259
+		276
 	],
 	"./south_korean_cards/types/": [
-		640,
+		657,
 		9,
-		259
+		276
 	],
 	"./south_korean_cards/types/index": [
-		640,
+		657,
 		9,
-		259
+		276
 	],
 	"./south_korean_cards/types/index.ts": [
-		640,
+		657,
 		9,
-		259
+		276
 	],
 	"./stablecoin/actions": [
-		525,
+		537,
 		9,
 		34
 	],
 	"./stablecoin/actions/": [
-		525,
+		537,
 		9,
 		34
 	],
 	"./stablecoin/actions/index": [
-		525,
+		537,
 		9,
 		34
 	],
 	"./stablecoin/actions/index.ts": [
-		525,
+		537,
 		9,
 		34
 	],
 	"./stablecoin/actions/interface": [
-		796,
+		831,
 		9,
-		464
+		504
 	],
 	"./stablecoin/actions/interface.ts": [
-		796,
+		831,
 		9,
-		464
+		504
 	],
 	"./stablecoin/api": [
-		431,
+		435,
 		9,
-		260
+		277
 	],
 	"./stablecoin/api/": [
-		431,
+		435,
 		9,
-		260
+		277
 	],
 	"./stablecoin/api/index": [
-		431,
+		435,
 		9,
-		260
+		277
 	],
 	"./stablecoin/api/index.ts": [
-		431,
+		435,
 		9,
-		260
+		277
 	],
 	"./stablecoin/handlers": [
-		364,
+		369,
 		9,
-		261
+		278
 	],
 	"./stablecoin/handlers/": [
-		364,
+		369,
 		9,
-		261
+		278
 	],
 	"./stablecoin/handlers/index": [
-		364,
+		369,
 		9,
-		261
+		278
 	],
 	"./stablecoin/handlers/index.ts": [
-		364,
+		369,
 		9,
-		261
+		278
 	],
 	"./stablecoin/handlers/stripe": [
-		797,
+		832,
 		9,
-		373
+		403
 	],
 	"./stablecoin/handlers/stripe.ts": [
-		797,
+		832,
 		9,
-		373
+		403
 	],
 	"./stablecoin/loader": [
-		471,
+		479,
 		9,
-		161
+		168
 	],
 	"./stablecoin/loader/": [
-		471,
+		479,
 		9,
-		161
+		168
 	],
 	"./stablecoin/loader/index": [
-		471,
+		479,
 		9,
-		161
+		168
 	],
 	"./stablecoin/loader/index.ts": [
-		471,
+		479,
 		9,
-		161
+		168
 	],
 	"./stablecoin/loader/interface": [
-		798,
+		833,
 		9,
-		465
+		505
 	],
 	"./stablecoin/loader/interface.ts": [
-		798,
+		833,
 		9,
-		465
+		505
 	],
 	"./stablecoin/types": [
-		641,
+		658,
 		9,
-		262
+		279
 	],
 	"./stablecoin/types/": [
-		641,
+		658,
 		9,
-		262
+		279
 	],
 	"./stablecoin/types/index": [
-		641,
+		658,
 		9,
-		262
+		279
 	],
 	"./stablecoin/types/index.ts": [
-		641,
+		658,
 		9,
-		262
+		279
 	],
 	"./swish/handlers": [
-		385,
+		363,
 		9,
-		263
+		280
 	],
 	"./swish/handlers/": [
-		385,
+		363,
 		9,
-		263
+		280
 	],
 	"./swish/handlers/adyen": [
-		799,
+		834,
 		9,
-		299
+		321
 	],
 	"./swish/handlers/adyen.ts": [
-		799,
+		834,
 		9,
-		299
+		321
+	],
+	"./swish/handlers/checkout_com": [
+		835,
+		9,
+		404
+	],
+	"./swish/handlers/checkout_com.ts": [
+		835,
+		9,
+		404
 	],
 	"./swish/handlers/index": [
-		385,
+		363,
 		9,
-		263
+		280
 	],
 	"./swish/handlers/index.ts": [
-		385,
+		363,
 		9,
-		263
+		280
 	],
 	"./swish/handlers/stripe": [
-		800,
+		836,
 		9,
-		1,
-		466
+		2,
+		506
 	],
 	"./swish/handlers/stripe.ts": [
-		800,
+		836,
 		9,
-		1,
-		466
+		2,
+		506
 	],
 	"./swish/loader": [
-		504,
+		512,
 		9,
-		162
+		169
 	],
 	"./swish/loader/": [
-		504,
+		512,
 		9,
-		162
+		169
 	],
 	"./swish/loader/index": [
-		504,
+		512,
 		9,
-		162
+		169
 	],
 	"./swish/loader/index.ts": [
-		504,
+		512,
 		9,
-		162
+		169
 	],
 	"./swish/loader/interface": [
-		801,
+		837,
 		9,
-		467
+		507
 	],
 	"./swish/loader/interface.ts": [
-		801,
+		837,
 		9,
-		467
+		507
 	],
 	"./swish/types": [
-		642,
+		659,
 		9,
-		264
+		281
 	],
 	"./swish/types/": [
-		642,
+		659,
 		9,
-		264
+		281
 	],
 	"./swish/types/index": [
-		642,
+		659,
 		9,
-		264
+		281
 	],
 	"./swish/types/index.ts": [
-		642,
+		659,
 		9,
-		264
+		281
+	],
+	"./tamara/actions": [
+		660,
+		9,
+		170
+	],
+	"./tamara/actions/": [
+		660,
+		9,
+		170
+	],
+	"./tamara/actions/index": [
+		660,
+		9,
+		170
+	],
+	"./tamara/actions/index.ts": [
+		660,
+		9,
+		170
+	],
+	"./tamara/actions/interface": [
+		838,
+		9,
+		508
+	],
+	"./tamara/actions/interface.ts": [
+		838,
+		9,
+		508
+	],
+	"./tamara/api": [
+		470,
+		9,
+		282
+	],
+	"./tamara/api/": [
+		470,
+		9,
+		282
+	],
+	"./tamara/api/index": [
+		470,
+		9,
+		282
+	],
+	"./tamara/api/index.ts": [
+		470,
+		9,
+		282
+	],
+	"./tamara/handlers": [
+		392,
+		9,
+		283
+	],
+	"./tamara/handlers/": [
+		392,
+		9,
+		283
+	],
+	"./tamara/handlers/checkout_com": [
+		839,
+		9,
+		405
+	],
+	"./tamara/handlers/checkout_com.ts": [
+		839,
+		9,
+		405
+	],
+	"./tamara/handlers/index": [
+		392,
+		9,
+		283
+	],
+	"./tamara/handlers/index.ts": [
+		392,
+		9,
+		283
+	],
+	"./tamara/loader": [
+		520,
+		9,
+		171
+	],
+	"./tamara/loader/": [
+		520,
+		9,
+		171
+	],
+	"./tamara/loader/index": [
+		520,
+		9,
+		171
+	],
+	"./tamara/loader/index.ts": [
+		520,
+		9,
+		171
+	],
+	"./tamara/loader/interface": [
+		840,
+		9,
+		509
+	],
+	"./tamara/loader/interface.ts": [
+		840,
+		9,
+		509
+	],
+	"./tamara/types": [
+		661,
+		9,
+		284
+	],
+	"./tamara/types/": [
+		661,
+		9,
+		284
+	],
+	"./tamara/types/index": [
+		661,
+		9,
+		284
+	],
+	"./tamara/types/index.ts": [
+		661,
+		9,
+		284
+	],
+	"./touch_n_go/actions": [
+		662,
+		9,
+		172
+	],
+	"./touch_n_go/actions/": [
+		662,
+		9,
+		172
+	],
+	"./touch_n_go/actions/index": [
+		662,
+		9,
+		172
+	],
+	"./touch_n_go/actions/index.ts": [
+		662,
+		9,
+		172
+	],
+	"./touch_n_go/actions/interface": [
+		841,
+		9,
+		510
+	],
+	"./touch_n_go/actions/interface.ts": [
+		841,
+		9,
+		510
+	],
+	"./touch_n_go/api": [
+		471,
+		9,
+		285
+	],
+	"./touch_n_go/api/": [
+		471,
+		9,
+		285
+	],
+	"./touch_n_go/api/index": [
+		471,
+		9,
+		285
+	],
+	"./touch_n_go/api/index.ts": [
+		471,
+		9,
+		285
+	],
+	"./touch_n_go/handlers": [
+		391,
+		9,
+		286
+	],
+	"./touch_n_go/handlers/": [
+		391,
+		9,
+		286
+	],
+	"./touch_n_go/handlers/checkout_com": [
+		842,
+		9,
+		406
+	],
+	"./touch_n_go/handlers/checkout_com.ts": [
+		842,
+		9,
+		406
+	],
+	"./touch_n_go/handlers/index": [
+		391,
+		9,
+		286
+	],
+	"./touch_n_go/handlers/index.ts": [
+		391,
+		9,
+		286
+	],
+	"./touch_n_go/loader": [
+		519,
+		9,
+		173
+	],
+	"./touch_n_go/loader/": [
+		519,
+		9,
+		173
+	],
+	"./touch_n_go/loader/index": [
+		519,
+		9,
+		173
+	],
+	"./touch_n_go/loader/index.ts": [
+		519,
+		9,
+		173
+	],
+	"./touch_n_go/loader/interface": [
+		843,
+		9,
+		511
+	],
+	"./touch_n_go/loader/interface.ts": [
+		843,
+		9,
+		511
+	],
+	"./touch_n_go/types": [
+		663,
+		9,
+		287
+	],
+	"./touch_n_go/types/": [
+		663,
+		9,
+		287
+	],
+	"./touch_n_go/types/index": [
+		663,
+		9,
+		287
+	],
+	"./touch_n_go/types/index.ts": [
+		663,
+		9,
+		287
 	],
 	"./trustly/actions": [
-		539,
+		551,
 		9,
 		35
 	],
 	"./trustly/actions/": [
-		539,
+		551,
 		9,
 		35
 	],
 	"./trustly/actions/index": [
-		539,
+		551,
 		9,
 		35
 	],
 	"./trustly/actions/index.ts": [
-		539,
+		551,
 		9,
 		35
 	],
 	"./trustly/actions/interface": [
-		802,
+		844,
 		9,
-		468
+		512
 	],
 	"./trustly/actions/interface.ts": [
-		802,
+		844,
 		9,
-		468
+		512
 	],
 	"./trustly/api": [
-		445,
+		449,
 		9,
-		265
+		288
 	],
 	"./trustly/api/": [
-		445,
+		449,
 		9,
-		265
+		288
 	],
 	"./trustly/api/index": [
-		445,
+		449,
 		9,
-		265
+		288
 	],
 	"./trustly/api/index.ts": [
-		445,
+		449,
 		9,
-		265
+		288
 	],
 	"./trustly/handlers": [
-		350,
+		354,
 		9,
-		266
+		289
 	],
 	"./trustly/handlers/": [
-		350,
+		354,
 		9,
-		266
+		289
 	],
 	"./trustly/handlers/adyen": [
-		803,
+		845,
 		9,
-		300
+		322
 	],
 	"./trustly/handlers/adyen.ts": [
-		803,
+		845,
 		9,
-		300
+		322
 	],
 	"./trustly/handlers/index": [
-		350,
+		354,
 		9,
-		266
+		289
 	],
 	"./trustly/handlers/index.ts": [
-		350,
+		354,
 		9,
-		266
+		289
 	],
 	"./trustly/handlers/mollie": [
-		804,
+		846,
 		9,
-		374
+		407
 	],
 	"./trustly/handlers/mollie.ts": [
-		804,
+		846,
 		9,
-		374
+		407
 	],
 	"./trustly/loader": [
-		473,
+		481,
 		9,
-		163
+		174
 	],
 	"./trustly/loader/": [
-		473,
+		481,
 		9,
-		163
+		174
 	],
 	"./trustly/loader/index": [
-		473,
+		481,
 		9,
-		163
+		174
 	],
 	"./trustly/loader/index.ts": [
-		473,
+		481,
 		9,
-		163
+		174
 	],
 	"./trustly/loader/interface": [
-		805,
+		847,
 		9,
-		469
+		513
 	],
 	"./trustly/loader/interface.ts": [
-		805,
+		847,
 		9,
-		469
+		513
 	],
 	"./trustly/types": [
-		643,
+		664,
 		9,
-		267
+		290
 	],
 	"./trustly/types/": [
-		643,
+		664,
 		9,
-		267
+		290
 	],
 	"./trustly/types/index": [
-		643,
+		664,
 		9,
-		267
+		290
 	],
 	"./trustly/types/index.ts": [
-		643,
+		664,
 		9,
-		267
+		290
 	],
 	"./twint/actions": [
-		644,
+		665,
 		9,
-		164
+		175
 	],
 	"./twint/actions/": [
-		644,
+		665,
 		9,
-		164
+		175
 	],
 	"./twint/actions/index": [
-		644,
+		665,
 		9,
-		164
+		175
 	],
 	"./twint/actions/index.ts": [
-		644,
+		665,
 		9,
-		164
+		175
 	],
 	"./twint/actions/interface": [
-		806,
+		848,
 		9,
-		470
+		514
 	],
 	"./twint/actions/interface.ts": [
-		806,
+		848,
 		9,
-		470
+		514
 	],
 	"./twint/api": [
-		464,
+		472,
 		9,
-		268
+		291
 	],
 	"./twint/api/": [
-		464,
+		472,
 		9,
-		268
+		291
 	],
 	"./twint/api/index": [
-		464,
+		472,
 		9,
-		268
+		291
 	],
 	"./twint/api/index.ts": [
-		464,
+		472,
 		9,
-		268
+		291
 	],
 	"./twint/handlers": [
-		380,
+		360,
 		9,
-		269
+		292
 	],
 	"./twint/handlers/": [
-		380,
+		360,
 		9,
-		269
+		292
 	],
 	"./twint/handlers/adyen": [
-		807,
+		849,
 		9,
-		301
+		323
 	],
 	"./twint/handlers/adyen.ts": [
-		807,
+		849,
 		9,
-		301
+		323
+	],
+	"./twint/handlers/checkout_com": [
+		850,
+		9,
+		408
+	],
+	"./twint/handlers/checkout_com.ts": [
+		850,
+		9,
+		408
 	],
 	"./twint/handlers/index": [
-		380,
+		360,
 		9,
-		269
+		292
 	],
 	"./twint/handlers/index.ts": [
-		380,
+		360,
 		9,
-		269
+		292
 	],
 	"./twint/loader": [
-		495,
+		503,
 		9,
-		165
+		176
 	],
 	"./twint/loader/": [
-		495,
+		503,
 		9,
-		165
+		176
 	],
 	"./twint/loader/index": [
-		495,
+		503,
 		9,
-		165
+		176
 	],
 	"./twint/loader/index.ts": [
-		495,
+		503,
 		9,
-		165
+		176
 	],
 	"./twint/loader/interface": [
-		808,
+		851,
 		9,
-		471
+		515
 	],
 	"./twint/loader/interface.ts": [
-		808,
+		851,
 		9,
-		471
+		515
 	],
 	"./upi/actions": [
-		645,
+		666,
 		9,
-		166
+		177
 	],
 	"./upi/actions/": [
-		645,
+		666,
 		9,
-		166
+		177
 	],
 	"./upi/actions/index": [
-		645,
+		666,
 		9,
-		166
+		177
 	],
 	"./upi/actions/index.ts": [
-		645,
+		666,
 		9,
-		166
+		177
 	],
 	"./upi/actions/interface": [
-		809,
+		852,
 		9,
-		472
+		516
 	],
 	"./upi/actions/interface.ts": [
-		809,
+		852,
 		9,
-		472
+		516
 	],
 	"./upi/api": [
-		465,
+		473,
 		9,
-		270
+		293
 	],
 	"./upi/api/": [
-		465,
+		473,
 		9,
-		270
+		293
 	],
 	"./upi/api/index": [
-		465,
+		473,
 		9,
-		270
+		293
 	],
 	"./upi/api/index.ts": [
-		465,
+		473,
 		9,
-		270
+		293
 	],
 	"./upi/handlers": [
-		371,
+		374,
 		9,
-		91
+		93
 	],
 	"./upi/handlers/": [
-		371,
+		374,
 		9,
-		91
+		93
 	],
 	"./upi/handlers/index": [
-		371,
+		374,
 		9,
-		91
+		93
 	],
 	"./upi/handlers/index.ts": [
-		371,
+		374,
 		9,
-		91
+		93
 	],
 	"./upi/handlers/razorpay": [
-		656,
+		678,
 		9,
 		38,
-		49,
-		375
+		50,
+		410
 	],
 	"./upi/handlers/razorpay.ts": [
-		656,
+		678,
 		9,
 		38,
-		49,
-		375
+		50,
+		410
 	],
 	"./upi/handlers/stripe": [
-		814,
+		857,
 		9,
 		38,
-		1,
-		49,
-		473
+		2,
+		50,
+		517
 	],
 	"./upi/handlers/stripe.ts": [
-		814,
+		857,
 		9,
 		38,
-		1,
-		49,
-		473
+		2,
+		50,
+		517
 	],
 	"./upi/loader": [
-		485,
+		493,
 		9,
-		81
+		83
 	],
 	"./upi/loader/": [
-		485,
+		493,
 		9,
-		81
+		83
 	],
 	"./upi/loader/index": [
-		485,
+		493,
 		9,
-		81
+		83
 	],
 	"./upi/loader/index.ts": [
-		485,
+		493,
 		9,
-		81
+		83
 	],
 	"./upi/loader/interface": [
-		815,
+		858,
 		9,
-		474
+		518
 	],
 	"./upi/loader/interface.ts": [
-		815,
+		858,
 		9,
-		474
+		518
 	],
 	"./upi/types": [
-		646,
+		667,
 		9,
-		271
+		294
 	],
 	"./upi/types/": [
-		646,
+		667,
 		9,
-		271
+		294
 	],
 	"./upi/types/index": [
-		646,
+		667,
 		9,
-		271
+		294
 	],
 	"./upi/types/index.ts": [
-		646,
+		667,
 		9,
-		271
+		294
 	],
 	"./venmo/actions": [
-		532,
+		544,
 		9,
 		36
 	],
 	"./venmo/actions/": [
-		532,
+		544,
 		9,
 		36
 	],
 	"./venmo/actions/index": [
-		532,
+		544,
 		9,
 		36
 	],
 	"./venmo/actions/index.ts": [
-		532,
+		544,
 		9,
 		36
 	],
 	"./venmo/actions/interface": [
-		816,
+		859,
 		9,
-		475
+		519
 	],
 	"./venmo/actions/interface.ts": [
-		816,
+		859,
 		9,
-		475
+		519
 	],
 	"./venmo/api": [
-		438,
+		442,
 		9,
-		272
+		295
 	],
 	"./venmo/api/": [
-		438,
+		442,
 		9,
-		272
+		295
 	],
 	"./venmo/api/index": [
-		438,
+		442,
 		9,
-		272
+		295
 	],
 	"./venmo/api/index.ts": [
-		438,
+		442,
 		9,
-		272
+		295
 	],
 	"./venmo/handlers": [
-		351,
+		346,
 		9,
-		273
+		296
 	],
 	"./venmo/handlers/": [
-		351,
+		346,
 		9,
-		273
+		296
 	],
 	"./venmo/handlers/braintree": [
-		817,
+		860,
 		9,
-		342
+		364
 	],
 	"./venmo/handlers/braintree.ts": [
-		817,
+		860,
 		9,
-		342
+		364
+	],
+	"./venmo/handlers/checkout_com": [
+		861,
+		9,
+		409
+	],
+	"./venmo/handlers/checkout_com.ts": [
+		861,
+		9,
+		409
 	],
 	"./venmo/handlers/index": [
-		351,
+		346,
 		9,
-		273
+		296
 	],
 	"./venmo/handlers/index.ts": [
-		351,
+		346,
 		9,
-		273
+		296
 	],
 	"./venmo/handlers/paypal": [
-		818,
+		862,
 		9,
 		3,
-		343
+		365
 	],
 	"./venmo/handlers/paypal.ts": [
-		818,
+		862,
 		9,
 		3,
-		343
+		365
 	],
 	"./venmo/handlers/utils": [
-		647,
+		668,
 		9,
-		476
+		520
 	],
 	"./venmo/handlers/utils.ts": [
-		647,
+		668,
 		9,
-		476
+		520
 	],
 	"./venmo/loader": [
-		479,
+		487,
 		9,
-		167
+		178
 	],
 	"./venmo/loader/": [
-		479,
+		487,
 		9,
-		167
+		178
 	],
 	"./venmo/loader/index": [
-		479,
+		487,
 		9,
-		167
+		178
 	],
 	"./venmo/loader/index.ts": [
-		479,
+		487,
 		9,
-		167
+		178
 	],
 	"./venmo/loader/interface": [
-		819,
+		863,
 		9,
-		477
+		521
 	],
 	"./venmo/loader/interface.ts": [
-		819,
+		863,
 		9,
-		477
+		521
 	],
 	"./venmo/types": [
-		648,
+		669,
 		9,
-		274
+		297
 	],
 	"./venmo/types/": [
-		648,
+		669,
 		9,
-		274
+		297
 	],
 	"./venmo/types/index": [
-		648,
+		669,
 		9,
-		274
+		297
 	],
 	"./venmo/types/index.ts": [
-		648,
+		669,
 		9,
-		274
+		297
 	],
 	"./wechat_pay/actions": [
-		649,
+		670,
 		9,
-		168
+		179
 	],
 	"./wechat_pay/actions/": [
-		649,
+		670,
 		9,
-		168
+		179
 	],
 	"./wechat_pay/actions/index": [
-		649,
+		670,
 		9,
-		168
+		179
 	],
 	"./wechat_pay/actions/index.ts": [
-		649,
+		670,
 		9,
-		168
+		179
 	],
 	"./wechat_pay/actions/interface": [
-		820,
+		864,
 		9,
-		478
+		522
 	],
 	"./wechat_pay/actions/interface.ts": [
-		820,
+		864,
 		9,
-		478
+		522
 	],
 	"./wechat_pay/api": [
-		466,
+		474,
 		9,
-		275
+		298
 	],
 	"./wechat_pay/api/": [
-		466,
+		474,
 		9,
-		275
+		298
 	],
 	"./wechat_pay/api/index": [
-		466,
+		474,
 		9,
-		275
+		298
 	],
 	"./wechat_pay/api/index.ts": [
-		466,
+		474,
 		9,
-		275
+		298
 	],
 	"./wechat_pay/handlers": [
-		358,
+		362,
 		9,
-		78
+		80
 	],
 	"./wechat_pay/handlers/": [
-		358,
+		362,
 		9,
-		78
+		80
 	],
 	"./wechat_pay/handlers/adyen": [
-		821,
+		865,
 		9,
-		279
+		302
 	],
 	"./wechat_pay/handlers/adyen.ts": [
-		821,
+		865,
 		9,
-		279
+		302
 	],
 	"./wechat_pay/handlers/index": [
-		358,
+		362,
 		9,
-		78
+		80
 	],
 	"./wechat_pay/handlers/index.ts": [
-		358,
+		362,
 		9,
-		78
+		80
 	],
 	"./wechat_pay/handlers/stripe": [
-		822,
+		866,
 		9,
-		281
+		304
 	],
 	"./wechat_pay/handlers/stripe.ts": [
-		822,
+		866,
 		9,
-		281
+		304
 	],
 	"./wechat_pay/loader": [
-		502,
+		510,
 		9,
-		73
+		75
 	],
 	"./wechat_pay/loader/": [
-		502,
+		510,
 		9,
-		73
+		75
 	],
 	"./wechat_pay/loader/index": [
-		502,
+		510,
 		9,
-		73
+		75
 	],
 	"./wechat_pay/loader/index.ts": [
-		502,
+		510,
 		9,
-		73
+		75
 	],
 	"./wechat_pay/loader/interface": [
-		823,
+		867,
 		9,
-		479
+		523
 	],
 	"./wechat_pay/loader/interface.ts": [
-		823,
+		867,
 		9,
-		479
+		523
 	],
 	"./wechat_pay/types": [
-		650,
+		671,
 		9,
-		276
+		299
 	],
 	"./wechat_pay/types/": [
-		650,
+		671,
 		9,
-		276
+		299
 	],
 	"./wechat_pay/types/index": [
-		650,
+		671,
 		9,
-		276
+		299
 	],
 	"./wechat_pay/types/index.ts": [
-		650,
+		671,
 		9,
-		276
+		299
 	]
 };
 function webpackAsyncContext(req) {
@@ -6628,5 +7274,5 @@ function webpackAsyncContext(req) {
 webpackAsyncContext.keys = function webpackAsyncContextKeys() {
 	return Object.keys(map);
 };
-webpackAsyncContext.id = 659;
+webpackAsyncContext.id = 681;
 module.exports = webpackAsyncContext;

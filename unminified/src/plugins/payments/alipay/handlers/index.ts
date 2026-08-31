@@ -32,12 +32,12 @@ export default class AlipayHandler extends PaymentIntentHandler implements Alipa
       return new Promise(() => {});
     }
 
-      this.windowManager = new CbWindowManager();
-      this.windowManager.openDirect('', PAYMENT_AUTH_REDIRECT_WINDOW_NAME, {
-        skipReferrer: true,
-        showLoader: true,
-        openInNewWindow: true,
-      });
+    this.windowManager = new CbWindowManager({redirectMode: this.isRedirectMode});
+    this.windowManager.openDirect('', PAYMENT_AUTH_REDIRECT_WINDOW_NAME, {
+      skipReferrer: true,
+      showLoader: true,
+      openInNewWindow: true,
+    });
 
     this.windowManager.loadURL(rawData.redirect_url);
     return this.pollForAuthCompletion();

@@ -123,6 +123,7 @@ if (!window.Chargebee) {
       let recaptchaKey = attrValue(element, 'cbRecaptchaKey');
       let isItemsModel = attrValue(element, 'cbItemsModel');
       const businessEntityId = attrValue(element, 'cbBusinessEntityId');
+      const brandId = attrValue(element, 'cbBrandId');
       (function () {
         // @ts-ignore
         if (
@@ -145,6 +146,7 @@ if (!window.Chargebee) {
             recaptchaKey,
             isItemsModel: !!isItemsModel,
             businessEntityId,
+            brandId,
           });
 
           registerPortal(cbInstance);
@@ -165,6 +167,7 @@ if (!window.Chargebee) {
             referrerModule: attrValue(element, 'cbReferrerModule'),
             recaptchaKey,
             businessEntityId,
+            brandId,
           });
 
           registerPortal(cbInstance);

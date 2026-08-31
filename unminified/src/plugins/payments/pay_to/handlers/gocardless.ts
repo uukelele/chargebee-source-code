@@ -2,7 +2,7 @@ import {PaymentAttemptStatus, PaymentAttempt, PaymentMethodType, Gateway} from '
 import PayToHandler from '@/plugins/payments/pay_to/handlers';
 import Errors, {CbError} from '@/hosted_fields/common/errors';
 import {requiredAll, requiredAnyOne} from '@/utils/utility-functions';
-import {PaymentInfo, BankAccount} from '../../faster_payments/types';
+import {PaymentInfo, BankAccount, PayToDetails} from '../../faster_payments/types';
 import BankFieldHelper from '@/utils/bank-field-helper';
 import {PaymentOptions} from '@/hosted_fields/common/base-types';
 
@@ -71,10 +71,8 @@ export default class GocardlessPayToHandler extends PayToHandler {
     }
     let customer = input.customer;
     let billingAddress = customer && customer.billingAddress;
-    let bankAccount = input.bankAccount;
     return !!(
       customer &&
-      bankAccount &&
       requiredAnyOne(requiredAll(customer.firstName, customer.lastName), customer.company) &&
       requiredAll(
         customer.email,
@@ -83,24 +81,83 @@ export default class GocardlessPayToHandler extends PayToHandler {
         billingAddress.city,
         billingAddress.countryCode,
         billingAddress.zip,
-        this._validateBankFields(bankAccount)
+        this._validatePayToIdentifier(input)
       )
     );
   }
 
+  private _resolvePayToDetails(input: PaymentInfo): PayToDetails & {countryCode?: string} {
+    const payTo = (input.additionalData && input.additionalData.payTo) || input.payTo;
+
+    if (payTo) {
+      return {
+        payId: payTo.payId,
+        accountNumber: payTo.accountNumber,
+        bsbNumber: payTo.bsbNumber,
+        countryCode: (input.bankAccount && input.bankAccount.countryCode) || 'AU',
+      };
+    }
+
+    const bankAccount = input.bankAccount;
+    if (!bankAccount) {
+      return {};
+    }
+
+    return {
+      payId: bankAccount.payId,
+      accountNumber: bankAccount.accountNumber,
+      bsbNumber: bankAccount.routingNumber,
+      countryCode: bankAccount.countryCode || 'AU',
+    };
+  }
+
+  private _validatePayToIdentifier(input: PaymentInfo): boolean {
+    const {payId, accountNumber, bsbNumber, countryCode} = this._resolvePayToDetails(input);
+
+    if (payId) {
+      return true;
+    }
+
+    if (accountNumber || bsbNumber) {
+      if (!accountNumber || !bsbNumber) {
+        return false;
+      }
+
+      return this._validateBankFields({
+        accountNumber,
+        routingNumber: bsbNumber,
+        countryCode: countryCode || 'AU',
+      });
+    }
+
+    return false;
+  }
+
   private _validateBankFields(givenBankAccount: BankAccount): boolean {
-    givenBankAccount.countryCode = givenBankAccount.countryCode || 'AU';
-    if (!BankFieldHelper.isCountryForBecs(Gateway.GOCARDLESS, givenBankAccount.countryCode)) {
+    const countryCode = givenBankAccount.countryCode || 'AU';
+    if (!BankFieldHelper.isCountryForBecs(Gateway.GOCARDLESS, countryCode)) {
       return false;
     }
-    let expectedBankFields = BankFieldHelper.getBecsFields(Gateway.GOCARDLESS, givenBankAccount.countryCode);
+    let expectedBankFields = BankFieldHelper.getBecsFields(Gateway.GOCARDLESS, countryCode);
     return expectedBankFields.every((field) => givenBankAccount[field]);
   }
 
   _transform(input: PaymentInfo): object {
+    const additionalData = input.additionalData;
+    const subscription = additionalData && additionalData.subscription;
     let out: any = {
       paymentMethodType: PaymentMethodType.PAY_TO,
     };
+    if (subscription) {
+      out['subscription'] = {
+        frequencyUnit: subscription.frequencyUnit,
+        startDate: subscription.startDate,
+        endDate: subscription.endDate,
+        frequencyPeriod: subscription.frequencyPeriod,
+        id: subscription.id,
+        mandateFloorAmount: subscription.mandateFloorAmount,
+      };
+    }
     if (input.customer) {
       out['paymentMethodDetails'] = {
         firstName: input.customer.firstName,
@@ -112,15 +169,28 @@ export default class GocardlessPayToHandler extends PayToHandler {
     }
     if (input.useGateway) {
       out['requiresRedirection'] = true;
-    } else if (input.bankAccount) {
-      out['paymentMethodDetails'] = {
-        ...out['paymentMethodDetails'],
-        directDebitBankAccount: {
-          accountNumber: input.bankAccount.accountNumber,
-          routingNumber: input.bankAccount.routingNumber,
-          accountCountry: input.bankAccount.countryCode,
-        },
-      };
+    } else {
+      const {payId, accountNumber, bsbNumber, countryCode} = this._resolvePayToDetails(input);
+
+      if (payId) {
+        out['paymentMethodDetails'] = {
+          ...out['paymentMethodDetails'],
+          payTo: {payId},
+        };
+      } else if (accountNumber && bsbNumber) {
+        out['paymentMethodDetails'] = {
+          ...out['paymentMethodDetails'],
+          payTo: {
+            accountNumber,
+            bsbNumber,
+          },
+          directDebitBankAccount: {
+            accountNumber,
+            routingNumber: bsbNumber,
+            accountCountry: countryCode || 'AU',
+          },
+        };
+      }
     }
     return out;
   }

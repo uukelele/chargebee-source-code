@@ -64,6 +64,7 @@ export default class GooglePayHandler implements GooglePayment {
       case Gateway.NMI:
       case Gateway.CHECKOUT_COM:
       case Gateway.VANTIV:
+      case Gateway.CHARGEBEE_PAYMENTS:
       case Gateway.WORLDPAY:
         return new DirectGooglePayHandler(this);
       case Gateway.DEUTSCHE_BANK:

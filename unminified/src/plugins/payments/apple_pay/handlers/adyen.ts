@@ -236,7 +236,9 @@ export default class AdyenApplepayHandler extends ApplepayHandler {
       refererDomain &&
       applePayMethod &&
       applePayMethod.configuration &&
-      (referrerModule === Ids.CB_PAYMENT_COMPONENTS || referrerModule === Ids.PC_FPC_V4 || referrerModule === Ids.PC_INAPP_V4)
+      (referrerModule === Ids.CB_PAYMENT_COMPONENTS ||
+        referrerModule === Ids.PC_FPC_V4 ||
+        referrerModule === Ids.PC_INAPP_V4)
     ) {
       config.onValidateMerchant = this.buildMerchantValidator(gwData, refererDomain, applePayMethod);
     }

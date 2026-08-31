@@ -41,5 +41,6 @@ export default class AdyenPaypayHandler extends PaypayHandler {
         this.setPaymentIntent(data.payment_intent);
       }
       return data;
-    });  }
+    });
+  }
 }

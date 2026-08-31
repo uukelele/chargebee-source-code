@@ -115,7 +115,6 @@ export default class StripeKlarnaHandler extends KlarnaHandler {
       confirmData.customer = mergedCustomer;
     }
 
-
     if (
       (typeof paymentType === 'string' && paymentType.toUpperCase() === 'ONETIME') ||
       (paymentInfo && paymentInfo.retainPaymentMethod === false)

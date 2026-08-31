@@ -114,6 +114,7 @@ export default class CbIframeManager implements Manager {
   open(url: string, type: string): void {
     let referrer = Helpers.getReferrer();
     let businessEntityId = Helpers.getBusinessEntityId();
+    let brandId = Helpers.getBrandId();
     let cbFrame = <HTMLIFrameElement>window.document.getElementById(Ids.CB_FRAME);
     let cbInstance = Helpers.getCbInstance();
     cbFrame.style.display = 'block';
@@ -136,6 +137,9 @@ export default class CbIframeManager implements Manager {
             }
           }
         }
+        if (brandId) {
+          srcUrl.searchParams.append('brand_id', brandId);
+        }
       }
       srcUrl.searchParams.append('window_referrer', window.location.href);
       cbFrame.src = srcUrl.href;
@@ -146,10 +150,16 @@ export default class CbIframeManager implements Manager {
       if (typeof this.layout !== 'undefined') {
         srcUrl = `${url}${separator}hp_opener=chargebee&hp_referrer=${encodeURIComponent(referrer)}&layout=${
           this.layout
-        }${type == PageCategory.PORTAL_PAGE ? Helpers.getBeIdQueryParamForPortal() : ''}`;
+        }${
+          type == PageCategory.PORTAL_PAGE
+            ? Helpers.getBeIdQueryParamForPortal() + Helpers.getBrIdQueryParamForPortal()
+            : ''
+        }`;
       } else {
         srcUrl = `${url}${separator}hp_opener=chargebee&hp_referrer=${encodeURIComponent(referrer)}${
-          type == PageCategory.PORTAL_PAGE ? Helpers.getBeIdQueryParamForPortal() : ''
+          type == PageCategory.PORTAL_PAGE
+            ? Helpers.getBeIdQueryParamForPortal() + Helpers.getBrIdQueryParamForPortal()
+            : ''
         }`;
       }
       cbFrame.src = srcUrl;

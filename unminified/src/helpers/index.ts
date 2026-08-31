@@ -241,6 +241,10 @@ export default class Helpers {
     const cbInstance = Helpers.getCbInstance();
     return cbInstance && cbInstance.options && cbInstance.options.businessEntityId;
   }
+  static getBrandId(): string | undefined {
+    const cbInstance = Helpers.getCbInstance();
+    return cbInstance && cbInstance.options && cbInstance.options.brandId;
+  }
   static getPortalToken(): string | undefined {
     const cbInstance = Helpers.getCbInstance();
     const ssoToken = cbInstance && cbInstance.authHandler && cbInstance.authHandler.ssoToken;
@@ -253,5 +257,10 @@ export default class Helpers {
   static getBeIdQueryParamForPortal(): string {
     let beId = this.getBusinessEntityId();
     return beId ? '&be_id=' + beId : '';
+  }
+
+  static getBrIdQueryParamForPortal(): string {
+    let brId = this.getBrandId();
+    return brId ? '&brand_id=' + brId : '';
   }
 }

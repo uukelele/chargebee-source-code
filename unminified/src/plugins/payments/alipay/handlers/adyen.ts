@@ -41,5 +41,6 @@ export default class AdyenAlipayHandler extends AlipayHandler {
         this.setPaymentIntent(data.payment_intent);
       }
       return data;
-    });  }
+    });
+  }
 }

@@ -146,7 +146,12 @@ export default class BraintreeApplePayHandler extends ApplepayHandler {
       //refererDomain is used for payment-component
       const cbInstance = Helpers.getCbInstance();
       const referrerModule = cbInstance && cbInstance.options && cbInstance.options.referrerModule;
-      if (referer && (referrerModule === Ids.CB_PAYMENT_COMPONENTS || referrerModule === Ids.PC_FPC_V4 || referrerModule === Ids.PC_INAPP_V4)) {
+      if (
+        referer &&
+        (referrerModule === Ids.CB_PAYMENT_COMPONENTS ||
+          referrerModule === Ids.PC_FPC_V4 ||
+          referrerModule === Ids.PC_INAPP_V4)
+      ) {
         try {
           const refererDomain = new URL(referer).hostname;
           if (refererDomain) {

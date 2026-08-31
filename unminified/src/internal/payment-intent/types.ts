@@ -56,6 +56,10 @@ export enum PaymentMethodType {
   BIZUM = 'bizum',
   PAYNOW = 'paynow',
   PROMPTPAY = 'promptpay',
+  DANA = 'dana',
+  TOUCH_N_GO = 'touch_n_go',
+  TAMARA = 'tamara',
+  QPAY = 'qpay',
 }
 
 export enum AchVerificationType {
@@ -78,6 +82,7 @@ export type PaymentIntent = {
   success_url?: string;
   failure_url?: string;
   business_entity_id?: string;
+  brand_id?: string;
   payer_info?: PayerInfo;
 };
 
@@ -185,6 +190,7 @@ export type AdditionalData = {
 
   metaData?: {};
 
+  // Request a charge-free payment method addition (variable enrollment / vaulting)
   allowPaylessPaymentMethodAddition?: boolean;
 };
 
@@ -284,6 +290,7 @@ export enum Gateway {
   EZIDEBIT = 'ezidebit',
   TEMPUS = 'tempus',
   MOYASAR = 'moyasar',
+  PAYU = 'payu',
 }
 
 export interface ConfirmApiInputPayload extends AdditionalData {
@@ -343,6 +350,7 @@ export interface ConfirmApiPayload {
   payload?: ConfirmApiInputPayload;
   paymentIntentId: string;
   businessEntityId?: string;
+  brandId?: string;
   referenceId?: string;
   gatewayAccountId?: string;
   paymentMethodType?: PaymentMethodType;

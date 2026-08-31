@@ -117,6 +117,12 @@ export default class DirectGooglePayHandler extends AbstractGooglePayHandler {
           gateway: 'adyen',
           gatewayMerchantId: this.gatewayCredential.google_pay && this.gatewayCredential.google_pay.adyen_merchant_id,
         };
+      case Gateway.CHARGEBEE_PAYMENTS:
+        return {
+          gateway: 'adyen',
+          gatewayMerchantId:
+            this.gatewayCredential.google_pay && this.gatewayCredential.google_pay.cb_payments_merchant_id,
+        };
       case Gateway.BLUESNAP:
         return {
           gateway: 'bluesnap',
@@ -364,6 +370,7 @@ export default class DirectGooglePayHandler extends AbstractGooglePayHandler {
   protected handlePaymentAttempt(paymentAttempt: PaymentAttempt): Promise<any> {
     switch (this.getPaymentIntent().gateway) {
       case Gateway.ADYEN:
+      case Gateway.CHARGEBEE_PAYMENTS:
         return this.adyenHandlePaymentAttempt(paymentAttempt);
       case Gateway.CHECKOUT_COM:
         return this.checkoutComHandlePaymentAttempt(paymentAttempt);
@@ -525,7 +532,8 @@ export default class DirectGooglePayHandler extends AbstractGooglePayHandler {
         };
       case Gateway.ADYEN:
       case Gateway.VANTIV:
-        // Vantiv DIRECT tokenization: forward encrypted payload as-is for backend decryption.
+      // Vantiv DIRECT tokenization: forward encrypted payload as-is for backend decryption.
+      case Gateway.CHARGEBEE_PAYMENTS:
         return {
           token: paymentData.paymentMethodData.tokenizationData.token,
         };
@@ -588,6 +596,7 @@ export default class DirectGooglePayHandler extends AbstractGooglePayHandler {
       this.getPaymentIntent().gateway === Gateway.CHECKOUT_COM ||
       this.getPaymentIntent().gateway === Gateway.VANTIV ||
       this.getPaymentIntent().gateway === Gateway.NMI ||
+      this.getPaymentIntent().gateway === Gateway.CHARGEBEE_PAYMENTS ||
       this.getPaymentIntent().gateway === Gateway.WORLDPAY
     ) {
       const tokenKey = this.getPaymentIntent().gateway === Gateway.CHECKOUT_COM ? 'googlePay' : 'tempToken';

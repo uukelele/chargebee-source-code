@@ -38,7 +38,7 @@ export default class RazorpayUpiHandler extends UpiHandler {
   }
 
   getPaymentData(): any {
-    return {
+    const paymentData = {
       amount: this.getPaymentIntent().amount, // amount in paise
       method: 'upi',
       contact: (this.paymentInfo.customer && this.paymentInfo.customer.phone) || '',
@@ -52,6 +52,13 @@ export default class RazorpayUpiHandler extends UpiHandler {
       ...((!this.paymentInfo.additionalData ||
         (this.paymentInfo.additionalData && this.paymentInfo.additionalData.paymentType != 'ONETIME')) && {save: 1}),
     };
+    const paymentAttemptPayload = this.getPaymentAttempt().action_payload;
+    if (paymentAttemptPayload && paymentAttemptPayload.order_receipt) {
+      paymentData['notes'] = {
+        invoice_number: paymentAttemptPayload.order_receipt,
+      };
+    }
+    return paymentData;
   }
 
   protected kvl(data): Promise<any> {
@@ -366,6 +373,7 @@ export default class RazorpayUpiHandler extends UpiHandler {
       order_id: paymentData.order_id,
       ...(paymentData.recurring && {recurring: paymentData.recurring}),
       ...(paymentData.save && {save: paymentData.save}),
+      ...(paymentData.notes && {notes: paymentData.notes}),
     };
   }
 

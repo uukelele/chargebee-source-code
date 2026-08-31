@@ -276,6 +276,14 @@ const CONFIG = {
       bank_fields: TYPE_4,
     },
   ],
+  nmi_ach: [
+    {
+      display_name: 'United States',
+      country_code: 'US',
+      bank_fields: TYPE_9,
+    },
+  ],
+
   authorize_net_ach: [
     {
       display_name: 'United States',
@@ -484,6 +492,8 @@ export default class BankFieldHelper {
         return this.isCountrySupported(CONFIG.authorize_net_ach, country_code);
       case Gateway.CYBERSOURCE:
         return this.isCountrySupported(CONFIG.cybersource_ach, country_code);
+      case Gateway.NMI:
+        return this.isCountrySupported(CONFIG.nmi_ach, country_code);
       default:
         return false;
     }
@@ -569,6 +579,8 @@ export default class BankFieldHelper {
         return this.getFields(CONFIG.authorize_net_ach, country_code);
       case Gateway.CYBERSOURCE:
         return this.getFields(CONFIG.cybersource_ach, country_code);
+      case Gateway.NMI:
+        return this.getFields(CONFIG.nmi_ach, country_code);
       default:
         return [];
     }

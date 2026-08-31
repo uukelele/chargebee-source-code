@@ -20,11 +20,13 @@ import {PaymentInfo as KakaoPayPaymentInfo} from '@/plugins/payments/kakao_pay/t
 import {PaymentInfo as NaverPayPaymentInfo} from '@/plugins/payments/naver_pay/types';
 import {PaymentInfo as RevolutPayPaymentInfo} from '@/plugins/payments/revolut_pay/types';
 import {PaymentInfo as AlipayPaymentInfo} from '@/plugins/payments/alipay/types';
-import {PaymentInfo as AlipayHkPaymentInfo} from '@/plugins/payments/alipay_hk/types';
-import {PaymentInfo as GcashPaymentInfo} from '@/plugins/payments/gcash/types';
 import {PaymentInfo as WechatPayPaymentInfo} from '@/plugins/payments/wechat_pay/types';
 import {PaymentInfo as CashAppPayPaymentInfo} from '@/plugins/payments/cash_app_pay/types';
 import {RenderOptions as CashAppPayRenderOptions} from '@/plugins/payments/cash_app_pay/types';
+import {PaymentInfo as DanaPaymentInfo} from '@/plugins/payments/dana/types';
+import {PaymentInfo as TouchNGoPaymentInfo} from '@/plugins/payments/touch_n_go/types';
+import {PaymentInfo as TamaraPaymentInfo} from '@/plugins/payments/tamara/types';
+import {PaymentInfo as QpayPaymentInfo} from '@/plugins/payments/qpay/types';
 import {PaymentInfo as PaypayPaymentInfo} from '@/plugins/payments/paypay/types';
 import {PaymentInfo as SouthKoreanCardsPaymentInfo} from '@/plugins/payments/south_korean_cards/types';
 import {ButtonOption} from '@/plugins/payments/google_pay/types';
@@ -389,11 +391,42 @@ export interface GrabPayPayment {
   handlePayment(paymentInfo: BasePaymentInfo, callbacks?: Callbacks): Promise<any>;
 }
 
+export interface DanaPayment {
+  setPaymentIntent(paymentIntent: PaymentIntent, options: Options);
+  updatePaymentIntent(paymentIntent: PaymentIntent);
+  getPaymentIntent(): PaymentIntent;
+  handlePayment(paymentInfo: DanaPaymentInfo, callbacks?: Callbacks): Promise<any>;
+}
+
+export interface TouchNGoPayment {
+  setPaymentIntent(paymentIntent: PaymentIntent, options: Options);
+  updatePaymentIntent(paymentIntent: PaymentIntent);
+  getPaymentIntent(): PaymentIntent;
+  handlePayment(paymentInfo: TouchNGoPaymentInfo, callbacks?: Callbacks): Promise<any>;
+}
+
+export interface TamaraPayment {
+  setPaymentIntent(paymentIntent: PaymentIntent, options: Options);
+  updatePaymentIntent(paymentIntent: PaymentIntent);
+  getPaymentIntent(): PaymentIntent;
+  handlePayment(paymentInfo: TamaraPaymentInfo, callbacks?: Callbacks): Promise<any>;
+}
+
+export interface QpayPayment {
+  setPaymentIntent(paymentIntent: PaymentIntent, options: Options);
+  updatePaymentIntent(paymentIntent: PaymentIntent);
+  getPaymentIntent(): PaymentIntent;
+  handlePayment(paymentInfo: QpayPaymentInfo, callbacks?: Callbacks): Promise<any>;
+}
+
 export interface Subscription {
   startDate: number;
   endDate: number;
   frequencyUnit: FrequencyUnit;
   frequencyPeriod: number;
+  handle?: string;
+  id?: string;
+  mandateFloorAmount?: number;
 }
 
 export interface PaymentAddress {
@@ -453,6 +486,12 @@ export interface BasePaymentInfo {
     bankCode?: string;
     countryCode?: string;
     swedishIdentityNumber?: string;
+    payId?: string;
+  };
+  payTo?: {
+    payId?: string;
+    accountNumber?: string;
+    bsbNumber?: string;
   };
   vpa?: string;
   additionalData?: {
@@ -468,6 +507,11 @@ export interface BasePaymentInfo {
     };
     subscription?: Subscription;
     document?: Document;
+    payTo?: {
+      payId?: string;
+      accountNumber?: string;
+      bsbNumber?: string;
+    };
   };
   lineItems?: Array<any>;
 }
@@ -510,6 +554,7 @@ export enum TabRedirectPayments {
   grab_pay,
   go_pay,
   twint,
+  swish,
   kbc_payment_button,
   electronic_payment_standard,
   trustly,
@@ -530,6 +575,10 @@ export enum TabRedirectPayments {
   bizum,
   paynow,
   promptpay,
+  dana,
+  touch_n_go,
+  tamara,
+  qpay,
 }
 
 export const PAYMENT_AUTH_REDIRECT_WINDOW_NAME = 'cb_payment_auth_redirect_window';

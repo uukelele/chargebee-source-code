@@ -25,6 +25,10 @@ Object {
     "email": "siva@chargebee.com",
     "firstName": undefined,
     "lastName": undefined,
+    "payTo": Object {
+      "accountNumber": "123",
+      "bsbNumber": "123",
+    },
   },
   "paymentMethodType": "pay_to",
 }
@@ -48,6 +52,31 @@ Object {
     "email": "siva@chargebee.com",
     "firstName": "Chargebee",
     "lastName": "Chargebee",
+    "payTo": Object {
+      "accountNumber": "123",
+      "bsbNumber": "123",
+    },
+  },
+  "paymentMethodType": "pay_to",
+}
+`;
+
+exports[`Gocardless PayTo Handler _transform() 4`] = `
+Object {
+  "paymentMethodDetails": Object {
+    "billingAddress": Object {
+      "addressLine1": "123",
+      "city": "Sydney",
+      "countryCode": "AU",
+      "zip": "2000",
+    },
+    "companyName": undefined,
+    "email": "siva@chargebee.com",
+    "firstName": "Chargebee",
+    "lastName": "Customer",
+    "payTo": Object {
+      "payId": "user@example.com",
+    },
   },
   "paymentMethodType": "pay_to",
 }

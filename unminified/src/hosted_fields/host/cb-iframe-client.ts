@@ -75,6 +75,7 @@ class CbIframeClient implements CbIframeClientInterface {
           site: cbInstance.site,
           publishableKey: cbInstance.publishableKey,
           businessEntityId: Helpers.getBusinessEntityId(),
+          brandId: Helpers.getBrandId(),
           options: cbInstance.options,
           window_url: window.location.href,
         };

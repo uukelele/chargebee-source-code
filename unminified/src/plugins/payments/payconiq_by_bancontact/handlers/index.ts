@@ -11,10 +11,7 @@ import {
 import {PaymentData, RenderOptions} from '../types';
 import {CbError} from '@/hosted_fields/common/errors';
 import Helpers from '@/helpers';
-import {
-  renderQrPaymentModal,
-  QrPaymentModalDefaults,
-} from '@/internal/auth-redirect/qr-payment-modal';
+import {renderQrPaymentModal, QrPaymentModalDefaults} from '@/internal/auth-redirect/qr-payment-modal';
 
 export default class PayconiqByBancontactHandler extends PaymentIntentHandler implements PayconiqByBancontactPayment {
   public paymentData: PaymentData;

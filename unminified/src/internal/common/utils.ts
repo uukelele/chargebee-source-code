@@ -7,7 +7,7 @@ import {
   ConfirmApiInputPayload,
 } from '@/internal/payment-intent/types';
 
-import {BUSINESS_ENTITY_HEADER} from '@/plugins/core/api/interface';
+import {BUSINESS_ENTITY_HEADER, BRAND_ID_HEADER} from '@/plugins/core/api/interface';
 import Errors, {CbError} from '@/hosted_fields/common/errors';
 import {StateFullPromise} from '@/hosted_fields/common/types';
 import Helpers from '@/helpers';
@@ -165,6 +165,7 @@ export function onlyString(val) {
 export function getPaymentIntentApiHeaders(data: ConfirmApiPayload) {
   const headers = {Authorization: `Bearer ${data.paymentIntentId}`};
   if (data.businessEntityId) headers[BUSINESS_ENTITY_HEADER] = data.businessEntityId;
+  if (data.brandId) headers[BRAND_ID_HEADER] = data.brandId;
   return headers;
 }
 
@@ -174,6 +175,7 @@ export function constructPaymentIntentApiPayload(
 ): ConfirmApiPayload {
   const paymentIntentId = paymentIntent.id;
   const businessEntityId = paymentIntent.business_entity_id;
+  const brandId = paymentIntent.brand_id;
   const referenceId = paymentIntent.reference_id;
   const paymentMethodType = paymentIntent.payment_method_type;
   const gatewayAccountId = paymentIntent.gateway_account_id;
@@ -196,6 +198,7 @@ export function constructPaymentIntentApiPayload(
   };
   if (referenceId) output.referenceId = referenceId;
   if (businessEntityId) output.businessEntityId = businessEntityId;
+  if (brandId) output.brandId = brandId;
   if (gatewayAccountId) output.gatewayAccountId = gatewayAccountId;
   if (paymentMethodType) output.paymentMethodType = paymentMethodType;
 

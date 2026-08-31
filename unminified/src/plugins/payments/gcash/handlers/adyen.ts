@@ -41,5 +41,6 @@ export default class AdyenGcashHandler extends GcashHandler {
         this.setPaymentIntent(data.payment_intent);
       }
       return data;
-    });  }
+    });
+  }
 }

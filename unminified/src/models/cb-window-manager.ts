@@ -53,6 +53,7 @@ export default class CbWindowManager implements Manager {
       // TODO refactor this after checking the hot fix
       let referrer = Helpers.getReferrer();
       let businessEntityId = Helpers.getBusinessEntityId();
+      let brandId = Helpers.getBrandId();
 
       try {
         let srcUrl: any;
@@ -61,13 +62,18 @@ export default class CbWindowManager implements Manager {
         srcUrl.searchParams.append('hp_referrer', referrer);
         this.layout && srcUrl.searchParams.append('layout', this.layout);
         type == PageCategory.PORTAL_PAGE && businessEntityId && srcUrl.searchParams.append('be_id', businessEntityId);
+        type == PageCategory.PORTAL_PAGE && brandId && srcUrl.searchParams.append('brand_id', brandId);
         _url = srcUrl.href;
       } catch (err) {
         Logger.error(err);
         let separator = url.indexOf('?') !== -1 ? (url[url.length - 1] == '&' ? '' : '&') : '?';
         let srcUrl: string = `${url}${separator}hp_opener=${
           this.redirectMode ? 'chargebee_redirect' : 'chargebee'
-        }&hp_referrer=${referrer}${type == PageCategory.PORTAL_PAGE ? Helpers.getBeIdQueryParamForPortal() : ''}`;
+        }&hp_referrer=${referrer}${
+          type == PageCategory.PORTAL_PAGE
+            ? Helpers.getBeIdQueryParamForPortal() + Helpers.getBrIdQueryParamForPortal()
+            : ''
+        }`;
         if (typeof this.layout !== 'undefined') {
           srcUrl += `&layout=${this.layout}`;
         }
@@ -116,6 +122,7 @@ export default class CbWindowManager implements Manager {
     // Check if the window is still opened
     let referrer = Helpers.getReferrer();
     let businessEntityId = Helpers.getBusinessEntityId();
+    let brandId = Helpers.getBrandId();
     const fallbackTarget = isMobileSafari() ? '_blank' : 'cb-pages';
     if (this.windowOpened || counter == 0) {
       try {
@@ -126,6 +133,7 @@ export default class CbWindowManager implements Manager {
         type == PageCategory.PORTAL_PAGE &&
           businessEntityId &&
           urlWithParam.searchParams.append('be_id', businessEntityId);
+        type == PageCategory.PORTAL_PAGE && brandId && urlWithParam.searchParams.append('brand_id', brandId);
 
         if (this.redirectMode) {
           this.window.location.href = urlWithParam.href;
@@ -142,7 +150,11 @@ export default class CbWindowManager implements Manager {
         let separator = url.indexOf('?') !== -1 ? (url[url.length - 1] == '&' ? '' : '&') : '?';
         let urlWithParam = `${url}${separator}hp_opener=${
           this.redirectMode ? 'chargebee_redirect' : 'chargebee'
-        }&hp_referrer=${referrer}${type == PageCategory.PORTAL_PAGE ? Helpers.getBeIdQueryParamForPortal() : ''}`;
+        }&hp_referrer=${referrer}${
+          type == PageCategory.PORTAL_PAGE
+            ? Helpers.getBeIdQueryParamForPortal() + Helpers.getBrIdQueryParamForPortal()
+            : ''
+        }`;
         if (this.redirectMode) {
           this.window.location.href = urlWithParam;
         } else {

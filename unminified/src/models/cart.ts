@@ -14,6 +14,7 @@ export default class Cart {
   customer: Customer = {billing_address: {}};
   affiliateToken: string;
   businessEntityId: string;
+  brandId: string;
 
   callbacks: CbCallbacksInterface = {};
 
@@ -92,6 +93,10 @@ export default class Cart {
     if (typeof businessEntityId === 'string') this.businessEntityId = businessEntityId;
   }
 
+  setBrand(brandId: string) {
+    if (typeof brandId === 'string') this.brandId = brandId;
+  }
+
   public generateUrl(domain?: string, useBaseDomain: boolean = true): string {
     let params: any = {};
     let product = this.products[0];
@@ -113,6 +118,8 @@ export default class Cart {
 
       if (this.businessEntityId && typeof this.businessEntityId === 'string')
         params['business_entity_id'] = this.businessEntityId;
+
+      if (this.brandId && typeof this.brandId === 'string') params['brand_id'] = this.brandId;
     } else {
       if (product.planId != undefined) {
         params['planId'] = product.planId;

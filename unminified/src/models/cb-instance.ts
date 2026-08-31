@@ -57,6 +57,10 @@ import {
   RevolutPayPayment,
   SwishPayment,
   PaymePayment,
+  DanaPayment,
+  TouchNGoPayment,
+  TamaraPayment,
+  QpayPayment,
   ComponentTypeRaw,
   PaypayPayment,
   SouthKoreanCardsPayment,
@@ -135,6 +139,10 @@ import {PersonalizedOffers} from '@/interfaces/cb-personalized-offers';
 import PayconiqByBancontactPaymentLoaderInterface from '@/plugins/payments/payconiq_by_bancontact/loader/interface';
 import SwishPaymentLoaderInterface from '@/plugins/payments/swish/loader/interface';
 import PaymePaymentLoaderInterface from '@/plugins/payments/payme/loader/interface';
+import DanaPaymentLoaderInterface from '@/plugins/payments/dana/loader/interface';
+import TouchNGoPaymentLoaderInterface from '@/plugins/payments/touch_n_go/loader/interface';
+import TamaraPaymentLoaderInterface from '@/plugins/payments/tamara/loader/interface';
+import QpayPaymentLoaderInterface from '@/plugins/payments/qpay/loader/interface';
 import BizumPaymentLoaderInterface from '@/plugins/payments/bizum/loader/interface';
 import PayNowPaymentLoaderInterface from '@/plugins/payments/paynow/loader/interface';
 import PromptPayPaymentLoaderInterface from '@/plugins/payments/promptpay/loader/interface';
@@ -193,6 +201,9 @@ export default class CbInstance {
 
   /** @internal */
   businessEntityId: string;
+
+  /** @internal */
+  brandId: string;
 
   /** @internal */
   cspNonce: string;
@@ -340,6 +351,18 @@ export default class CbInstance {
   revolutPayPaymentLoader: RevolutPayPaymentLoaderInterface;
 
   /** @internal */
+  danaPaymentLoader: DanaPaymentLoaderInterface;
+
+  /** @internal */
+  touchNGoPaymentLoader: TouchNGoPaymentLoaderInterface;
+
+  /** @internal */
+  tamaraPaymentLoader: TamaraPaymentLoaderInterface;
+
+  /** @internal */
+  qpayPaymentLoader: QpayPaymentLoaderInterface;
+
+  /** @internal */
   PaypayPaymentLoader: PaypayPaymentLoaderInterface;
 
   /** @internal */
@@ -387,6 +410,7 @@ export default class CbInstance {
     this.authHandler = new AuthHandler(this);
     this.cart = new Cart();
     this.cart.setBusinessEntity(options.businessEntityId);
+    this.cart.setBrand(options.brandId);
     options.portalSession && this.setPortalSession(options.portalSession);
 
     // Initialize communication manager (master)
@@ -402,6 +426,12 @@ export default class CbInstance {
   setBusinessEntity(businessEntityId: string): Promise<ResponseInnerMessage> {
     return sendToMasterIframe('setBusinessEntity', {
       businessEntityId,
+    });
+  }
+
+  setBrand(brandId: string): Promise<ResponseInnerMessage> {
+    return sendToMasterIframe('setBrand', {
+      brandId,
     });
   }
 
@@ -507,6 +537,14 @@ export default class CbInstance {
         return this.loadPayme();
       case 'swish':
         return this.loadSwishPay();
+      case 'dana':
+        return this.loadDana();
+      case 'touch_n_go':
+        return this.loadTouchNGo();
+      case 'tamara':
+        return this.loadTamara();
+      case 'qpay':
+        return this.loadQpay();
       case 'bizum':
         return this.loadBizum();
       case 'paynow':
@@ -932,6 +970,38 @@ export default class CbInstance {
   }
 
   /** @internal */
+  loadDana(): Promise<DanaPayment> {
+    if (this.danaPaymentLoader) return Promise.resolve(this.danaPaymentLoader.init());
+    return import(/* webpackChunkName: "dana-loader" */ '@/plugins/payments/dana/loader')
+      .then(() => this.danaPaymentLoader.loaderPromise)
+      .then(() => this.danaPaymentLoader.init());
+  }
+
+  /** @internal */
+  loadTouchNGo(): Promise<TouchNGoPayment> {
+    if (this.touchNGoPaymentLoader) return Promise.resolve(this.touchNGoPaymentLoader.init());
+    return import(/* webpackChunkName: "touch-n-go-loader" */ '@/plugins/payments/touch_n_go/loader')
+      .then(() => this.touchNGoPaymentLoader.loaderPromise)
+      .then(() => this.touchNGoPaymentLoader.init());
+  }
+
+  /** @internal */
+  loadTamara(): Promise<TamaraPayment> {
+    if (this.tamaraPaymentLoader) return Promise.resolve(this.tamaraPaymentLoader.init());
+    return import(/* webpackChunkName: "tamara-loader" */ '@/plugins/payments/tamara/loader')
+      .then(() => this.tamaraPaymentLoader.loaderPromise)
+      .then(() => this.tamaraPaymentLoader.init());
+  }
+
+  /** @internal */
+  loadQpay(): Promise<QpayPayment> {
+    if (this.qpayPaymentLoader) return Promise.resolve(this.qpayPaymentLoader.init());
+    return import(/* webpackChunkName: "qpay-loader" */ '@/plugins/payments/qpay/loader')
+      .then(() => this.qpayPaymentLoader.loaderPromise)
+      .then(() => this.qpayPaymentLoader.init());
+  }
+
+  /** @internal */
   loadpaypay(): Promise<PaypayPayment> {
     if (this.PaypayPaymentLoader) return Promise.resolve(this.PaypayPaymentLoader.init());
     return import(/* webpackChunkName: "paypay-loader" */ '@/plugins/payments/paypay/loader')
@@ -1224,7 +1294,11 @@ export default class CbInstance {
       case 'swish':
       case 'payme':
       case 'alipay_hk':
+      case 'dana':
       case 'gcash':
+      case 'touch_n_go':
+      case 'tamara':
+      case 'qpay':
       case 'bizum':
       case 'paynow':
       case 'promptpay':

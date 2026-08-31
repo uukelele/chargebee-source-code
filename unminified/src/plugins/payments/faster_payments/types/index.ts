@@ -10,8 +10,15 @@ export interface PaymentInfo extends BasePaymentInfo {
     billingAddress?: Address;
   };
   bankAccount?: BankAccount;
+  payTo?: PayToDetails;
   useGateway?: boolean;
 }
+
+export type PayToDetails = {
+  payId?: string;
+  accountNumber?: string;
+  bsbNumber?: string;
+};
 
 export type BankAccount = {
   iban?: string;
@@ -25,6 +32,7 @@ export type BankAccount = {
   swedishIdentityNumber?: string;
   nonce?: string;
   institutionId?: string;
+  payId?: string;
 };
 
 export enum BankAccountType {

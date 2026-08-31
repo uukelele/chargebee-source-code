@@ -23,8 +23,7 @@ export default class PixHandler extends PaymentIntentHandler implements PixPayme
     return Promise.resolve({
       paymentMethodType: PaymentMethodType.PIX,
       paymentType: this.paymentInfo.additionalData && this.paymentInfo.additionalData.paymentType,
-      allowPaylessPaymentMethodAddition:
-        this.paymentInfo.additionalData && this.paymentInfo.additionalData.allowPaylessPaymentMethodAddition,
+      allowPaylessPaymentMethodAddition: additionalData && additionalData.allowPaylessPaymentMethodAddition,
       paymentMethodDetails: {
         firstName: (billingAddress && billingAddress.firstName) || (customer && customer.firstName),
         lastName: (billingAddress && billingAddress.lastName) || (customer && customer.lastName),
@@ -75,6 +74,8 @@ export default class PixHandler extends PaymentIntentHandler implements PixPayme
             startDate: subscription.startDate,
             endDate: subscription.endDate,
             frequencyPeriod: subscription.frequencyPeriod,
+            handle: subscription.handle,
+            mandateFloorAmount: subscription.mandateFloorAmount,
           }
         : undefined,
       additionalInfo: {
@@ -113,9 +114,9 @@ export default class PixHandler extends PaymentIntentHandler implements PixPayme
       return Promise.reject(new CbError('Required document details.'));
     }
 
-    // Validate subscription frequencyUnit only if subscription is provided (recurring payments)
+    // Validate subscription frequencyUnit for recurring checkout; portal vaulting may send handle only.
     const subscription = additionalData && additionalData.subscription;
-    if (subscription) {
+    if (subscription && !subscription.handle) {
       const frequencyUnit = subscription.frequencyUnit;
       if (!frequencyUnit) {
         return Promise.reject(new CbError('Required subscription frequency unit.'));
@@ -125,7 +126,7 @@ export default class PixHandler extends PaymentIntentHandler implements PixPayme
     return Promise.resolve(true);
   }
 
-  private redirectToProvider(paymentAttempt: PaymentAttempt): Promise<any> {
+  protected redirectToProvider(paymentAttempt: PaymentAttempt): Promise<any> {
     const rawData = paymentAttempt.action_payload;
 
     if (!rawData || !rawData.redirect_url) {

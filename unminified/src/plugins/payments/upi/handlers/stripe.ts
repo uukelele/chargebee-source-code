@@ -138,9 +138,7 @@ export default class StripeUpiHandler extends StripeRealTimeApmHandler {
     // These strings are only returned once the intent is terminally good; confirmAfterWebhookRace
     // re-verifies via a fresh retrieve and only succeeds on an AUTHORIZED attempt.
     return (
-      msg === 'Payment intent is authorized' ||
-      msg === 'Payment intent is consumed' ||
-      msg === 'Invalid Attempt status'
+      msg === 'Payment intent is authorized' || msg === 'Payment intent is consumed' || msg === 'Invalid Attempt status'
     );
   }
 

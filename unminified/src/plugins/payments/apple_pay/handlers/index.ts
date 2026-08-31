@@ -59,6 +59,7 @@ export default class ApplepayHandler extends PaymentIntentHandler implements App
         gateway === Gateway.CHECKOUT_COM ||
         gateway === Gateway.BRAINTREE ||
         gateway === Gateway.ADYEN ||
+        gateway === Gateway.CHARGEBEE_PAYMENTS ||
         gateway === Gateway.MOLLIE ||
         gateway === Gateway.VANTIV ||
         gateway === Gateway.WORLDPAY ||
@@ -110,7 +111,10 @@ export default class ApplepayHandler extends PaymentIntentHandler implements App
     if (merchantIdentifier) {
       return window['ApplePaySession'].applePayCapabilities(merchantIdentifier);
     }
-    if (this.getPaymentIntent().gateway == Gateway.ADYEN) {
+    if (
+      this.getPaymentIntent().gateway == Gateway.ADYEN ||
+      this.getPaymentIntent().gateway == Gateway.CHARGEBEE_PAYMENTS
+    ) {
       this.gatewayHandler = await this.getGatewayHandler(this.getPaymentIntent());
       return this.gatewayHandler.applePayCapabilities();
     } else {
@@ -292,6 +296,8 @@ export default class ApplepayHandler extends PaymentIntentHandler implements App
       case Gateway.STRIPE:
         return this.getCommonHandler(paymentIntent);
       case Gateway.ADYEN:
+        return this.getCommonHandler(paymentIntent);
+      case Gateway.CHARGEBEE_PAYMENTS:
         return this.getCommonHandler(paymentIntent);
       case Gateway.DEUTSCHE_BANK:
         return this.getCommonHandler(paymentIntent);

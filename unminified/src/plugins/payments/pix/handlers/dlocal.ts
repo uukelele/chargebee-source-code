@@ -1,4 +1,7 @@
 import PixHandler from '@/plugins/payments/pix/handlers/index';
+import {PaymentAttempt, PaymentAttemptStatus} from '@/internal/payment-intent/types';
+import {CbError} from '@/hosted_fields/common/errors';
+import Helpers from '@/helpers';
 
 /**
  * DLocal gateway-specific PIX handler
@@ -11,5 +14,37 @@ export default class DLocalPixHandler extends PixHandler {
     this.windowManager = handler.windowManager;
     this.isRedirectMode = handler.isRedirectMode;
     this.isIframeMode = handler.isIframeMode;
+  }
+
+  protected handlePaymentAttempt(paymentAttempt: PaymentAttempt): Promise<any> {
+    switch (paymentAttempt.status) {
+      case PaymentAttemptStatus.REQUIRES_REDIRECTION:
+      case PaymentAttemptStatus.REQUIRES_CHALLENGE: {
+        this.markPaymentAttemptsAsAuthorized();
+        return this.redirectToProvider(paymentAttempt).then((data) => {
+          this.setPaymentIntent(data.payment_intent);
+          return this.handlePaymentAttempt(this.getPaymentAttempt());
+        });
+      }
+      case PaymentAttemptStatus.AUTHORIZED: {
+        this.callbackHandler.triggerSuccessCallback();
+        return Promise.resolve(this.getPaymentIntent());
+      }
+      case PaymentAttemptStatus.REFUSED: {
+        const error = this.callbackHandler.intentError();
+        this.callbackHandler.triggerErrorCallback(error);
+        return Promise.reject(error);
+      }
+      default:
+        return Promise.reject(new CbError('UNHANDLED_PAYMENT_STATUS'));
+    }
+  }
+
+  private markPaymentAttemptsAsAuthorized(): void {
+    if (Helpers.isTestSite(Helpers.getCbInstance().site)) {
+      setTimeout(() => {
+        this.confirmPayment();
+      }, 5000);
+    }
   }
 }

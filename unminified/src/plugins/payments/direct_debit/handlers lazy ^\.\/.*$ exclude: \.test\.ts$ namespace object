@@ -4,307 +4,317 @@ var map = {
 		9
 	],
 	"./AUD/ezidebit": [
-		578,
+		592,
 		0,
-		94
+		96
 	],
 	"./AUD/ezidebit.ts": [
-		578,
+		592,
 		0,
-		94
+		96
 	],
 	"./AUD/gocardless": [
-		579,
+		593,
 		0,
-		95
+		97
 	],
 	"./AUD/gocardless.ts": [
-		579,
+		593,
 		0,
-		95
+		97
 	],
 	"./AUD/stripe": [
-		580,
+		594,
 		0,
-		96
+		98
 	],
 	"./AUD/stripe.ts": [
-		580,
+		594,
 		0,
-		96
+		98
 	],
 	"./CAD/gocardless": [
-		581,
+		595,
 		0,
-		97
+		99
 	],
 	"./CAD/gocardless.ts": [
-		581,
+		595,
 		0,
-		97
+		99
 	],
 	"./EUR": [
-		346,
+		350,
 		7
 	],
 	"./EUR/": [
-		346,
+		350,
 		7
 	],
 	"./EUR/adyen": [
-		582,
-		83
+		596,
+		85
 	],
 	"./EUR/adyen.ts": [
-		582,
-		83
+		596,
+		85
 	],
 	"./EUR/bluesnap": [
-		583,
+		597,
 		0,
-		98
+		100
 	],
 	"./EUR/bluesnap.ts": [
-		583,
+		597,
 		0,
-		98
+		100
 	],
 	"./EUR/chargebee_payments": [
-		584,
+		598,
 		0,
-		99
+		101
 	],
 	"./EUR/chargebee_payments.ts": [
-		584,
+		598,
 		0,
-		99
+		101
 	],
 	"./EUR/checkout_com": [
-		585,
+		599,
 		0,
-		100
+		102
 	],
 	"./EUR/checkout_com.ts": [
-		585,
+		599,
 		0,
-		100
+		102
 	],
 	"./EUR/deutsche_bank": [
-		586,
+		600,
 		0,
-		101
+		103
 	],
 	"./EUR/deutsche_bank.ts": [
-		586,
+		600,
 		0,
-		101
+		103
 	],
 	"./EUR/gocardless": [
-		587,
+		601,
 		0,
-		102
+		104
 	],
 	"./EUR/gocardless.ts": [
-		587,
+		601,
 		0,
-		102
+		104
 	],
 	"./EUR/index": [
-		346,
+		350,
 		7
 	],
 	"./EUR/index.ts": [
-		346,
+		350,
 		7
 	],
 	"./EUR/mollie": [
-		588,
-		84
+		602,
+		86
 	],
 	"./EUR/mollie.ts": [
-		588,
-		84
+		602,
+		86
 	],
 	"./EUR/stripe": [
-		589,
-		85
+		603,
+		87
 	],
 	"./EUR/stripe.ts": [
-		589,
-		85
+		603,
+		87
 	],
 	"./GBP/adyen": [
-		590,
+		604,
 		0,
-		103
+		105
 	],
 	"./GBP/adyen.ts": [
-		590,
+		604,
 		0,
-		103
+		105
 	],
 	"./GBP/chargebee_payments": [
-		591,
+		605,
 		0,
-		104
+		106
 	],
 	"./GBP/chargebee_payments.ts": [
-		591,
+		605,
 		0,
-		104
+		106
 	],
 	"./GBP/gocardless": [
-		592,
+		606,
 		0,
-		105
+		107
 	],
 	"./GBP/gocardless.ts": [
-		592,
+		606,
 		0,
-		105
+		107
 	],
 	"./GBP/mollie": [
-		593,
+		607,
 		0,
-		106
+		108
 	],
 	"./GBP/mollie.ts": [
-		593,
+		607,
 		0,
-		106
+		108
 	],
 	"./GBP/stripe": [
-		594,
+		608,
 		0,
-		107
+		109
 	],
 	"./GBP/stripe.ts": [
-		594,
+		608,
 		0,
-		107
+		109
 	],
 	"./NZD/ezidebit": [
-		595,
+		609,
 		0,
-		108
+		110
 	],
 	"./NZD/ezidebit.ts": [
-		595,
+		609,
 		0,
-		108
+		110
 	],
 	"./NZD/gocardless": [
-		596,
+		610,
 		0,
-		109
+		111
 	],
 	"./NZD/gocardless.ts": [
-		596,
+		610,
 		0,
-		109
+		111
 	],
 	"./SEK/gocardless": [
-		597,
+		611,
 		0,
-		110
+		112
 	],
 	"./SEK/gocardless.ts": [
-		597,
+		611,
 		0,
-		110
+		112
 	],
 	"./USD": [
-		336,
+		337,
 		8
 	],
 	"./USD/": [
-		336,
+		337,
 		8
 	],
 	"./USD/adyen": [
-		598,
-		86
+		612,
+		88
 	],
 	"./USD/adyen.ts": [
-		598,
-		86
+		612,
+		88
 	],
 	"./USD/authorize_net": [
-		599,
-		87
+		613,
+		89
 	],
 	"./USD/authorize_net.ts": [
-		599,
-		87
+		613,
+		89
 	],
 	"./USD/bluesnap": [
-		600,
+		614,
 		0,
-		111
+		113
 	],
 	"./USD/bluesnap.ts": [
-		600,
+		614,
 		0,
-		111
+		113
 	],
 	"./USD/braintree": [
-		601,
+		615,
 		0,
-		48
+		49
 	],
 	"./USD/braintree.ts": [
-		601,
+		615,
 		0,
-		48
+		49
 	],
 	"./USD/chargebee_payments": [
-		602,
-		88
+		616,
+		90
 	],
 	"./USD/chargebee_payments.ts": [
-		602,
-		88
+		616,
+		90
 	],
 	"./USD/checkout_com": [
-		603,
-		46
+		617,
+		47
 	],
 	"./USD/checkout_com.ts": [
-		603,
-		46
+		617,
+		47
 	],
 	"./USD/cybersource": [
-		604,
-		89
+		618,
+		91
 	],
 	"./USD/cybersource.ts": [
-		604,
-		89
+		618,
+		91
 	],
 	"./USD/gocardless": [
-		605,
+		619,
 		0,
-		112
+		114
 	],
 	"./USD/gocardless.ts": [
-		605,
+		619,
 		0,
-		112
+		114
 	],
 	"./USD/index": [
-		336,
+		337,
 		8
 	],
 	"./USD/index.ts": [
-		336,
+		337,
 		8
 	],
+	"./USD/nmi": [
+		620,
+		0,
+		115
+	],
+	"./USD/nmi.ts": [
+		620,
+		0,
+		115
+	],
 	"./USD/stripe": [
-		606,
+		621,
 		40
 	],
 	"./USD/stripe.ts": [
-		606,
+		621,
 		40
 	],
 	"./common": [
@@ -320,12 +330,12 @@ var map = {
 	"./common/gocardless": [
 		339,
 		0,
-		127
+		132
 	],
 	"./common/gocardless.ts": [
 		339,
 		0,
-		127
+		132
 	],
 	"./common/index": [
 		327,
@@ -338,14 +348,14 @@ var map = {
 		6
 	],
 	"./common/mollie": [
-		452,
+		457,
 		0,
-		128
+		133
 	],
 	"./common/mollie.ts": [
-		452,
+		457,
 		0,
-		128
+		133
 	],
 	"./index": [
 		310,
@@ -373,5 +383,5 @@ function webpackAsyncContext(req) {
 webpackAsyncContext.keys = function webpackAsyncContextKeys() {
 	return Object.keys(map);
 };
-webpackAsyncContext.id = 827;
+webpackAsyncContext.id = 871;
 module.exports = webpackAsyncContext;
