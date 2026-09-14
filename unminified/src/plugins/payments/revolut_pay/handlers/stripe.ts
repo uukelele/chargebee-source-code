@@ -1,4 +1,5 @@
 import {PaymentMethodType} from '@/internal/payment-intent/types';
+import {buildBillingPaymentMethodDetails} from '@/internal/common/utils';
 import RevolutPayHandler from './index';
 import Utils from '@/utils/payments/utils';
 
@@ -11,9 +12,12 @@ export default class StripeRevolutPayHandler extends RevolutPayHandler {
   }
 
   initPayment() {
+    const paymentMethodDetails = buildBillingPaymentMethodDetails(this.paymentInfo);
+
     return Promise.resolve({
       paymentMethodType: PaymentMethodType.REVOLUT_PAY,
       paymentIntentId: this.getPaymentIntent().id,
+      ...(paymentMethodDetails ? {paymentMethodDetails} : {}),
     });
   }
 }

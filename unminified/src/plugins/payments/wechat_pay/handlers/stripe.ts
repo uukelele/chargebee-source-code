@@ -1,4 +1,5 @@
 import {PaymentMethodType} from '@/internal/payment-intent/types';
+import {buildBillingPaymentMethodDetails} from '@/internal/common/utils';
 import WechatPayHandler from './index';
 import {StripeQrPollingMixin} from '@/plugins/payments/_stripe_qr_poll/handler';
 
@@ -13,8 +14,11 @@ export default class StripeWechatPayHandler extends StripeQrPollingMixin(WechatP
   }
 
   initPayment() {
+    const paymentMethodDetails = buildBillingPaymentMethodDetails(this.paymentInfo);
+
     return Promise.resolve({
       paymentMethodType: PaymentMethodType.WECHAT_PAY,
+      ...(paymentMethodDetails ? {paymentMethodDetails} : {}),
     });
   }
 

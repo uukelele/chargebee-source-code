@@ -1,15 +1,16 @@
 import {PaymentRedirectTimeouts} from '@/constants/enums';
-import {CashAppPayPayment} from '@/hosted_fields/common/base-types';
+import {CashAppPayPayment, PaymentOptions} from '@/hosted_fields/common/base-types';
 import {CbError} from '@/hosted_fields/common/errors';
 import PaymentIntentHandler from '@/internal/payment-intent/handler';
 import {Callbacks, PaymentMethodType, PaymentAttempt, PaymentAttemptStatus} from '@/internal/payment-intent/types';
-import {PaymentData, RenderOptions} from '../types';
+import {PaymentData, PaymentInfo, RenderInfo} from '../types';
 import Helpers from '@/helpers';
+import {resolveRenderInfo} from '@/internal/common/utils';
 import {renderQrPaymentModal, QrPaymentModalDefaults} from '@/internal/auth-redirect/qr-payment-modal';
 
 export default class CashAppPayHandler extends PaymentIntentHandler implements CashAppPayPayment {
   public paymentData: PaymentData;
-  public renderOptions: RenderOptions;
+  public renderInfo: Partial<RenderInfo>;
   redirectTimeout: number = PaymentRedirectTimeouts.CASH_APP_PAY;
   public declare gatewayHandler: CashAppPayHandler;
 
@@ -31,11 +32,11 @@ export default class CashAppPayHandler extends PaymentIntentHandler implements C
     return this.paymentData;
   }
 
-  public setRenderOptions(options: RenderOptions) {
-    this.renderOptions = options;
+  public setRenderInfo(renderInfo?: Partial<RenderInfo>) {
+    this.renderInfo = renderInfo || {};
   }
 
-  public getRenderOptions(): RenderOptions {
+  public getRenderInfo(): RenderInfo {
     const defaults = {
       heading: 'Scan QR code with Cash App',
       instruction: QrPaymentModalDefaults.instruction,
@@ -45,7 +46,7 @@ export default class CashAppPayHandler extends PaymentIntentHandler implements C
       accentColor: QrPaymentModalDefaults.accentColor,
       buttonText: 'Pay with Cash App',
     };
-    const opts: Partial<RenderOptions> = this.renderOptions || {};
+    const opts = this.renderInfo || {};
     return {
       heading: opts.heading || defaults.heading,
       instruction: opts.instruction || defaults.instruction,
@@ -62,11 +63,14 @@ export default class CashAppPayHandler extends PaymentIntentHandler implements C
     return {};
   }
 
-  handlePayment(options: RenderOptions, callbacks?: Callbacks): Promise<any> {
+  handlePayment(options: PaymentInfo | PaymentOptions, callbacks?: Callbacks): Promise<any> {
+    const paymentInfo = ((options as PaymentOptions).paymentInfo as PaymentInfo) || (options as PaymentInfo);
+    const renderInfo = resolveRenderInfo<RenderInfo>(options, paymentInfo);
+    callbacks = (options as PaymentOptions).callbacks || callbacks;
     return this.getGatewayHandler(this.getPaymentIntent()).then((handler) => {
       this.gatewayHandler = handler as CashAppPayHandler;
-      this.gatewayHandler.setRenderOptions(options);
-      return this.gatewayHandler.initiateAuthorization({}, callbacks);
+      this.gatewayHandler.setRenderInfo(renderInfo);
+      return this.gatewayHandler.initiateAuthorization(paymentInfo, callbacks);
     });
   }
 
@@ -111,7 +115,7 @@ export default class CashAppPayHandler extends PaymentIntentHandler implements C
       qrCode: (paymentData && paymentData.qrCode) || '',
       qrAlt: 'Cash App Pay QR Code',
       mobileAppUrl: paymentData && paymentData.mobileAuthUrl,
-      renderOptions: this.getRenderOptions(),
+      renderOptions: this.getRenderInfo(),
       isMobile: Helpers.isMobileOrTablet(),
       onDismiss: () => this.abandonPendingAuthorization(),
     });

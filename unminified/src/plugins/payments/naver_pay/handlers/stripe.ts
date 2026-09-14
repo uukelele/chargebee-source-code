@@ -1,4 +1,5 @@
 import {PaymentMethodType} from '@/internal/payment-intent/types';
+import {buildBillingPaymentMethodDetails} from '@/internal/common/utils';
 import NaverPayHandler from './index';
 
 export default class StripeNaverPayHandler extends NaverPayHandler {
@@ -10,8 +11,10 @@ export default class StripeNaverPayHandler extends NaverPayHandler {
   }
 
   initPayment() {
+    const paymentMethodDetails = buildBillingPaymentMethodDetails(this.paymentInfo);
     const confirmData: any = {
       paymentMethodType: PaymentMethodType.NAVER_PAY,
+      ...(paymentMethodDetails ? {paymentMethodDetails} : {}),
     };
     return confirmData;
   }

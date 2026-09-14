@@ -13,6 +13,7 @@ import {StateFullPromise} from '@/hosted_fields/common/types';
 import Helpers from '@/helpers';
 import sanitizeError from '@/internal/common/error-sanitizer';
 import Logger from '@/utils/logger_old';
+import {isObjectEmpty} from '@/utils/utility-functions';
 
 declare global {
   interface Window {
@@ -127,6 +128,97 @@ export const sanitizeAddress = (addr: Address): Address => {
     zip: onlyString(addr.zip) || typeof addr.zip === 'number' ? addr.zip.toString() : undefined,
   });
 };
+
+/**
+ * Builds the paymentMethodDetails block that carries the billing contact and address for a
+ * redirect or QR payment method. chargebee-app maps it onto the OpenPay payment method billing
+ * address, which the gateway sends on as the billing details for the inline payment method.
+ *
+ * Returns undefined when the paymentInfo carries nothing, so callers can leave the key off the
+ * payload entirely rather than sending an empty object.
+ *
+ * The address is read from additionalData.billingAddress, falling back to
+ * additionalData.customerBillingAddress. Both are part of the documented paymentInfo contract, and
+ * a merchant calling the SDK directly may supply either; the precedence matches
+ * getCardBillingAddress. cb-checkout sends both, with billingAddress carrying the resolved
+ * contact, so the fallback only applies to direct integrations.
+ *
+ * A top-level customer block is deliberately not built here: chargebee-app would then derive
+ * customerDetails from it instead of from the stored customer record, replacing a fuller source
+ * with a sparser one.
+ */
+export const buildBillingPaymentMethodDetails = (paymentInfo: any): Record<string, unknown> | undefined => {
+  const info = paymentInfo || {};
+  const additionalData = info.additionalData || {};
+  const customer = sanitizeCustomerInfo({
+    ...(additionalData.customer || {}),
+    ...(info.customer || {}),
+  } as Customer);
+  const sanitizedBillingAddress = sanitizeAddress(additionalData.billingAddress as Address);
+  const billingAddress = isObjectEmpty(sanitizedBillingAddress)
+    ? sanitizeAddress(additionalData.customerBillingAddress as Address)
+    : sanitizedBillingAddress;
+
+  const paymentMethodDetails: Record<string, unknown> = {};
+  if (!isObjectEmpty(billingAddress)) {
+    paymentMethodDetails.billingAddress = billingAddress;
+  }
+  const email = additionalData.email || customer.email;
+  if (email) {
+    paymentMethodDetails.email = email;
+  }
+  // Stripe builds billing_details[name] from these, so they belong on paymentMethodDetails
+  // itself rather than inside the nested address.
+  const firstName = customer.firstName || billingAddress.firstName;
+  const lastName = customer.lastName || billingAddress.lastName;
+  if (firstName) {
+    paymentMethodDetails.firstName = firstName;
+  }
+  if (lastName) {
+    paymentMethodDetails.lastName = lastName;
+  }
+  const phone = customer.phone || additionalData.phone || billingAddress.phone;
+  if (phone) {
+    paymentMethodDetails.phone = phone;
+  }
+
+  return isObjectEmpty(paymentMethodDetails) ? undefined : paymentMethodDetails;
+};
+
+const QR_RENDER_INFO_KEYS = [
+  'heading',
+  'instruction',
+  'timerLabel',
+  'timerDurationSeconds',
+  'waitingMessage',
+  'accentColor',
+  'buttonText',
+];
+
+const pickRenderInfoKeys = (source: any): Record<string, unknown> => {
+  if (!source || typeof source !== 'object') return {};
+  return QR_RENDER_INFO_KEYS.reduce((picked, key) => {
+    if (source[key] !== undefined) picked[key] = source[key];
+    return picked;
+  }, {});
+};
+
+/**
+ * Resolves the QR modal copy out of every shape handlePayment has accepted.
+ *
+ * `renderInfo` is the documented contract, but integrations written against earlier builds pass
+ * the same keys flat, because the handlers used to store whatever object they were handed as
+ * their render options. Those keys therefore arrive either on the paymentInfo or on the outer
+ * PaymentOptions, and both still have to be honoured. Where a key is supplied in more than one
+ * place, `renderInfo` wins, so an integration can migrate one key at a time.
+ */
+export function resolveRenderInfo<T>(options: any, paymentInfo?: any): Partial<T> {
+  return {
+    ...pickRenderInfoKeys(options),
+    ...pickRenderInfoKeys(paymentInfo),
+    ...((paymentInfo && paymentInfo.renderInfo) || {}),
+  } as Partial<T>;
+}
 
 export const sanitizeCustomerInfo = (customer: Customer): Customer => {
   if (!customer || typeof customer != 'object' || customer.constructor !== Object) return {};

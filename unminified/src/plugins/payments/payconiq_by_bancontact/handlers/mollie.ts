@@ -1,11 +1,11 @@
-import {PaymentOptions} from '@/hosted_fields/common/base-types';
 import {CbError} from '@/hosted_fields/common/errors';
 import PayconiqByBancontactHandler from '@/plugins/payments/payconiq_by_bancontact/handlers';
+import {PaymentInfo} from '@/plugins/payments/payconiq_by_bancontact/types';
 import {
   Callbacks,
   PaymentAttempt,
   PaymentAttemptStatus,
-  PaymentInfo,
+  PaymentInfo as ThreeDSPaymentInfo,
   PaymentMethodType,
 } from '@/plugins/three_domain_secure/types';
 
@@ -23,8 +23,8 @@ export default class MolliePayconiqByBancontactHandler extends PayconiqByBancont
     });
   }
 
-  handlePayment(options: PaymentOptions, callbacks?: Callbacks): Promise<any> {
-    return this.initiateAuthorization(options.paymentInfo as PaymentInfo, options.callbacks as Callbacks);
+  handlePayment(paymentInfo: PaymentInfo, callbacks?: Callbacks): Promise<any> {
+    return this.initiateAuthorization(paymentInfo as ThreeDSPaymentInfo, callbacks);
   }
 
   private redirectToGateway(paymentAttempt: PaymentAttempt): Promise<any> {

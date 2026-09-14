@@ -1,6 +1,6 @@
 import {PaymentMethodType} from '@/internal/payment-intent/types';
+import {buildBillingPaymentMethodDetails} from '@/internal/common/utils';
 import KakaoPayHandler from './index';
-import Utils from '@/utils/payments/utils';
 import {CbError} from '@/hosted_fields/common/errors';
 
 export default class StripeKakaoPayHandler extends KakaoPayHandler {
@@ -12,14 +12,17 @@ export default class StripeKakaoPayHandler extends KakaoPayHandler {
   }
 
   initPayment() {
+    const paymentMethodDetails = buildBillingPaymentMethodDetails(this.paymentInfo);
+    if (!paymentMethodDetails || !paymentMethodDetails.email) {
+      throw new CbError({
+        name: 'email_required',
+        message: 'An email address is required to pay with Kakao Pay.',
+      });
+    }
+
     const confirmData: any = {
       paymentMethodType: PaymentMethodType.KAKAO_PAY,
-      paymentMethodDetails: {
-        email:
-          (this.paymentInfo.customer && this.paymentInfo.customer.email) ||
-          (this.paymentInfo.additionalData && this.paymentInfo.additionalData.email) ||
-          null,
-      },
+      paymentMethodDetails,
     };
     return confirmData;
   }

@@ -11,7 +11,6 @@ import UpiHandler from '@/plugins/payments/upi/handlers';
 import {getRazorPay} from '@/utils/payments/razorpay';
 import {PaymentInfo} from '@/plugins/payments/upi/types';
 import {PaymentOptions} from '@/hosted_fields/common/base-types';
-import {PaymentData, RenderOptions} from '../../payconiq_by_bancontact/types';
 import Helpers from '@/helpers';
 import {PaymentRedirectTimeouts} from '@/constants/enums';
 import EnvConstants from '@/constants/environment';
@@ -23,11 +22,12 @@ import {jsonify} from '@/utils/utility-functions';
 import {Master as M} from '@/hosted_fields/common/enums';
 import Ids from '@/constants/ids';
 import * as QRCode from 'qrcode';
+import {renderQrPaymentModal, QrPaymentModalDefaults} from '@/internal/auth-redirect/qr-payment-modal';
+
+const UpiQrFrameMinHeight = 540;
 
 export default class RazorpayUpiHandler extends UpiHandler {
   private razorpay: any;
-  public paymentData: PaymentData;
-  public renderOptions: RenderOptions;
   redirectTimeout: number = PaymentRedirectTimeouts.UPI;
   selectedApp: string | null = null;
   browserInfo: DetectResult = detect();
@@ -263,100 +263,32 @@ export default class RazorpayUpiHandler extends UpiHandler {
       return;
     }
 
-    const iframe = this.createIframe(this.getPaymentIntent().gateway);
-    this.openIframe();
-
-    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
     const timerDurationSeconds = this.getQrExpirySeconds(expiresOn);
-
-    const style = iframeDoc.createElement('style');
-    style.textContent = `
-      * {
-        box-sizing: border-box;
-      }
-      body {
-        margin: 0;
-        padding: 24px 16px;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        background: #f5f5f5;
-        min-height: 100vh;
-        display: flex;
-        align-items: flex-start;
-        justify-content: center;
-      }
-      .container {
-        background: white;
-        border-radius: 12px;
-        padding: 24px 20px;
-        max-width: 360px;
-        width: 100%;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 16px;
-      }
-      .heading {
-        font-size: 18px;
-        font-weight: 600;
-        color: #1f2937;
-        text-align: center;
-      }
-      .qr-image {
-        width: 240px;
-        height: 240px;
-        object-fit: contain;
-      }
-      .timer {
-        font-size: 14px;
-        color: #6b7280;
-        text-align: center;
-      }
-    `;
-    iframeDoc.head.appendChild(style);
-
-    const container = iframeDoc.createElement('div');
-    container.className = 'container';
-
-    const heading = iframeDoc.createElement('div');
-    heading.className = 'heading';
-    heading.textContent = 'Scan QR code with any UPI app';
-    container.appendChild(heading);
-
-    const qrImage = iframeDoc.createElement('img');
-    qrImage.className = 'qr-image';
-    qrImage.src = qrImageUrl;
-    qrImage.alt = 'UPI QR Code';
-    container.appendChild(qrImage);
-
-    const timer = iframeDoc.createElement('div');
-    timer.className = 'timer';
-    timer.innerHTML = `This QR code is valid for <span id="timer"></span>`;
-    container.appendChild(timer);
-
-    const script = iframeDoc.createElement('script');
-    script.textContent = `
-      (function() {
-        var duration = ${timerDurationSeconds};
-        var display = document.getElementById('timer');
-        if (!display) return;
-        var timer = duration;
-        var interval = setInterval(function () {
-          var minutes = parseInt(timer / 60, 10);
-          var seconds = parseInt(timer % 60, 10);
-          minutes = minutes < 10 ? '0' + minutes : minutes;
-          seconds = seconds < 10 ? '0' + seconds : seconds;
-          display.textContent = minutes + ':' + seconds;
-          if (--timer < 0) {
-            clearInterval(interval);
-            display.textContent = '00:00';
-          }
-        }, 1000);
-      })();
-    `;
-    iframeDoc.body.appendChild(container);
-    iframeDoc.body.appendChild(script);
-    this.hideIframeLoader();
+    this.lightbox = renderQrPaymentModal({
+      modalId: 'razorpay-upi',
+      qrCode: qrImageUrl,
+      qrAlt: 'UPI QR Code',
+      mobileAppUrl: qrUrl,
+      renderOptions: {
+        heading: 'Scan QR and Pay',
+        instruction:
+          'Scan the QR from your mobile using any UPI app such as PhonePe, Google Pay, Paytm, CRED, Amazon Pay, BHIM etc.',
+        timerLabel: 'Approve payment within: {time}',
+        timerDurationSeconds,
+        waitingMessage: 'Please wait while we confirm your transaction status. Please do not close this page',
+        accentColor: QrPaymentModalDefaults.accentColor,
+        buttonText: 'Pay with any UPI App',
+      },
+      isMobile: Helpers.isMobileOrTablet(),
+      // UPI copy wraps to more lines than the other QR methods; without a floor the
+      // fitted frame clips the closing line of the waiting message.
+      frameFit: {minHeight: UpiQrFrameMinHeight},
+      onDismiss: () => {
+        this.isIframeOpen = false;
+        this.abandonPendingAuthorization();
+      },
+    });
+    this.isIframeOpen = true;
   }
 
   private getQrDirectPaymentData(): any {

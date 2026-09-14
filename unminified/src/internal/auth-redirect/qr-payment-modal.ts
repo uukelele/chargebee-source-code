@@ -37,6 +37,11 @@ export type QrPaymentModalOptions = {
    * Click posts dismiss `{source, action}` to the parent window.
    */
   showCloseButton?: boolean;
+  /**
+   * Bounds for the content-height fit. Pass `minHeight` when the copy is long
+   * enough that a short measurement would clip the last line (e.g. UPI).
+   */
+  frameFit?: FitQrLightboxFrameOptions;
 };
 
 /** postMessage payload when the in-card QR × is clicked. */
@@ -89,7 +94,7 @@ export class QrPaymentModal extends LightBox {
         doc.write(buildQrPaymentModalHtml(options));
         doc.close();
       }
-      fitQrLightboxFrameToContent(iframe).then(() => {
+      fitQrLightboxFrameToContent(iframe, options.frameFit).then(() => {
         if (this.hasBeenDismissed()) {
           return;
         }
@@ -646,6 +651,8 @@ export type QrRenderConfig = {
   isMobile: boolean;
   /** Called when the user dismisses the QR modal (e.g. to call abandonPendingAuthorization). */
   onDismiss: () => void;
+  /** Height bounds for the frame fit; use `minHeight` to stop long copy from clipping. */
+  frameFit?: FitQrLightboxFrameOptions;
 };
 
 /**
@@ -656,7 +663,7 @@ export type QrRenderConfig = {
  * Returns the modal so the caller can assign it to `this.lightbox`.
  */
 export function renderQrPaymentModal(config: QrRenderConfig): QrPaymentModal {
-  const {modalId, qrCode, qrAlt, mobileAppUrl, renderOptions, isMobile, onDismiss} = config;
+  const {modalId, qrCode, qrAlt, mobileAppUrl, renderOptions, isMobile, onDismiss, frameFit} = config;
   const headerHtml = isMobile
     ? `${buildQrOpenAppButtonHtml({url: mobileAppUrl, label: renderOptions.buttonText})}${buildQrOrDividerHtml()}`
     : '';
@@ -672,6 +679,7 @@ export function renderQrPaymentModal(config: QrRenderConfig): QrPaymentModal {
       waitingMessage: renderOptions.waitingMessage,
       accentColor: renderOptions.accentColor,
       headerHtml,
+      frameFit,
     },
     {onDismiss}
   );

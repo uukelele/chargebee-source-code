@@ -1,5 +1,5 @@
 import PayconiqByBancontactHandler from '@/plugins/payments/payconiq_by_bancontact/handlers';
-import {RenderOptions} from '../types';
+import {PaymentInfo} from '@/plugins/payments/payconiq_by_bancontact/types';
 import Callbacks from '@/callbacks';
 
 export default class AdyenPayconiqByBancontactHandler extends PayconiqByBancontactHandler {
@@ -8,8 +8,8 @@ export default class AdyenPayconiqByBancontactHandler extends PayconiqByBanconta
     this.windowManager = handler.windowManager;
   }
 
-  handlePayment(options: RenderOptions, callbacks?: Callbacks): Promise<any> {
-    this.setRenderOptions(options);
+  handlePayment(paymentInfo: PaymentInfo, callbacks?: Callbacks): Promise<any> {
+    this.setRenderInfo(paymentInfo && paymentInfo.renderInfo);
     return this.initiateAuthorization({}, callbacks);
   }
 

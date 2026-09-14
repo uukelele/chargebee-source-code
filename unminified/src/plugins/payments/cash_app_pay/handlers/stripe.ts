@@ -1,4 +1,5 @@
 import {PaymentMethodType} from '@/internal/payment-intent/types';
+import {buildBillingPaymentMethodDetails} from '@/internal/common/utils';
 import CashAppPayHandler from './index';
 import {StripeQrPollingMixin} from '@/plugins/payments/_stripe_qr_poll/handler';
 
@@ -12,9 +13,19 @@ export default class StripeCashAppPayHandler extends StripeQrPollingMixin(CashAp
     this.isIframeMode = handler.isIframeMode;
   }
 
+  /**
+   * Everything is carried on paymentMethodDetails, which chargebee-app maps onto the OpenPay
+   * payment method billing address — the highest-precedence source for
+   * payment_method_data[billing_details] at Stripe. A top-level customer block is deliberately
+   * not sent: chargebee-app would then build customerDetails from it instead of from the stored
+   * customer record, replacing a fuller source with a sparser one.
+   */
   initPayment() {
+    const paymentMethodDetails = buildBillingPaymentMethodDetails(this.paymentInfo);
+
     return Promise.resolve({
       paymentMethodType: PaymentMethodType.CASH_APP_PAY,
+      ...(paymentMethodDetails ? {paymentMethodDetails} : {}),
     });
   }
 

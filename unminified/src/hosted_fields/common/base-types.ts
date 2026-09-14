@@ -9,8 +9,7 @@ import {
 import {PaymentInfo as NetbankingPaymentInfo} from '@/plugins/payments/netbanking_emandates/types';
 import {PaymentInfo as OnlineBankingPolandPaymetInfo} from '@/plugins/payments/online_banking_poland/types';
 import {PaymentInfo as BancontactPaymentInfo} from '@/plugins/payments/bancontact/types';
-import {RenderOptions} from '@/plugins/payments/payconiq_by_bancontact/types';
-import {RenderOptions as WechatPayRenderOptions} from '@/plugins/payments/wechat_pay/types';
+import {PaymentInfo as PayconiqByBancontactPaymentInfo} from '@/plugins/payments/payconiq_by_bancontact/types';
 import {PaymentInfo as UpiPaymentInfo} from '@/plugins/payments/upi/types';
 import {PaymentInfo as DirectDebitPaymentInfo} from '@/plugins/payments/direct_debit/types';
 import {PaymentInfo as BoletoPaymentInfo} from '@/plugins/payments/boleto/types';
@@ -20,9 +19,14 @@ import {PaymentInfo as KakaoPayPaymentInfo} from '@/plugins/payments/kakao_pay/t
 import {PaymentInfo as NaverPayPaymentInfo} from '@/plugins/payments/naver_pay/types';
 import {PaymentInfo as RevolutPayPaymentInfo} from '@/plugins/payments/revolut_pay/types';
 import {PaymentInfo as AlipayPaymentInfo} from '@/plugins/payments/alipay/types';
-import {PaymentInfo as WechatPayPaymentInfo} from '@/plugins/payments/wechat_pay/types';
-import {PaymentInfo as CashAppPayPaymentInfo} from '@/plugins/payments/cash_app_pay/types';
-import {RenderOptions as CashAppPayRenderOptions} from '@/plugins/payments/cash_app_pay/types';
+import {
+  PaymentInfo as WechatPayPaymentInfo,
+  RenderInfo as WechatPayRenderInfo,
+} from '@/plugins/payments/wechat_pay/types';
+import {
+  PaymentInfo as CashAppPayPaymentInfo,
+  RenderInfo as CashAppPayRenderInfo,
+} from '@/plugins/payments/cash_app_pay/types';
 import {PaymentInfo as DanaPaymentInfo} from '@/plugins/payments/dana/types';
 import {PaymentInfo as TouchNGoPaymentInfo} from '@/plugins/payments/touch_n_go/types';
 import {PaymentInfo as TamaraPaymentInfo} from '@/plugins/payments/tamara/types';
@@ -242,7 +246,7 @@ export interface BancontactPayment {
 export interface PayconiqByBancontactPayment {
   setPaymentIntent(paymentIntent: PaymentIntent, options: Options);
   getPaymentIntent(): PaymentIntent;
-  handlePayment(options: RenderOptions | PaymentOptions, callbacks?: Callbacks): Promise<any>;
+  handlePayment(paymentInfo: PayconiqByBancontactPaymentInfo, callbacks?: Callbacks): Promise<any>;
 }
 
 export interface NetbankingPayment {
@@ -326,7 +330,10 @@ export interface WechatPayPayment {
   setPaymentIntent(paymentIntent: PaymentIntent, options: Options);
   updatePaymentIntent(paymentIntent: PaymentIntent);
   getPaymentIntent(): PaymentIntent;
-  handlePayment(options: WechatPayRenderOptions, callbacks?: Callbacks): Promise<any>;
+  handlePayment(
+    options: WechatPayPaymentInfo | PaymentOptions | Partial<WechatPayRenderInfo>,
+    callbacks?: Callbacks
+  ): Promise<any>;
 }
 
 export interface BizumPayment {
@@ -354,7 +361,10 @@ export interface CashAppPayPayment {
   setPaymentIntent(paymentIntent: PaymentIntent, options: Options);
   updatePaymentIntent(paymentIntent: PaymentIntent);
   getPaymentIntent(): PaymentIntent;
-  handlePayment(options: CashAppPayRenderOptions, callbacks?: Callbacks): Promise<any>;
+  handlePayment(
+    options: CashAppPayPaymentInfo | PaymentOptions | Partial<CashAppPayRenderInfo>,
+    callbacks?: Callbacks
+  ): Promise<any>;
 }
 
 export interface PaypayPayment {

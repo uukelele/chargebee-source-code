@@ -1,15 +1,16 @@
 import {PaymentRedirectTimeouts} from '@/constants/enums';
-import {WechatPayPayment} from '@/hosted_fields/common/base-types';
+import {WechatPayPayment, PaymentOptions} from '@/hosted_fields/common/base-types';
 import {CbError} from '@/hosted_fields/common/errors';
 import PaymentIntentHandler from '@/internal/payment-intent/handler';
 import {Callbacks, PaymentMethodType, PaymentAttempt, PaymentAttemptStatus} from '@/internal/payment-intent/types';
-import {PaymentData, RenderOptions} from '../types';
+import {PaymentData, PaymentInfo, RenderInfo} from '../types';
 import Helpers from '@/helpers';
+import {resolveRenderInfo} from '@/internal/common/utils';
 import {renderQrPaymentModal, QrPaymentModalDefaults} from '@/internal/auth-redirect/qr-payment-modal';
 
 export default class WechatPayHandler extends PaymentIntentHandler implements WechatPayPayment {
   public paymentData: PaymentData;
-  public renderOptions: RenderOptions;
+  public renderInfo: Partial<RenderInfo>;
   redirectTimeout: number = PaymentRedirectTimeouts.WECHAT_PAY;
   public declare gatewayHandler: WechatPayHandler;
 
@@ -35,11 +36,11 @@ export default class WechatPayHandler extends PaymentIntentHandler implements We
     return {};
   }
 
-  public setRenderOptions(options: RenderOptions) {
-    this.renderOptions = options;
+  public setRenderInfo(renderInfo?: Partial<RenderInfo>) {
+    this.renderInfo = renderInfo || {};
   }
 
-  public getRenderOptions(): RenderOptions {
+  public getRenderInfo(): RenderInfo {
     const defaults = {
       heading: 'Scan QR code with WeChat',
       instruction: QrPaymentModalDefaults.instruction,
@@ -49,7 +50,7 @@ export default class WechatPayHandler extends PaymentIntentHandler implements We
       accentColor: QrPaymentModalDefaults.accentColor,
       buttonText: 'Pay with WeChat App',
     };
-    const opts: Partial<RenderOptions> = this.renderOptions || {};
+    const opts = this.renderInfo || {};
     return {
       heading: opts.heading || defaults.heading,
       instruction: opts.instruction || defaults.instruction,
@@ -62,11 +63,14 @@ export default class WechatPayHandler extends PaymentIntentHandler implements We
     };
   }
 
-  handlePayment(options: RenderOptions, callbacks?: Callbacks): Promise<any> {
+  handlePayment(options: PaymentInfo | PaymentOptions, callbacks?: Callbacks): Promise<any> {
+    const paymentInfo = ((options as PaymentOptions).paymentInfo as PaymentInfo) || (options as PaymentInfo);
+    const renderInfo = resolveRenderInfo<RenderInfo>(options, paymentInfo);
+    callbacks = (options as PaymentOptions).callbacks || callbacks;
     return this.getGatewayHandler(this.getPaymentIntent()).then((handler) => {
       this.gatewayHandler = handler as WechatPayHandler;
-      this.gatewayHandler.setRenderOptions(options);
-      return this.gatewayHandler.initiateAuthorization({}, callbacks);
+      this.gatewayHandler.setRenderInfo(renderInfo);
+      return this.gatewayHandler.initiateAuthorization(paymentInfo, callbacks);
     });
   }
 
@@ -112,7 +116,7 @@ export default class WechatPayHandler extends PaymentIntentHandler implements We
       qrCode: (paymentData && paymentData.qrCode) || '',
       qrAlt: 'WeChat Pay QR Code',
       mobileAppUrl: paymentData && paymentData.qrCodeData,
-      renderOptions: this.getRenderOptions(),
+      renderOptions: this.getRenderInfo(),
       isMobile: Helpers.isMobileOrTablet(),
       onDismiss: () => this.abandonPendingAuthorization(),
     });
