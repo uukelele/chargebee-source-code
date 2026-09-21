@@ -84,6 +84,7 @@ export default class DeutscheBankPayPalHandler extends PaypalHandler {
           onSuccess: (data: any) => {
             resolve(true);
           },
+          onClick: () => this.callbackHandler.triggerClickCallback(),
           onAuthorize: () => {
             this.confirmPayment();
           },

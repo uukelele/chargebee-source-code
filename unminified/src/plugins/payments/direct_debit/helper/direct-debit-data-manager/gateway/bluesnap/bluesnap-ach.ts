@@ -35,6 +35,9 @@ export class BluesnapACH extends AbstractDirectDebitDataManager {
         email: input.customer.email,
         companyName: input.customer.company,
       };
+      if (input.customer.billingAddress) {
+        out['customerBillingAddress'] = input.customer.billingAddress;
+      }
     }
     if (input.bankAccount) {
       out['directDebitBankAccount'] = {

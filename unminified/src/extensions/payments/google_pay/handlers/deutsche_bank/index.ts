@@ -76,6 +76,7 @@ export default class DeutscheBankGooglePayHandler extends AbstractGooglePayHandl
           onSuccess: (data: any) => {
             this.callSuccess();
           },
+          onClick: () => this.callClick(),
           onAuthorize: () => {
             this.reattempt = false;
             return this.confirmPayment();

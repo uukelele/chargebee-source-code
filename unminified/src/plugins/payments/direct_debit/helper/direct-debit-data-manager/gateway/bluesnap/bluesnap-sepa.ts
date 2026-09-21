@@ -20,6 +20,9 @@ export class BluesnapSEPA extends AbstractDirectDebitDataManager {
         lastName: input.customer.lastName,
         email: input.customer.email,
       };
+      if (input.customer.billingAddress) {
+        out['customerBillingAddress'] = input.customer.billingAddress;
+      }
     }
     if (input.bankAccount) {
       out['directDebitBankAccount'] = {

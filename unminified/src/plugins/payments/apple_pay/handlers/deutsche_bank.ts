@@ -92,6 +92,7 @@ export default class DeutscheBankApplePayHandler extends ApplepayHandler {
           onSuccess: (result: any) => {
             resolve(true);
           },
+          onClick: () => this.callbackHandler.triggerClickCallback(),
           onAuthorize: () => {
             return this.confirmPayment();
           },
