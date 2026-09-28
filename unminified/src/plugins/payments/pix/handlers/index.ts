@@ -138,7 +138,10 @@ export default class PixHandler extends PaymentIntentHandler implements PixPayme
       return this.pollForAuthCompletion();
     }
 
-    this.windowManager = new CbWindowManager();
+    // Reached when no tab was pre-opened on the click. In redirect mode that is deliberate — the
+    // caller asked for the current window — and opening one here, after the intent call, is what a
+    // popup blocker stops. So the manager carries the flag and navigates the top window instead.
+    this.windowManager = new CbWindowManager({redirectMode: this.isRedirectMode});
     this.windowManager.openDirect('', PAYMENT_AUTH_REDIRECT_WINDOW_NAME, {
       skipReferrer: true,
       showLoader: true,

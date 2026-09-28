@@ -76,7 +76,9 @@ export default class PaypalVenmoHandler extends VenmoHandler {
   }
 
   loadPaypalSdk(clientID: string, merchantID: string, options: Options): Promise<any> {
+    const default_funding = ['venmo']; // default venmo funding for venmo button
     const {allowed, disallowed} = options.funding || {};
+    const funding = [...new Set([...default_funding, ...(allowed || [])])].join();
     const queryString = qs.stringify({
       'client-id': clientID,
       'merchant-id': merchantID,
@@ -84,7 +86,7 @@ export default class PaypalVenmoHandler extends VenmoHandler {
       intent: 'authorize',
       currency: this.getPaymentIntent().currency_code,
       ...(disallowed && disallowed.length > 0 ? {'disable-funding': disallowed.join()} : {}),
-      ...(allowed && allowed.length > 0 ? {'enable-funding': allowed.join()} : {}),
+      'enable-funding': funding,
       ...(options.locale ? {locale: options.locale} : {}),
     });
 

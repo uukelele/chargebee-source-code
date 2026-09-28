@@ -1,6 +1,6 @@
 import {CbError} from '@/hosted_fields/common/errors';
 import StripeRealTimeApmHandler from '@/plugins/payments/_stripe_real_time_apm/handler';
-import LightBox from '@/extensions/three_domain_secure/common/lightbox';
+import {QrPaymentModal, QrPaymentModalDefaults} from '@/internal/auth-redirect/qr-payment-modal';
 import {PaymentAttempt, PaymentAttemptStatus} from '@/internal/payment-intent/types';
 import {PaymentRedirectTimeouts} from '@/constants/enums';
 import {retrievePaymentIntent} from './razorpay';
@@ -15,11 +15,13 @@ const MAX_POLL_DURATION_MS = PaymentRedirectTimeouts.UPI;
  * After server-side confirmation via OpenPay:
  *
  * Desktop (default):
- *   1. Renders QR from action_payload.qr_code_image_url in our LightBox.
+ *   1. Renders QR from action_payload.qr_code_image_url in the shared QrPaymentModal.
  *   2. Polls Stripe directly using client_secret — QR completion happens on an external
  *      device (customer's phone), so pollForAuthCompletion() (browser-store/return flow)
  *      is unreliable; we bypass it and poll Stripe's API directly instead.
  *   3. On terminal Stripe success, confirms Chargebee once to sync the PaymentIntent.
+ *   4. Dismissing the QR via its × stops the poll and fires the cancel callback instead
+ *      of a payment error, so the customer can pick another payment method.
  *
  * Mobile (Helpers.isMobileOrTablet() === true):
  *   Stripe returns hosted_instructions_url — a device-aware Stripe-hosted page that
@@ -32,8 +34,12 @@ const MAX_POLL_DURATION_MS = PaymentRedirectTimeouts.UPI;
  */
 export default class StripeUpiHandler extends StripeRealTimeApmHandler {
   private readonly upiHandler: UpiHandler;
-  private qrLightboxUpi: LightBox | null = null;
+  private qrLightboxUpi: QrPaymentModal | null = null;
+  private qrDismissed: boolean = false;
+  private completingPayment: boolean = false;
+  private dismissedDuringCompletion: boolean = false;
   private pollTimeoutId: ReturnType<typeof setTimeout> | null = null;
+  private pollDelayResolve: (() => void) | null = null;
   // Holds the tab opened for the mobile hosted_instructions_url path so it can be
   // closed automatically once polling detects a terminal PI status.
   private mobileWindow: Window | null = null;
@@ -68,44 +74,47 @@ export default class StripeUpiHandler extends StripeRealTimeApmHandler {
     });
   }
 
-  private writeQrIframeDocument(iframe: HTMLIFrameElement, qrCodeImageUrl: string): void {
-    const doc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
-    if (!doc) {
-      return;
-    }
-    doc.open();
-    doc.write(
-      `<html><body style="display:flex;flex-direction:column;align-items:center;` +
-        `justify-content:flex-start;box-sizing:border-box;padding:24px 16px;` +
-        `font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;gap:16px;">` +
-        `<img src="${qrCodeImageUrl}" alt="UPI QR Code" style="max-width:240px;max-height:240px;"/>` +
-        `<div style="font-size:14px;color:#555;text-align:center;">` +
-        `Scan with your UPI app to complete payment.</div>` +
-        `</body></html>`
+  private openQr(qrCodeImageUrl: string): void {
+    this.qrDismissed = false;
+    this.qrLightboxUpi = new QrPaymentModal('stripe-upi-qr', 'stripe-upi-qr-frame');
+    this.qrLightboxUpi.openQr(
+      {
+        qrCode: qrCodeImageUrl,
+        qrAlt: 'UPI QR Code',
+        heading: 'Scan QR code',
+        instruction: QrPaymentModalDefaults.instruction,
+        timerLabel: 'Complete payment within: {time}',
+        timerDurationSeconds: MAX_POLL_DURATION_MS / 1000,
+        waitingMessage: QrPaymentModalDefaults.waitingMessage,
+        accentColor: QrPaymentModalDefaults.accentColor,
+      },
+      {
+        onDismiss: () => this.handleQrDismiss(),
+      }
     );
-    doc.close();
-    if (this.qrLightboxUpi) {
-      this.qrLightboxUpi.hideLoader();
-    }
   }
 
-  private openQr(qrCodeImageUrl: string): void {
-    this.qrLightboxUpi = new LightBox('stripe-upi-qr');
-    const iframe = this.qrLightboxUpi.createIframe('stripe-upi-qr-frame');
-    this.qrLightboxUpi.show();
-    iframe.style.cssText =
-      'width:400px;height:420px;min-width:400px;min-height:420px;max-width:400px;max-height:420px;';
-    iframe.onload = () => {
-      this.writeQrIframeDocument(iframe, qrCodeImageUrl);
-    };
-    iframe.src = 'about:blank';
+  private handleQrDismiss(): void {
+    // dismiss() already closed and destroyed the frame; clearing the ref keeps
+    // closeQr() from tearing it down a second time.
+    this.qrLightboxUpi = null;
+
+    // Stripe already reported success and the Chargebee confirm is in flight, so the
+    // payment can still complete. Ignore the dismiss and let the completion path decide —
+    // cancelling here would latch callbackTriggered and suppress the imminent success.
+    if (this.completingPayment) {
+      this.dismissedDuringCompletion = true;
+      this.closeQr();
+      return;
+    }
+
+    this.qrDismissed = true;
+    this.closeQr();
+    this.abandonPendingAuthorization();
   }
 
   private closeQr(): void {
-    if (this.pollTimeoutId) {
-      clearTimeout(this.pollTimeoutId);
-      this.pollTimeoutId = null;
-    }
+    this.cancelPollDelay();
     // Close the mobile-path tab if it is still open (payment completed or failed).
     if (this.mobileWindow && !this.mobileWindow.closed) {
       this.mobileWindow.close();
@@ -115,6 +124,21 @@ export default class StripeUpiHandler extends StripeRealTimeApmHandler {
       this.qrLightboxUpi.close();
       this.qrLightboxUpi.destroy();
       this.qrLightboxUpi = null;
+    }
+  }
+
+  private cancelPollDelay(): void {
+    if (this.pollTimeoutId) {
+      clearTimeout(this.pollTimeoutId);
+      this.pollTimeoutId = null;
+    }
+    // Clearing the timer leaves the promise delayPoll handed out unsettled, which would
+    // strand the polling chain forever. Resolve it so poll() wakes and exits via its
+    // qrDismissed guard instead.
+    if (this.pollDelayResolve) {
+      const resolvePendingDelay = this.pollDelayResolve;
+      this.pollDelayResolve = null;
+      resolvePendingDelay();
     }
   }
 
@@ -173,19 +197,36 @@ export default class StripeUpiHandler extends StripeRealTimeApmHandler {
   private async pollStripeOnce(clientSecret: string): Promise<any> {
     const result = await this.retrieveStripeIntent(clientSecret);
 
+    // Customer closed the QR while this retrieve was in flight — drop the result
+    // rather than surfacing it as a payment failure.
+    if (this.qrDismissed) {
+      return undefined;
+    }
+
     if (result.error) {
       this.closeQr();
       throw new CbError({name: 'GATEWAY_ERROR', message: result.error.message});
     }
 
     if (this.isTerminalStripeSuccess(result.status)) {
+      // Past this point Stripe holds the payment; a dismiss must not turn it into a cancel.
+      this.completingPayment = true;
       try {
         const data = await this.completeChargebeePayment();
         this.closeQr();
         return data;
       } catch (err) {
         this.closeQr();
+        // Dismissed mid-confirm and the confirm then failed — honour the dismiss as a
+        // cancel rather than surfacing an error the customer is no longer waiting on.
+        if (this.dismissedDuringCompletion) {
+          this.qrDismissed = true;
+          this.abandonPendingAuthorization();
+          return undefined;
+        }
         throw err;
+      } finally {
+        this.completingPayment = false;
       }
     }
 
@@ -199,7 +240,12 @@ export default class StripeUpiHandler extends StripeRealTimeApmHandler {
 
   private delayPoll(ms: number): Promise<void> {
     return new Promise((resolve) => {
-      this.pollTimeoutId = setTimeout(resolve, ms);
+      this.pollDelayResolve = resolve;
+      this.pollTimeoutId = setTimeout(() => {
+        this.pollTimeoutId = null;
+        this.pollDelayResolve = null;
+        resolve();
+      }, ms);
     });
   }
 
@@ -207,6 +253,10 @@ export default class StripeUpiHandler extends StripeRealTimeApmHandler {
     const startTime = Date.now();
 
     const poll = async (): Promise<any> => {
+      if (this.qrDismissed) {
+        return undefined;
+      }
+
       if (Date.now() - startTime > MAX_POLL_DURATION_MS) {
         this.closeQr();
         throw new CbError({name: 'GATEWAY_ERROR', message: 'UPI payment timed out after 5 minutes'});
@@ -225,9 +275,17 @@ export default class StripeUpiHandler extends StripeRealTimeApmHandler {
         throw new CbError(err);
       }
 
+      if (this.qrDismissed) {
+        return undefined;
+      }
+
       await this.delayPoll(POLL_INTERVAL_MS);
       return poll();
     };
+
+    if (this.qrDismissed) {
+      return Promise.resolve(undefined);
+    }
 
     return this.delayPoll(POLL_INTERVAL_MS).then(() => poll());
   }

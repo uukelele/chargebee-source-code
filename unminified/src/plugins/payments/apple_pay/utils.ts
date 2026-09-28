@@ -65,6 +65,11 @@ export function mountApplePayButton(containerEl: HTMLElement, mountOptions, star
       if (mountOptions.locale) {
         applePayButtonEl.setAttribute('locale', mountOptions.locale);
       }
+      applePayButtonEl.style.setProperty('--apple-pay-button-width', '100%');
+      applePayButtonEl.style.setProperty('--apple-pay-button-height', '40px');
+      applePayButtonEl.style.setProperty('--apple-pay-button-border-radius', '8px');
+      applePayButtonEl.style.setProperty('--apple-pay-button-padding', '0');
+      applePayButtonEl.style.setProperty('--apple-pay-button-box-sizing', 'border-box');
       containerEl.appendChild(applePayButtonEl);
       applePayButtonEl.addEventListener('click', (e) => startSession());
       containerEl.addEventListener('click', (e) => startSession());

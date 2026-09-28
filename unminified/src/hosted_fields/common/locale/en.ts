@@ -192,6 +192,8 @@ export default {
       common: {
         missingPaymentIntentForMountButton:
           'Missing payment intent. Payment intent is required to mount payment button',
+        popupBlocked: 'The payment window was blocked by the browser. Allow pop-ups for this site and try again',
+        popupConsentDismissed: 'Payment is cancelled.',
       },
       iDeal: {
         missingCurrency: 'Missing currency to fetch bank list',

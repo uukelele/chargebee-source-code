@@ -44,6 +44,7 @@ import CardComponent from '../host/card-component';
 import IDealField from '../host/ideal-field';
 import IDealComponent from '../host/ideal-component';
 import {BillingAddress} from '@/plugins/functions/types';
+import {PopupConsentOverlayOptions} from '@/interfaces/cb-instance-options';
 
 export enum ComponentType {
   Card = 'card',
@@ -198,6 +199,10 @@ export interface AlipayHkPayment extends RedirectPayment {}
 
 export interface GcashPayment extends RedirectPayment {}
 
+export interface MomoPayment extends RedirectPayment {}
+
+export interface RakutenPayPayment extends RedirectPayment {}
+
 interface SelectBank {
   mountBankList(id: string, options?: any): Promise<any>;
   getSelectedBank(): any;
@@ -320,6 +325,48 @@ export interface AlipayPayment {
 }
 
 export interface PixPayment {
+  setPaymentIntent(paymentIntent: PaymentIntent, options: Options);
+  updatePaymentIntent(paymentIntent: PaymentIntent);
+  getPaymentIntent(): PaymentIntent;
+  handlePayment(paymentInfo: BasePaymentInfo, callbacks?: Callbacks): Promise<any>;
+}
+
+export interface OvoPayment {
+  setPaymentIntent(paymentIntent: PaymentIntent, options: Options);
+  updatePaymentIntent(paymentIntent: PaymentIntent);
+  getPaymentIntent(): PaymentIntent;
+  handlePayment(paymentInfo: BasePaymentInfo, callbacks?: Callbacks): Promise<any>;
+}
+
+export interface ThaiQrPayment {
+  setPaymentIntent(paymentIntent: PaymentIntent, options: Options);
+  updatePaymentIntent(paymentIntent: PaymentIntent);
+  getPaymentIntent(): PaymentIntent;
+  handlePayment(paymentInfo: BasePaymentInfo, callbacks?: Callbacks): Promise<any>;
+}
+
+export interface NequiPayment {
+  setPaymentIntent(paymentIntent: PaymentIntent, options: Options);
+  updatePaymentIntent(paymentIntent: PaymentIntent);
+  getPaymentIntent(): PaymentIntent;
+  handlePayment(paymentInfo: BasePaymentInfo, callbacks?: Callbacks): Promise<any>;
+}
+
+export interface MercadoPagoPayment {
+  setPaymentIntent(paymentIntent: PaymentIntent, options: Options);
+  updatePaymentIntent(paymentIntent: PaymentIntent);
+  getPaymentIntent(): PaymentIntent;
+  handlePayment(paymentInfo: BasePaymentInfo, callbacks?: Callbacks): Promise<any>;
+}
+
+export interface NupayPayment {
+  setPaymentIntent(paymentIntent: PaymentIntent, options: Options);
+  updatePaymentIntent(paymentIntent: PaymentIntent);
+  getPaymentIntent(): PaymentIntent;
+  handlePayment(paymentInfo: BasePaymentInfo, callbacks?: Callbacks): Promise<any>;
+}
+
+export interface PicpayPayment {
   setPaymentIntent(paymentIntent: PaymentIntent, options: Options);
   updatePaymentIntent(paymentIntent: PaymentIntent);
   getPaymentIntent(): PaymentIntent;
@@ -534,6 +581,14 @@ export type PaymentOptions = {
   iframeMode?: boolean;
   mandateText?: string;
   gatewayCredentials?: any;
+  /**
+   * Overrides `CbInstanceOptions.enablePopupConsentOverlay` for this payment alone.
+   */
+  enablePopupConsentOverlay?: boolean;
+  /**
+   * Overrides `CbInstanceOptions.popupConsentOverlay` copy for this payment alone.
+   */
+  popupConsentOverlay?: PopupConsentOverlayOptions;
 };
 
 export enum FrequencyUnit {
@@ -585,10 +640,16 @@ export enum TabRedirectPayments {
   bizum,
   paynow,
   promptpay,
+  ovo,
+  mercado_pago,
+  nupay,
+  picpay,
   dana,
   touch_n_go,
   tamara,
   qpay,
+  momo,
+  rakuten_pay,
 }
 
 export const PAYMENT_AUTH_REDIRECT_WINDOW_NAME = 'cb_payment_auth_redirect_window';

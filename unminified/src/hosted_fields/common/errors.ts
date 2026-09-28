@@ -136,6 +136,8 @@ const ErrorCodes = {
   missingIDealIssuerBank: 'error.payments.iDeal.missingIssuerBank',
 
   missingPaymentIntentForMountButton: 'error.payaments.common.missingPaymentIntentForMountButton',
+  popupBlocked: 'error.payments.common.popupBlocked',
+  popupConsentDismissed: 'error.payments.common.popupConsentDismissed',
   missingTokenInfoInPaymentData: 'error.payaments.gpay.missingTokenInfoInPaymentData',
 
   missingDotpayCurrency: 'error.payments.dotpay.missingCurrency',

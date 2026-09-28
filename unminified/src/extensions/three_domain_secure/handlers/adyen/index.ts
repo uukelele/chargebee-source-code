@@ -19,7 +19,7 @@ import Ids from '@/constants/ids';
 import {constructPaymentIntentApiPayload} from '@/internal/common/utils';
 import {ThreeDSPollingTimeouts} from '@/constants/enums';
 
-import {loadAdyenJsAndCss, DEFAULT_ADYEN_VERSION} from '@/utils/payments/adyen';
+import {loadAdyenJsAndCss, DEFAULT_ADYEN_VERSION, getAdyenEnvironment} from '@/utils/payments/adyen';
 import Utils from '@/utils/payments/utils';
 
 const helper = {
@@ -126,12 +126,14 @@ export default class Adyen3DSHandler extends AbstractThreeDSecureHandler {
     });
   }
 
+  // Despite the name, this is always the Adyen client key (`gwData.client_key`) on this
+  // path — see checkAdyenInstance(). Adyen accepts it as either config property.
   async createAdyenCheckoutInstance(originKey: any) {
     if (!originKey || typeof originKey !== 'string') {
       Promise.reject(new CbError(Errors.invalidAdyenOriginKey));
     }
     const that = this;
-    const environment = Helpers.isTestSite() ? 'test' : 'live';
+    const environment = getAdyenEnvironment(originKey);
     // @ts-ignore
     this.adyenClient = await new window.AdyenCheckout({
       environment,

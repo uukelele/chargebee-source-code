@@ -407,6 +407,17 @@ export function isMobileSafari(): boolean {
   return /iP(hone|od|ad)/.test(ua) && /WebKit/.test(ua) && !/CriOS|FxiOS|OPiOS|EdgiOS/.test(ua);
 }
 
+/**
+ * True while the browser still honours `window.open` for the last user gesture. Browsers that
+ * do not expose `navigator.userActivation` are treated as active, so the open is attempted and
+ * the blocked result is detected afterwards instead.
+ */
+export function hasTransientUserActivation(): boolean {
+  const userActivation = window.navigator && (window.navigator as any).userActivation;
+  if (!userActivation || typeof userActivation.isActive !== 'boolean') return true;
+  return userActivation.isActive;
+}
+
 export function getCurrencyDivisor(currency) {
   let maxFractionDigit = 2;
   if (['JPY', 'KRW'].includes(currency)) {

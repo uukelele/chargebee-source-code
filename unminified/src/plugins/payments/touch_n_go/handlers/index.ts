@@ -1,11 +1,12 @@
-import {PaymentRedirectTimeouts} from '@/constants/enums';
 import {TouchNGoPayment, PAYMENT_AUTH_REDIRECT_WINDOW_NAME} from '@/hosted_fields/common/base-types';
 import {CbError} from '@/hosted_fields/common/errors';
-import CbWindowManager from '@/models/cb-window-manager';
 import PaymentIntentHandler from '@/internal/payment-intent/handler';
 import {PaymentMethodType, PaymentAttempt, PaymentAttemptStatus} from '@/internal/payment-intent/types';
+import CbWindowManager from '@/models/cb-window-manager';
+import {PaymentRedirectTimeouts} from '@/constants/enums';
 import {PaymentInfo} from '../types';
 
+// Redirect + poll only — payload shape is gateway-specific (see handlers/dlocal.ts).
 export default class TouchNGoHandler extends PaymentIntentHandler implements TouchNGoPayment {
   protected declare paymentInfo: PaymentInfo;
   redirectTimeout: number = PaymentRedirectTimeouts.TOUCH_N_GO;
@@ -27,7 +28,7 @@ export default class TouchNGoHandler extends PaymentIntentHandler implements Tou
       return Promise.reject(new CbError('Redirect URL is empty'));
     }
 
-    this.windowManager = new CbWindowManager();
+    this.windowManager = new CbWindowManager({redirectMode: this.isRedirectMode});
     this.windowManager.openDirect('', PAYMENT_AUTH_REDIRECT_WINDOW_NAME, {
       skipReferrer: true,
       showLoader: true,
@@ -45,6 +46,17 @@ export default class TouchNGoHandler extends PaymentIntentHandler implements Tou
           this.setPaymentIntent(data.payment_intent);
           return this.handlePaymentAttempt(this.getPaymentAttempt());
         });
+      }
+      case PaymentAttemptStatus.AUTHORIZED: {
+        this.callbackTriggered = true;
+        this.callbackHandler.triggerSuccessCallback();
+        return Promise.resolve(this.getPaymentIntent());
+      }
+      case PaymentAttemptStatus.REFUSED: {
+        this.callbackTriggered = true;
+        const error = this.callbackHandler.intentError();
+        this.callbackHandler.triggerErrorCallback(error);
+        return Promise.reject(error);
       }
     }
   }

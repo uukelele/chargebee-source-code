@@ -11,6 +11,7 @@ export default class Ids {
   static readonly CB_LOADING_BAR: string = 'cb-loading-bar';
   static readonly CB_MODAL_CLOSE: string = 'cb-modal-close';
   static readonly CB_PLACE_HOLDER: string = 'cb-placeholder';
+  static readonly CB_POPUP_CONSENT: string = 'cb-popup-consent';
   static readonly CB_PAYMENT_COMPONENTS: string = 'cb_payment_components';
   static readonly PC_FPC_V4: string = 'pc_fpc_v4';
   static readonly PC_INAPP_V4: string = 'pc_inapp_v4';

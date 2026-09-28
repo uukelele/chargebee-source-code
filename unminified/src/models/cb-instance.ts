@@ -28,6 +28,8 @@ import {
   AlipayPayment,
   AlipayHkPayment,
   GcashPayment,
+  MomoPayment,
+  RakutenPayPayment,
   StablecoinPayment,
   GooglePayment,
   BancontactPayment,
@@ -38,6 +40,12 @@ import {
   NetbankingPayment,
   UpiPayment,
   PixPayment,
+  OvoPayment,
+  MercadoPagoPayment,
+  NupayPayment,
+  PicpayPayment,
+  ThaiQrPayment,
+  NequiPayment,
   DirectDebitPayment,
   BoletoPayment,
   TabRedirectPayments,
@@ -91,6 +99,8 @@ import PayByBankPaymentLoaderInterface from '@/plugins/payments/pay_by_bank/load
 import AlipayPaymentLoaderInterface from '@/plugins/payments/alipay/loader/interface';
 import AlipayHkPaymentLoaderInterface from '@/plugins/payments/alipay_hk/loader/interface';
 import GcashPaymentLoaderInterface from '@/plugins/payments/gcash/loader/interface';
+import MomoPaymentLoaderInterface from '@/plugins/payments/momo/loader/interface';
+import RakutenPayPaymentLoaderInterface from '@/plugins/payments/rakuten_pay/loader/interface';
 import StablecoinPaymentLoaderInterface from '@/plugins/payments/stablecoin/loader/interface';
 import GooglePaymentLoaderInterface from '@/plugins/payments/google_pay/loader/interface';
 import BancontactPaymentLoaderInterface from '@/plugins/payments/bancontact/loader/interface';
@@ -102,6 +112,10 @@ import ApplepayPaymentLoaderInterface from '@/plugins/payments/apple_pay/loader/
 import AmazonpayPaymentLoaderInterface from '@/plugins/payments/amazon_payments/loader/interface';
 import UpiPaymentLoaderInterface from '@/plugins/payments/upi/loader/interface';
 import PixPaymentLoaderInterface from '@/plugins/payments/pix/loader/interface';
+import OvoPaymentLoaderInterface from '@/plugins/payments/ovo/loader/interface';
+import MercadoPagoPaymentLoaderInterface from '@/plugins/payments/mercado_pago/loader/interface';
+import NupayPaymentLoaderInterface from '@/plugins/payments/nupay/loader/interface';
+import PicpayPaymentLoaderInterface from '@/plugins/payments/picpay/loader/interface';
 import DirectDebitPaymentLoaderInterface from '@/plugins/payments/direct_debit/loader/interface';
 import FasterPymtsLoaderInterface from '@/plugins/payments/faster_payments/loader/interface';
 import PayToPaymentLoaderInterface from '@/plugins/payments/pay_to/loader/interface';
@@ -146,6 +160,8 @@ import QpayPaymentLoaderInterface from '@/plugins/payments/qpay/loader/interface
 import BizumPaymentLoaderInterface from '@/plugins/payments/bizum/loader/interface';
 import PayNowPaymentLoaderInterface from '@/plugins/payments/paynow/loader/interface';
 import PromptPayPaymentLoaderInterface from '@/plugins/payments/promptpay/loader/interface';
+import ThaiQrPaymentLoaderInterface from '@/plugins/payments/thai_qr/loader/interface';
+import NequiPaymentLoaderInterface from '@/plugins/payments/nequi/loader/interface';
 
 export default class CbInstance {
   /** @internal */
@@ -296,10 +312,34 @@ export default class CbInstance {
   gcashPaymentLoader: GcashPaymentLoaderInterface;
 
   /** @internal */
+  momoPaymentLoader: MomoPaymentLoaderInterface;
+
+  /** @internal */
+  rakutenPayPaymentLoader: RakutenPayPaymentLoaderInterface;
+
+  /** @internal */
   upiPaymentLoader: UpiPaymentLoaderInterface;
 
   /** @internal */
   pixPaymentLoader: PixPaymentLoaderInterface;
+
+  /** @internal */
+  ovoPaymentLoader: OvoPaymentLoaderInterface;
+
+  /** @internal */
+  mercadoPagoPaymentLoader: MercadoPagoPaymentLoaderInterface;
+
+  /** @internal */
+  nupayPaymentLoader: NupayPaymentLoaderInterface;
+
+  /** @internal */
+  picpayPaymentLoader: PicpayPaymentLoaderInterface;
+
+  /** @internal */
+  thaiQrPaymentLoader: ThaiQrPaymentLoaderInterface;
+
+  /** @internal */
+  nequiPaymentLoader: NequiPaymentLoaderInterface;
 
   /** @internal */
   directDebitPaymentLoader: DirectDebitPaymentLoaderInterface;
@@ -473,6 +513,18 @@ export default class CbInstance {
         return this.loadUpi();
       case 'pix':
         return this.loadPix();
+      case 'ovo':
+        return this.loadOvo();
+      case 'mercado_pago':
+        return this.loadMercadoPago();
+      case 'nupay':
+        return this.loadNupay();
+      case 'picpay':
+        return this.loadPicpay();
+      case 'thai_qr':
+        return this.loadThaiQr();
+      case 'nequi':
+        return this.loadNequi();
       case 'direct_debit':
         return this.loadDirectDebit();
       case 'boleto':
@@ -551,6 +603,10 @@ export default class CbInstance {
         return this.loadPayNow();
       case 'promptpay':
         return this.loadPromptPay();
+      case 'momo':
+        return this.loadMomo();
+      case 'rakuten_pay':
+        return this.loadRakutenPay();
       default:
         throw new Error('Module ' + chunkName + ' not supported');
     }
@@ -717,6 +773,22 @@ export default class CbInstance {
       .then(() => this.gcashPaymentLoader.init());
   }
 
+  /** @internal */
+  loadMomo(): Promise<MomoPayment> {
+    if (this.momoPaymentLoader) return Promise.resolve(this.momoPaymentLoader.init());
+    return import(/* webpackChunkName: "momo-loader" */ '@/plugins/payments/momo/loader')
+      .then(() => this.momoPaymentLoader.loaderPromise)
+      .then(() => this.momoPaymentLoader.init());
+  }
+
+  /** @internal */
+  loadRakutenPay(): Promise<RakutenPayPayment> {
+    if (this.rakutenPayPaymentLoader) return Promise.resolve(this.rakutenPayPaymentLoader.init());
+    return import(/* webpackChunkName: "rakuten-pay-loader" */ '@/plugins/payments/rakuten_pay/loader')
+      .then(() => this.rakutenPayPaymentLoader.loaderPromise)
+      .then(() => this.rakutenPayPaymentLoader.init());
+  }
+
   loadAmazonpay(): Promise<AmazonPayPayment> {
     if (this.amazonpayPaymentLoader) return Promise.resolve(this.amazonpayPaymentLoader.init());
 
@@ -742,6 +814,72 @@ export default class CbInstance {
     return import(/* webpackChunkName: "pix-loader" */ '@/plugins/payments/pix/loader')
       .then(() => this.pixPaymentLoader.loaderPromise)
       .then(() => this.pixPaymentLoader.init());
+  }
+
+  /** @internal */
+  loadOvo(): Promise<OvoPayment> {
+    if (this.ovoPaymentLoader) {
+      return Promise.resolve(this.ovoPaymentLoader.init());
+    }
+
+    return import(/* webpackChunkName: "ovo-loader" */ '@/plugins/payments/ovo/loader')
+      .then(() => this.ovoPaymentLoader.loaderPromise)
+      .then(() => this.ovoPaymentLoader.init());
+  }
+
+  /** @internal */
+  loadMercadoPago(): Promise<MercadoPagoPayment> {
+    if (this.mercadoPagoPaymentLoader) {
+      return Promise.resolve(this.mercadoPagoPaymentLoader.init());
+    }
+
+    return import(/* webpackChunkName: "mercado-pago-loader" */ '@/plugins/payments/mercado_pago/loader')
+      .then(() => this.mercadoPagoPaymentLoader.loaderPromise)
+      .then(() => this.mercadoPagoPaymentLoader.init());
+  }
+
+  /** @internal */
+  loadNupay(): Promise<NupayPayment> {
+    if (this.nupayPaymentLoader) {
+      return Promise.resolve(this.nupayPaymentLoader.init());
+    }
+
+    return import(/* webpackChunkName: "nupay-loader" */ '@/plugins/payments/nupay/loader')
+      .then(() => this.nupayPaymentLoader.loaderPromise)
+      .then(() => this.nupayPaymentLoader.init());
+  }
+
+  /** @internal */
+  loadPicpay(): Promise<PicpayPayment> {
+    if (this.picpayPaymentLoader) {
+      return Promise.resolve(this.picpayPaymentLoader.init());
+    }
+
+    return import(/* webpackChunkName: "picpay-loader" */ '@/plugins/payments/picpay/loader')
+      .then(() => this.picpayPaymentLoader.loaderPromise)
+      .then(() => this.picpayPaymentLoader.init());
+  }
+
+  /** @internal */
+  loadThaiQr(): Promise<ThaiQrPayment> {
+    if (this.thaiQrPaymentLoader) {
+      return Promise.resolve(this.thaiQrPaymentLoader.init());
+    }
+
+    return import(/* webpackChunkName: "thai-qr-loader" */ '@/plugins/payments/thai_qr/loader')
+      .then(() => this.thaiQrPaymentLoader.loaderPromise)
+      .then(() => this.thaiQrPaymentLoader.init());
+  }
+
+  /** @internal */
+  loadNequi(): Promise<NequiPayment> {
+    if (this.nequiPaymentLoader) {
+      return Promise.resolve(this.nequiPaymentLoader.init());
+    }
+
+    return import(/* webpackChunkName: "nequi-loader" */ '@/plugins/payments/nequi/loader')
+      .then(() => this.nequiPaymentLoader.loaderPromise)
+      .then(() => this.nequiPaymentLoader.init());
   }
 
   /** @internal */
@@ -1238,6 +1376,7 @@ export default class CbInstance {
 
   handlePayment(paymentType: string, options: PaymentOptions): Promise<any> {
     let windowManager;
+    let popupTask: Promise<any> = Promise.resolve();
     if (
       paymentType in TabRedirectPayments &&
       !options.redirectMode &&
@@ -1248,14 +1387,33 @@ export default class CbInstance {
        * Browsers will block new tabs/ windows which are not opened on user action
        * As a workaround, a blank tab is opened first and after fetching the URL from server
        * it is loaded in the blank tab
+       *
+       * The tab is still blocked when the user action has already expired, for instance when
+       * handlePayment is called after awaiting a payment intent. openDirectWithConsent then
+       * collects a fresh click through an overlay, if the merchant opted in to it.
        */
       windowManager = new CbWindowManager();
-      windowManager.openDirect('', PAYMENT_AUTH_REDIRECT_WINDOW_NAME, {
+      const windowManagerOptions = {
         skipReferrer: true,
         showLoader: true,
         openInNewWindow: true,
-      });
+        enablePopupConsentOverlay:
+          typeof options.enablePopupConsentOverlay === 'boolean'
+            ? options.enablePopupConsentOverlay
+            : this.options.enablePopupConsentOverlay,
+        popupConsentOverlay:
+          options.popupConsentOverlay != undefined ? options.popupConsentOverlay : this.options.popupConsentOverlay,
+      };
+      window.CbLogger.info('CbWindowManager', 'openDirectWithConsent', JSON.stringify(windowManagerOptions), true);
+      popupTask = windowManager.openDirectWithConsent('', PAYMENT_AUTH_REDIRECT_WINDOW_NAME, windowManagerOptions);
     }
+    return popupTask.then((result) => {
+      window.CbLogger.info('CbInstance', 'invoke:handlePayment:popupTask:result', result, true);
+      return this.dispatchPayment(paymentType, options, windowManager);
+    });
+  }
+
+  private dispatchPayment(paymentType: string, options: PaymentOptions, windowManager?: CbWindowManager): Promise<any> {
     switch (paymentType) {
       case 'ideal':
       case 'sofort':
@@ -1300,8 +1458,16 @@ export default class CbInstance {
       case 'tamara':
       case 'qpay':
       case 'bizum':
+      case 'ovo':
+      case 'mercado_pago':
+      case 'nupay':
+      case 'picpay':
+      case 'thai_qr':
+      case 'nequi':
       case 'paynow':
       case 'promptpay':
+      case 'momo':
+      case 'rakuten_pay':
         return this.load(paymentType).then((module) => {
           if (options.redirectMode) {
             module.setRedirectMode(true);

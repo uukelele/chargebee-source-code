@@ -2,7 +2,7 @@ import {PaymentRedirectTimeouts} from '@/constants/enums';
 import {UpiPayment} from '@/hosted_fields/common/base-types';
 import PaymentIntentHandler from '@/internal/payment-intent/handler';
 import {Callbacks} from '@/extensions/three_domain_secure/common/types';
-import {PaymentAttemptStatus, PaymentAttempt, PaymentMethodType} from '@/internal/payment-intent/types';
+import {PaymentAttemptStatus, PaymentAttempt, PaymentMethodType, Gateway} from '@/internal/payment-intent/types';
 import {PaymentInfo} from '../types';
 import {
   isDocumentIdValidationRequired as checkDocumentIdValidationRequired,
@@ -92,6 +92,13 @@ export default class UpiHandler extends PaymentIntentHandler implements UpiPayme
     if (this.getPaymentIntent().gateway.toLowerCase() === 'stripe') {
       return this.getGatewayHandler(this.getPaymentIntent()).then((stripeHandler) =>
         stripeHandler.initiateAuthorization(paymentInfo, callbacks)
+      );
+    }
+    // Adyen returns the QR inline instead of redirecting, so its own handler has to run
+    // rather than this base one.
+    if (this.getPaymentIntent().gateway.toLowerCase() === Gateway.ADYEN) {
+      return this.getGatewayHandler(this.getPaymentIntent()).then((adyenHandler) =>
+        adyenHandler.initiateAuthorization(paymentInfo, callbacks)
       );
     }
     if (this.getPaymentIntent().gateway.toLowerCase() === 'razorpay') {

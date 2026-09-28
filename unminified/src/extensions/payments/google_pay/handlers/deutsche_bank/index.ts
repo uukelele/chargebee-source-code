@@ -4,6 +4,10 @@ import {ButtonOption, PaymentRequestOptions} from '@/plugins/payments/google_pay
 import Helpers from '@/helpers';
 import {loadScriptUsingPredicate} from '@/extensions/three_domain_secure/common/utils';
 
+// Google Pay brand guidelines allow a 40px-72px button height in `fill` size mode.
+const BUTTON_MIN_HEIGHT = 40;
+const BUTTON_DEFAULT_HEIGHT = '40px';
+
 declare global {
   interface Window {
     widgetsolution: {
@@ -53,9 +57,10 @@ export default class DeutscheBankGooglePayHandler extends AbstractGooglePayHandl
     paymentRequestOptions: PaymentRequestOptions,
     widgetSessionId: string
   ): Promise<any> {
-    buttonStyle = Object.assign({buttonColor: 'default', buttonType: 'short', buttonSizeMode: 'static'}, buttonStyle);
+    buttonStyle = Object.assign({buttonColor: 'default', buttonType: 'short', buttonSizeMode: 'fill'}, buttonStyle);
 
     const containerId = id.startsWith('#') ? id.slice(1) : id;
+    this.sizeContainerForFillMode(containerId, buttonStyle);
 
     return new Promise((resolve, reject) => {
       const widgetSolutionConfig = {
@@ -97,13 +102,27 @@ export default class DeutscheBankGooglePayHandler extends AbstractGooglePayHandl
     });
   }
 
+  private sizeContainerForFillMode(containerId: string, buttonStyle: ButtonOption) {
+    if (buttonStyle.buttonSizeMode !== 'fill') {
+      return;
+    }
+    const container = document.getElementById(containerId);
+    if (!container) {
+      return;
+    }
+    container.style.width = '100%';
+    const height = parseFloat(getComputedStyle(container).height);
+    if (!(height >= BUTTON_MIN_HEIGHT)) {
+      container.style.height = BUTTON_DEFAULT_HEIGHT;
+    }
+  }
+
   private buildTransactionData(buttonStyle: ButtonOption, paymentRequestOptions: PaymentRequestOptions): any {
     const googlePayConfig: any = {
       buttonStyle: {
         buttonColor: buttonStyle.buttonColor,
         buttonType: buttonStyle.buttonType,
-        // TODO: Revert once V4 will send properly
-        buttonSizeMode: 'static',
+        buttonSizeMode: buttonStyle.buttonSizeMode,
       },
     };
 

@@ -5,8 +5,20 @@ import {CLOSE} from '@/constants/callbacks';
 import {CbCallbacksInterface} from '@/interfaces/cb-types';
 import {Layout, PageCategory} from '@/constants/enums';
 import Logger from '@/utils/logger_old';
-import {isWindowsOS, isSafariMacOS, isMobileSafari} from '@/utils/utility-functions';
+import {isWindowsOS, isSafariMacOS, isMobileSafari, hasTransientUserActivation} from '@/utils/utility-functions';
 import EnvConstants from '@/constants/environment';
+import PopupConsentOverlay from '@/internal/auth-redirect/popup-consent-overlay';
+import ErrorCodes, {CbError} from '@/hosted_fields/common/errors';
+import {PopupConsentOverlayOptions} from '@/interfaces/cb-instance-options';
+
+export interface WindowOpenOptions {
+  skipReferrer?: boolean;
+  showLoader?: boolean;
+  openInNewWindow?: boolean;
+  closeCallback?: () => void;
+  enablePopupConsentOverlay?: boolean;
+  popupConsentOverlay?: PopupConsentOverlayOptions;
+}
 
 export default class CbWindowManager implements Manager {
   type: ManagerType;
@@ -44,7 +56,7 @@ export default class CbWindowManager implements Manager {
     }
   }
 
-  openDirect(url, type, options?): void {
+  openDirect(url, type, options?: WindowOpenOptions): void {
     if (this.window && !this.window.closed) {
       this.window.close();
     }
@@ -89,6 +101,10 @@ export default class CbWindowManager implements Manager {
 
     this.window = this.redirectMode ? window.top : window.open(_url, type, windowFeatures);
 
+    if (this.isBlocked()) {
+      this.windowOpened = false;
+      return;
+    }
     if (this.redirectMode) {
       this.window.location.href = _url;
     }
@@ -100,6 +116,62 @@ export default class CbWindowManager implements Manager {
       this.watchClose(options.closeCallback);
     }
     this.windowOpened = true;
+  }
+
+  /**
+   * `window.open` returns null when the browser blocks the popup. Some blockers instead hand
+   * back a window that is already closed, and a few throw on property access.
+   */
+  isBlocked(): boolean {
+    try {
+      return !this.window || this.window.closed || typeof this.window.closed === 'undefined';
+    } catch (e) {
+      return true;
+    }
+  }
+
+  /**
+   * Opens the window, and if the browser blocked it, renders an overlay so the customer can
+   * open it with a fresh click. Resolves once a window is open, rejects with a CbError when
+   * the customer dismisses the overlay or the retry is blocked too.
+   *
+   * `openDirect` runs synchronously here — both on the first attempt and inside the overlay's
+   * click listener — because a deferred call loses the user gesture and gets blocked again.
+   */
+  openDirectWithConsent(url: string, type: string, options?: WindowOpenOptions): Promise<string> {
+    if (!this.consentOverlayEnabled(options) || this.redirectMode) {
+      this.openDirect(url, type, options);
+      return Promise.resolve('CONSENT_OVERLAY_NOT_ENABLED');
+    }
+
+    if (hasTransientUserActivation()) {
+      this.openDirect(url, type, options);
+      if (!this.isBlocked()) return Promise.resolve('TRANSIENT_USER_ACTIVATION');
+    }
+
+    const overlay = new PopupConsentOverlay();
+    return overlay
+      .prompt(() => this.openDirect(url, type, options), options && options.popupConsentOverlay)
+      .then(
+        () => {
+          if (this.isBlocked()) {
+            throw new CbError(ErrorCodes.popupBlocked);
+          }
+          return 'CONSENT_OVERLAY_ACCEPTED';
+        },
+        (err) => {
+          throw err || new CbError(ErrorCodes.popupConsentDismissed);
+        }
+      );
+  }
+
+  private consentOverlayEnabled(options?: WindowOpenOptions): boolean {
+    if (!PopupConsentOverlay.isSupported()) return false;
+    if (options && typeof options.enablePopupConsentOverlay === 'boolean') {
+      return options.enablePopupConsentOverlay;
+    }
+    const cbInstance = Helpers.getCbInstance();
+    return !!(cbInstance && cbInstance.options && cbInstance.options.enablePopupConsentOverlay);
   }
 
   watchClose(callback: () => void): void {

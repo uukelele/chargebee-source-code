@@ -102,6 +102,14 @@ export enum PaymentRedirectTimeouts {
   BIZUM = 600000,
   PAYNOW = 3600000,
   PROMPTPAY = 3600000,
+  OVO = 600000,
+  MERCADO_PAGO = 600000,
+  NUPAY = 600000,
+  PICPAY = 600000,
+  THAI_QR = 600000,
+  NEQUI = 600000,
+  MOMO = 600000,
+  RAKUTEN_PAY = 600000,
 }
 
 // values in milliseconds

@@ -7,6 +7,8 @@ import {
   PaymentIntentResponse,
 } from '@/extensions/three_domain_secure/common/types';
 import {constructPaymentIntentApiPayload, loadCSS, loadScriptUsingPredicate} from '@/internal/common/utils';
+import {renderQrPaymentModal, QrPaymentModalDefaults} from '@/internal/auth-redirect/qr-payment-modal';
+import * as QRCode from 'qrcode';
 import Helpers from '@/helpers';
 import LightBox from '@/extensions/three_domain_secure/common/lightbox';
 import Errors, {CbError} from '@/hosted_fields/common/errors';
@@ -38,6 +40,39 @@ export const DEFAULT_ADYEN_VERSION = '5.39.0';
 export const OLD_ADYEN_VERSION = '5.38.0';
 
 const LIVE_ENVIRONMENT_KEY = 'live';
+
+/**
+ * Adyen rejects a client key whose mode does not match the configured environment, so the
+ * Adyen credential — not the Chargebee site name — is the authoritative signal here. Site
+ * names only follow a convention: sandbox sites are not always suffixed `-test`, and a
+ * migration site ends with `-migration`.
+ *
+ * @param clientKey Adyen's own client key, from `gwData.client_key`. NOT the Chargebee
+ *   publishable key. Legacy Adyen origin keys reach this too and carry no mode, so the
+ *   site-name check remains the fallback for them.
+ * @param liveEnvironment The value Adyen expects for live mode — `live` for EU, or a
+ *   region-specific one such as `live-us` / `live-au`, from `gwData.sdk_live_url_suffix`.
+ */
+export function getAdyenEnvironment(clientKey: string, liveEnvironment: string = LIVE_ENVIRONMENT_KEY): string {
+  const testKey = isTestAdyenClientKey(clientKey);
+  const isTest = testKey !== undefined ? testKey : Helpers.isTestSite();
+  return isTest ? 'test' : liveEnvironment || LIVE_ENVIRONMENT_KEY;
+}
+
+/**
+ * Every Adyen client key carries a `test_` / `live_` prefix naming its environment, so the
+ * mode can be read straight off the credential:
+ * https://docs.adyen.com/development-resources/client-side-authentication
+ *
+ * @returns undefined when the mode cannot be read — an absent key, or a legacy Adyen origin
+ *   key (`pub.v2.*`), which predates client keys and carries no mode.
+ */
+export function isTestAdyenClientKey(key: string): boolean | undefined {
+  if (!key || typeof key !== 'string') return undefined;
+  if (key.startsWith('test_')) return true;
+  if (key.startsWith('live_')) return false;
+  return undefined;
+}
 
 export function createHiddenForm(paymentAttempt: PaymentAttempt) {
   const rawData = paymentAttempt.action_payload;
@@ -389,12 +424,15 @@ function generateOriginKey(intent): Promise<string> {
   });
 }
 
+// Despite the name, `originKey` holds whichever Adyen credential the SDK version needs: a
+// client key (`gwData.client_key`) on v5.38/5.39, or a legacy origin key on every other
+// version. Adyen accepts it under either config property, which is why it is passed as both.
 async function createAdyenCheckoutInstance(originKey: any, handler, liveEnvironment: string = LIVE_ENVIRONMENT_KEY) {
   if (!originKey || typeof originKey !== 'string') {
     Promise.reject(new CbError(Errors.invalidAdyenOriginKey));
   }
 
-  const environment = Helpers.isTestSite() ? 'test' : liveEnvironment;
+  const environment = getAdyenEnvironment(originKey, liveEnvironment);
   // @ts-ignore
   const adyenClient = await new window.AdyenCheckout({
     environment,
@@ -484,6 +522,126 @@ function _createAdyenInstance(
           : gwData.origin_key[window.location.origin];
       return createAdyenCheckoutInstance(originKey, handler, getLiveEnvironment(gwData));
     });
+  });
+}
+
+/** Time given to the `AUTHORISATION` webhook behind a payment made in the code's last seconds. */
+const ADYEN_QR_POLL_GRACE_MS = 60 * 1000;
+
+/**
+ * Ceiling on the wait, from the payment intent's own default life (cb-app site preference
+ * `payment_intent_expiry_min_three_ds`, 30 minutes). Once the intent has expired there is nothing
+ * left to authorize — an `AUTHORISATION` arriving after it is refunded rather than banked.
+ */
+const ADYEN_QR_MAX_POLL_MS = 30 * 60 * 1000;
+
+/**
+ * The image our QR modal paints, from whatever Adyen put on the action.
+ *
+ * `qrCodeData` is a raw payload rather than a picture — an EMV token for Pix, a `upi://pay`
+ * deeplink for UPI — so it has to be drawn here. Pix additionally gets `url`, Adyen's hosted
+ * `barcode.shtml` image, which is already an image and is used as-is.
+ */
+function resolveAdyenQrImage(action: any): Promise<string> {
+  const hostedImage = action && action.url;
+  if (hostedImage && /^https?:\/\//i.test(hostedImage)) {
+    return Promise.resolve(hostedImage);
+  }
+  const payload = action && action.qrCodeData;
+  if (!payload) {
+    return Promise.reject(new CbError('Adyen returned no QR code for this payment'));
+  }
+  return QRCode.toDataURL(payload, {width: 240, margin: 2, errorCorrectionLevel: 'M'});
+}
+
+/**
+ * Adyen's own approval window when it gave us one, so our countdown matches what it will honour.
+ *
+ * A paid Pix payment gets one: openpay asks through `sessionValidity` and Adyen answers with
+ * `pix.expirationDate`. UPI never does — Adyen sends no `additionalData` at all on a UPI response —
+ * and neither does a zero-amount Pix Automático enrolment, which is why the caller has to name the
+ * window it asked Adyen for rather than inherit another rail's.
+ */
+function adyenQrTimerSeconds(action: any, fallbackSeconds: number): number {
+  const expiresAt = action && action.expires_at;
+  const remaining = expiresAt ? Math.floor((Date.parse(expiresAt) - Date.now()) / 1000) : NaN;
+  const window = isFinite(remaining) && remaining > 0 ? remaining : fallbackSeconds;
+  // Capped at the intent's own life, because a code Adyen would honour for longer is no use once
+  // there is nothing left to authorize. openpay already asks Adyen for fifteen minutes, so this
+  // ceiling does not bind today; it keeps the countdown honest if that window ever grows.
+  return Math.min(window, ADYEN_QR_MAX_POLL_MS / 1000);
+}
+
+/**
+ * How long to wait on the intent: the life of the code the shopper is looking at, plus a grace.
+ *
+ * Waiting less is the expensive mistake. The wait only decides what the page reports — the
+ * `AUTHORISATION` webhook settles the payment either way — so a wait that ends while the code is
+ * still live takes it off screen and calls a payment failed that Adyen will still accept, and does
+ * bank if the shopper goes ahead. The per-method `PaymentRedirectTimeouts` entry is a fixed guess
+ * at the same number and stays the fallback for the paths with no code on screen.
+ */
+function adyenQrPollTimeout(timerSeconds: number): number {
+  return Math.min(timerSeconds * 1000 + ADYEN_QR_POLL_GRACE_MS, ADYEN_QR_MAX_POLL_MS);
+}
+
+export type AdyenQrOptions = {
+  modalId: string;
+  qrAlt: string;
+  heading: string;
+  /**
+   * Countdown to show when Adyen returns no expiry of its own, in seconds.
+   *
+   * Named by the caller rather than defaulted here: five minutes is Adyen's UPI guidance and
+   * fifteen is the `sessionValidity` openpay asks for on Pix, and one shared default is how a
+   * zero-amount Pix enrolment came to count down UPI's five minutes.
+   */
+  fallbackTimerSeconds: number;
+  /** Label for the mobile open-app button; only meaningful when the payload is a deeplink. */
+  buttonText?: string;
+  /** True when `qrCodeData` is an app deeplink (UPI) rather than a bank token (Pix). */
+  payloadIsDeepLink?: boolean;
+};
+
+/**
+ * Renders the code in our own QR modal and waits on our own payment intent, which the Adyen
+ * `AUTHORISATION` webhook settles. `pollForAuthCompletion` tears the modal down when the wait
+ * ends, so the code comes off screen as soon as the payment is authorized.
+ *
+ * This is the division of labour Adyen Payconiq already uses: Adyen hands over QR data and we own
+ * both the display and the wait. Mounting Adyen's Web SDK component instead ties completion to its
+ * `PaymentInitiation/v1/status` poll — undocumented, and it answers 422 for a Pix Automático
+ * enrolment, leaving the code up on a payment that has in fact succeeded.
+ */
+export function adyenRenderQrAndAwaitAuthorization(
+  paymentAttempt: PaymentAttempt,
+  handler,
+  options: AdyenQrOptions
+): Promise<any> {
+  const action = paymentAttempt.action_payload || {};
+  const timerSeconds = adyenQrTimerSeconds(action, options.fallbackTimerSeconds);
+  // The countdown and the wait are the same window, so the code cannot outlive the page's patience
+  // or the other way round.
+  handler.redirectTimeout = adyenQrPollTimeout(timerSeconds);
+  return resolveAdyenQrImage(action).then((qrCode) => {
+    handler.lightbox = renderQrPaymentModal({
+      modalId: options.modalId,
+      qrCode,
+      qrAlt: options.qrAlt,
+      mobileAppUrl: options.payloadIsDeepLink ? action.qrCodeData : undefined,
+      renderOptions: {
+        heading: options.heading,
+        instruction: QrPaymentModalDefaults.instruction,
+        timerLabel: 'This QR code is valid for {time}',
+        timerDurationSeconds: timerSeconds,
+        waitingMessage: QrPaymentModalDefaults.waitingMessage,
+        accentColor: QrPaymentModalDefaults.accentColor,
+        buttonText: options.buttonText,
+      },
+      isMobile: Helpers.isMobileOrTablet(),
+      onDismiss: () => handler.abandonPendingAuthorization(),
+    });
+    return handler.pollForAuthCompletion();
   });
 }
 

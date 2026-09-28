@@ -80,7 +80,6 @@ export class QrPaymentModal extends LightBox {
     const iframe = this.createIframe(this.frameName);
     this.show();
     this.enableDismiss(() => {
-      this.unbindDismissMessage();
       if (handlers.onDismiss) {
         handlers.onDismiss();
       }
@@ -123,6 +122,16 @@ export class QrPaymentModal extends LightBox {
     if (!this.hasBeenDismissed()) {
       this.dismiss();
     }
+  }
+
+  /**
+   * Unbind on every teardown path, not just dismiss(). Handlers that complete normally
+   * call close() + destroy() directly, which would otherwise leave the window 'message'
+   * listener bound for the life of the page and accumulate one per payment attempt.
+   */
+  destroy() {
+    this.unbindDismissMessage();
+    super.destroy();
   }
 }
 
@@ -517,10 +526,13 @@ export function buildQrPaymentModalHtml(options: QrPaymentModalOptions): string 
       var display = document.getElementById('qr-timer-value');
       var bar = document.getElementById('qr-progress-bar');
       function pad(n) { return n < 10 ? '0' + n : '' + n; }
+      // mm:ss with no hours field. Every window this modal shows is a checkout session — the
+      // longest is the payment intent's own thirty minutes — so minutes never reach three digits.
+      function clock(total) {
+        return pad(Math.floor(total / 60)) + ':' + pad(total % 60);
+      }
       function render() {
-        var minutes = Math.floor(remaining / 60);
-        var seconds = remaining % 60;
-        if (display) display.textContent = pad(minutes) + ':' + pad(seconds);
+        if (display) display.textContent = clock(remaining);
         if (bar) bar.style.width = Math.max(0, (remaining / duration) * 100) + '%';
       }
       render();
@@ -664,9 +676,13 @@ export type QrRenderConfig = {
  */
 export function renderQrPaymentModal(config: QrRenderConfig): QrPaymentModal {
   const {modalId, qrCode, qrAlt, mobileAppUrl, renderOptions, isMobile, onDismiss, frameFit} = config;
-  const headerHtml = isMobile
-    ? `${buildQrOpenAppButtonHtml({url: mobileAppUrl, label: renderOptions.buttonText})}${buildQrOrDividerHtml()}`
+  const openAppButtonHtml = isMobile
+    ? buildQrOpenAppButtonHtml({url: mobileAppUrl, label: renderOptions.buttonText})
     : '';
+  // The divider exists to separate the button from the QR, so it has no place when there is no
+  // button. A method whose QR payload is not a deeplink (Pix sends a copy-and-paste bank token)
+  // would otherwise show a bare "or" above the code on mobile.
+  const headerHtml = openAppButtonHtml ? `${openAppButtonHtml}${buildQrOrDividerHtml()}` : '';
   const modal = new QrPaymentModal(modalId);
   modal.openQr(
     {
