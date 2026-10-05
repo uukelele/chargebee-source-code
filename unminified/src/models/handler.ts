@@ -84,6 +84,7 @@ export default class Handler {
     if (page && page.type == PageType.PORTAL) {
       this.manager.setLayout(Layout.IN_APP);
     }
+    this.manager.setTitle(page ? page.title : undefined);
     if (this.manager.type == ManagerType.WINDOW_MANAGER) {
       let windowManager = <CbWindowManager>this.manager;
       if (windowManager.window && windowManager.window.closed) {

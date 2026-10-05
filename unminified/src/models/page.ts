@@ -1,4 +1,4 @@
-import {Layout, PageType} from '@/constants/enums';
+import {TitleOption, Layout, PageType} from '@/constants/enums';
 import {CbCallbacksInterface, TimeLogs, PageOptions, HostedPageData} from '@/interfaces/cb-types';
 import Callbacks from '@/callbacks/index';
 import {CHECKOUT_CALLBACK_KEYS, PORTAL_CALLBACK_KEYS} from '@/constants/callbacks';
@@ -12,6 +12,7 @@ export default class Page {
   name: string;
   options: {} = {};
   layout?: Layout;
+  title?: TitleOption;
 
   constructor(pageType: PageType, options: PageOptions) {
     this.type = pageType;
@@ -32,6 +33,10 @@ export default class Page {
 
     if (typeof options.layout !== 'undefined') {
       this.layout = options.layout;
+    }
+
+    if (typeof options.title !== 'undefined') {
+      this.title = options.title;
     }
 
     if (options.hostedPage && typeof options.hostedPage !== 'function') {

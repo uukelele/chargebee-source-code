@@ -3,7 +3,7 @@ import Urls from '@/models/urls';
 import Helpers from '@/helpers/index';
 import {CLOSE} from '@/constants/callbacks';
 import {CbCallbacksInterface} from '@/interfaces/cb-types';
-import {Layout, PageCategory} from '@/constants/enums';
+import {TitleOption, Layout, PageCategory} from '@/constants/enums';
 import Logger from '@/utils/logger_old';
 import {isWindowsOS, isSafariMacOS, isMobileSafari, hasTransientUserActivation} from '@/utils/utility-functions';
 import EnvConstants from '@/constants/environment';
@@ -26,6 +26,7 @@ export default class CbWindowManager implements Manager {
   windowOpened: boolean;
   redirectMode: boolean;
   layout: Layout;
+  title?: TitleOption;
 
   constructor({redirectMode = false} = {}) {
     this.redirectMode = redirectMode;
@@ -37,6 +38,10 @@ export default class CbWindowManager implements Manager {
 
   setLayout(layout: Layout) {
     this.layout = layout;
+  }
+
+  setTitle(title?: TitleOption) {
+    this.title = title;
   }
 
   showLoader(): void {
@@ -75,6 +80,8 @@ export default class CbWindowManager implements Manager {
         this.layout && srcUrl.searchParams.append('layout', this.layout);
         type == PageCategory.PORTAL_PAGE && businessEntityId && srcUrl.searchParams.append('be_id', businessEntityId);
         type == PageCategory.PORTAL_PAGE && brandId && srcUrl.searchParams.append('brand_id', brandId);
+        const hpTitle = Helpers.getTitleOptions(this.title);
+        hpTitle && srcUrl.searchParams.append('hp_title', hpTitle);
         _url = srcUrl.href;
       } catch (err) {
         Logger.error(err);
@@ -89,6 +96,7 @@ export default class CbWindowManager implements Manager {
         if (typeof this.layout !== 'undefined') {
           srcUrl += `&layout=${this.layout}`;
         }
+        srcUrl += Helpers.getTitleQueryParamForHostedPage(this.title);
         _url = srcUrl;
       }
     }
@@ -206,6 +214,8 @@ export default class CbWindowManager implements Manager {
           businessEntityId &&
           urlWithParam.searchParams.append('be_id', businessEntityId);
         type == PageCategory.PORTAL_PAGE && brandId && urlWithParam.searchParams.append('brand_id', brandId);
+        const hpTitle = Helpers.getTitleOptions(this.title);
+        hpTitle && urlWithParam.searchParams.append('hp_title', hpTitle);
 
         if (this.redirectMode) {
           this.window.location.href = urlWithParam.href;
@@ -226,7 +236,7 @@ export default class CbWindowManager implements Manager {
           type == PageCategory.PORTAL_PAGE
             ? Helpers.getBeIdQueryParamForPortal() + Helpers.getBrIdQueryParamForPortal()
             : ''
-        }`;
+        }${Helpers.getTitleQueryParamForHostedPage(this.title)}`;
         if (this.redirectMode) {
           this.window.location.href = urlWithParam;
         } else {

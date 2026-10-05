@@ -1,4 +1,4 @@
-import {Layout} from '@/constants/enums';
+import {TitleOption, Layout} from '@/constants/enums';
 import {CbCallbacksInterface} from '@/interfaces/cb-types';
 
 export default interface CbManager {
@@ -9,8 +9,10 @@ export default interface CbManager {
   show(): void;
   setCallBacks(callbacks: CbCallbacksInterface): void;
   setLayout(layout: Layout): void;
+  setTitle(title?: TitleOption): void;
   type: ManagerType;
   layout: Layout;
+  title?: TitleOption;
 }
 
 export enum ManagerType {

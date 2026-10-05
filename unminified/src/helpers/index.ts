@@ -1,4 +1,4 @@
-import {Layout, PageType} from '@/constants/enums';
+import {TitleOption, TitleOptions, Layout, PageType} from '@/constants/enums';
 import Page from '@/models/page';
 import CbInstance from '@/models/cb-instance';
 import Ids from '@/constants/ids';
@@ -262,5 +262,14 @@ export default class Helpers {
   static getBrIdQueryParamForPortal(): string {
     let brId = this.getBrandId();
     return brId ? '&brand_id=' + brId : '';
+  }
+
+  static getTitleOptions(title?: TitleOption): TitleOption | undefined {
+    return title === TitleOptions.HIDE || title === TitleOptions.SHOW ? title : undefined;
+  }
+
+  static getTitleQueryParamForHostedPage(title?: TitleOption): string {
+    const hpTitle = this.getTitleOptions(title);
+    return hpTitle ? `&hp_title=${hpTitle}` : '';
   }
 }

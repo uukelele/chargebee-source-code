@@ -24,6 +24,8 @@ export class HostedPagePluginImpl extends PluginLoader implements HostedPagePlug
     let srcUrl = new URL(url);
     srcUrl.searchParams.append('hp_opener', 'chargebee');
     srcUrl.searchParams.append('hp_referrer', Helpers.getReferrer());
+    const hpTitle = Helpers.getTitleOptions(options.title);
+    hpTitle && srcUrl.searchParams.append('hp_title', hpTitle);
     return new CheckoutImpl(srcUrl, options.callbacks);
   }
 }

@@ -6,7 +6,7 @@ import Ids from '@/constants/ids';
 import Urls from '@/models/urls';
 import {CLOSE} from '@/constants/callbacks';
 import {CbCallbacksInterface} from '@/interfaces/cb-types';
-import {Layout, PageCategory} from '@/constants/enums';
+import {TitleOption, TitleOptions, Layout, PageCategory} from '@/constants/enums';
 import {V4LoaderIconSVG} from '@/hosted_fields/component/templates/loader-template';
 import {strToHTML} from '@/hosted_fields/common/dom-utils';
 import Logger from '@/utils/logger_old';
@@ -18,6 +18,7 @@ export default class CbIframeManager implements Manager {
   bodySettings: {} = {};
   callbacks: CbCallbacksInterface;
   layout: Layout;
+  title?: TitleOption;
 
   init(): void {
     this.attachIframeAndLoader();
@@ -26,6 +27,10 @@ export default class CbIframeManager implements Manager {
 
   setLayout(layout: Layout) {
     this.layout = layout;
+  }
+
+  setTitle(title?: TitleOption) {
+    this.title = title;
   }
 
   showLoader(): void {
@@ -64,6 +69,10 @@ export default class CbIframeManager implements Manager {
     let cbContainer = window.document.getElementById(Ids.CONTAINER);
     let logo = window.document.getElementById(Ids.CB_HEADER_LOGO);
     let loadingBar = window.document.getElementById(Ids.CB_LOADING_BAR);
+    let loaderHeader = window.document.getElementById(Ids.CB_LOADER_HEADER);
+    if (loaderHeader) {
+      loaderHeader.style.display = Helpers.getTitleOptions(this.title) === TitleOptions.HIDE ? 'none' : '';
+    }
     cbContainer.style.background = 'rgba(0,0,0,.702)';
     cbContainer.style.display = 'block';
     let styleConfig = Helpers.getCbInstance().styleConfig;
@@ -141,12 +150,15 @@ export default class CbIframeManager implements Manager {
           srcUrl.searchParams.append('brand_id', brandId);
         }
       }
+      const hpTitle = Helpers.getTitleOptions(this.title);
+      hpTitle && srcUrl.searchParams.append('hp_title', hpTitle);
       srcUrl.searchParams.append('window_referrer', window.location.href);
       cbFrame.src = srcUrl.href;
     } catch (err) {
       Logger.error(err);
       let separator = url.indexOf('?') !== -1 ? (url[url.length - 1] == '&' ? '' : '&') : '?';
       let srcUrl: string;
+      const hpTitleSuffix = Helpers.getTitleQueryParamForHostedPage(this.title);
       if (typeof this.layout !== 'undefined') {
         srcUrl = `${url}${separator}hp_opener=chargebee&hp_referrer=${encodeURIComponent(referrer)}&layout=${
           this.layout
@@ -154,13 +166,13 @@ export default class CbIframeManager implements Manager {
           type == PageCategory.PORTAL_PAGE
             ? Helpers.getBeIdQueryParamForPortal() + Helpers.getBrIdQueryParamForPortal()
             : ''
-        }`;
+        }${hpTitleSuffix}`;
       } else {
         srcUrl = `${url}${separator}hp_opener=chargebee&hp_referrer=${encodeURIComponent(referrer)}${
           type == PageCategory.PORTAL_PAGE
             ? Helpers.getBeIdQueryParamForPortal() + Helpers.getBrIdQueryParamForPortal()
             : ''
-        }`;
+        }${hpTitleSuffix}`;
       }
       cbFrame.src = srcUrl;
     }

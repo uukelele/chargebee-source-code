@@ -368,11 +368,20 @@ export default class StripeApplePayHandler extends ApplepayHandler {
     if (!email && paymentMethod && paymentMethod.billing_details) {
       email = paymentMethod.billing_details.email || null;
     }
+    if (!this.stripePaymentEvent.payerEmail && email) {
+      this.stripePaymentEvent.payerEmail = email;
+    }
 
+    const paymentData = this.getPaymentData();
     return this.confirmPayment({
       paymentMethodType: 'apple_pay',
       paymentMethod: {id: paymentMethod.id},
-      customer: {email: email},
+      shippingAddress: paymentData.shipping_address,
+      cardBillingAddress: paymentData.billing_address,
+      customer: {
+        ...paymentData.customer,
+        email: email || (paymentData.customer && paymentData.customer.email) || null,
+      },
     })
       .then((intent: PaymentIntent) => {
         return this.handleChallengeResult(intent.active_payment_attempt.action_payload);
@@ -419,14 +428,20 @@ export default class StripeApplePayHandler extends ApplepayHandler {
         this.stripePaymentEvent.paymentMethod = result.paymentMethod;
         if (result.paymentMethod) {
           this.stripePaymentEvent.payerName = result.paymentMethod.billing_details.name || '';
-          this.stripePaymentEvent.payerEmail = result.paymentMethod.billing_details.email || '';
+          this.stripePaymentEvent.payerEmail = result.paymentMethod.billing_details.email || email || '';
           this.stripePaymentEvent.paymentMethod.billing_details = result.paymentMethod.billing_details || {};
         }
 
+        const paymentData = this.getPaymentData();
         return this.confirmPayment({
           paymentMethodType: 'apple_pay',
           paymentMethod: {id: result.paymentMethod.id},
-          customer: {email: email},
+          shippingAddress: paymentData.shipping_address,
+          cardBillingAddress: paymentData.billing_address,
+          customer: {
+            ...paymentData.customer,
+            email: email || (paymentData.customer && paymentData.customer.email) || null,
+          },
         });
       })
       .then((intent: PaymentIntent) => {

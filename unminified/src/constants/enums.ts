@@ -10,6 +10,13 @@ export const Layout = {
 
 export type Layout = (typeof Layout)[keyof typeof Layout];
 
+export const TitleOptions = {
+  SHOW: 'show',
+  HIDE: 'hide',
+} as const;
+
+export type TitleOption = (typeof TitleOptions)[keyof typeof TitleOptions];
+
 export enum SectionType {
   SUBSCRIPTION_DETAILS = 'sub_details',
   SUBSCRIPTION_CANCELLATION = 'sub_cancel',
