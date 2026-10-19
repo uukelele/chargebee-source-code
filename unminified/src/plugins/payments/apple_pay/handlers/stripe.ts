@@ -377,10 +377,10 @@ export default class StripeApplePayHandler extends ApplepayHandler {
       paymentMethodType: 'apple_pay',
       paymentMethod: {id: paymentMethod.id},
       shippingAddress: paymentData.shipping_address,
-      cardBillingAddress: paymentData.billing_address,
       customer: {
         ...paymentData.customer,
         email: email || (paymentData.customer && paymentData.customer.email) || null,
+        billingAddress: paymentData.billing_address,
       },
     })
       .then((intent: PaymentIntent) => {

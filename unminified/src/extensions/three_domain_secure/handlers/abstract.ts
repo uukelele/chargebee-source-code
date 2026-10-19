@@ -260,6 +260,13 @@ export default abstract class AbstractThreeDSecureHandler {
       Object.assign(data, {reattempt: this.reattempt});
       this.reattempt = false;
     }
+    const card = this.paymentInfo && this.paymentInfo.card;
+    if (card != null) {
+      const {number, expiryMonth, expiryYear, cvv} = card;
+      if (number != null) {
+        data.vaultRawCard = {number, expiryMonth, expiryYear, cvv};
+      }
+    }
     return IframeClientLoader.then((cbIframeClient) =>
       cbIframeClient.send(
         {

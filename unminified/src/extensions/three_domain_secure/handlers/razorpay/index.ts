@@ -2,6 +2,8 @@ import Errors, {CbError} from '@/hosted_fields/common/errors';
 import AbstractThreeDSecureHandler from '../abstract';
 import {validateRawCardDetails} from '@/extensions/three_domain_secure/common/utils';
 import {PaymentAttempt, PaymentAttemptStatus, AdditionalData} from '@/plugins/three_domain_secure/types';
+import {PaymentIntent} from '@/extensions/three_domain_secure/common/types';
+import {getCurrencyDivisor} from '@/utils/utility-functions';
 import {fetchPaymentIntentStatus} from '@/utils/payments/razorpay';
 import {
   openOtpChallengeInIframe,
@@ -19,6 +21,9 @@ import Utils from '@/utils/payments/utils';
 export default class Razorpay3DSHandler extends AbstractThreeDSecureHandler {
   private gatewayCredential: any;
   private cardOtpFlowEnabled = false;
+  // Set while we close the bank tab. The close watcher cannot tell that apart from the customer
+  // closing it, and must not report a cancel after the payment has already finished.
+  private suppressBankWindowCancel = false;
 
   validate(): boolean {
     const hasRawCard = !!this.paymentInfo.card;
@@ -75,6 +80,7 @@ export default class Razorpay3DSHandler extends AbstractThreeDSecureHandler {
   }
 
   closeWindowIfOpen() {
+    this.suppressBankWindowCancel = true;
     this.parent && this.parent.closeTab();
   }
 
@@ -214,7 +220,7 @@ export default class Razorpay3DSHandler extends AbstractThreeDSecureHandler {
     this.closeWindowIfOpen(); 
     const intent = this.getPaymentIntent();
     const otpIframe = openOtpChallengeInIframe({
-      amountLabel: intent ? `${intent.currency_code} ${intent.amount}` : '',
+      amountLabel: intent ? this.formatOtpAmountLabel(intent) : '',
       cardLast4: this.getCardLast4(),
       redirectUrl: actionPayload.redirect_url,
       timeoutMs: OTP_IFRAME_TIMEOUT_MS,
@@ -296,6 +302,11 @@ export default class Razorpay3DSHandler extends AbstractThreeDSecureHandler {
     });
   }
 
+  private formatOtpAmountLabel(intent: PaymentIntent): string {
+    const divisor = getCurrencyDivisor(intent.currency_code);
+    return `${intent.currency_code} ${(intent.amount / divisor).toFixed(2)}`;
+  }
+
   private getCardLast4(): string {
     const card: any = this.paymentInfo && this.paymentInfo.card;
     const number = card && card.number ? String(card.number).replace(/\s/g, '') : '';
@@ -331,10 +342,6 @@ export default class Razorpay3DSHandler extends AbstractThreeDSecureHandler {
     // CHKOUTENGG-44063: We can't support redirectMode here because razorpay doesn't have redirect support
     if (this.openNewWindowForRazorpay()) {
       this.parent.windowManager.loadURL(redirectUrl);
-      this.parent.windowManager.watchClose(() => {
-        fetchPaymentIntentStatus(this.getPaymentIntent());
-        this.callCancel();
-      });
     }
 
     return this.pollFor3DSCompletion()
@@ -347,16 +354,46 @@ export default class Razorpay3DSHandler extends AbstractThreeDSecureHandler {
       });
   }
 
+  private handleBankWindowClosed(): void {
+    if (this.suppressBankWindowCancel || this.hasTerminalAttempt()) {
+      return;
+    }
+    // The copy we hold is still the pre-challenge intent. Razorpay can close the tab once the
+    // payment is authorized, before the 3DS poll writes that result locally.
+    fetchPaymentIntentStatus(this.getPaymentIntent()).then((intent) => {
+      if (this.suppressBankWindowCancel) {
+        return;
+      }
+      if (intent) {
+        this.setPaymentIntent(intent);
+      }
+      if (this.hasTerminalAttempt()) {
+        return;
+      }
+      this.callCancel();
+    });
+  }
+
+  private hasTerminalAttempt(): boolean {
+    const attempt = this.getPaymentAttempt();
+    return (
+      !!attempt &&
+      (attempt.status === PaymentAttemptStatus.AUTHORIZED || attempt.status === PaymentAttemptStatus.REFUSED)
+    );
+  }
+
   // In the OTP flow the bank tab is best effort: a popup blocker leaves us with no window, and
   // embedded browsers such as Salesforce hand back one without a usable location, both of which
   // throw once the loader URL is assigned. The OTP iframe can still carry the payment, so log the
   // failure and report it. Without the OTP flow the tab is the only way through, so keep letting
   // the error surface.
   private openNewWindowForRazorpay(): boolean {
-    const openWindow = () =>
+    const openWindow = () => {
+      this.suppressBankWindowCancel = false;
       this.parent.openNewWindow({
-        closeCallback: () => fetchPaymentIntentStatus(this.getPaymentIntent()),
+        closeCallback: () => this.handleBankWindowClosed(),
       });
+    };
 
     if (!this.cardOtpFlowEnabled) {
       openWindow();

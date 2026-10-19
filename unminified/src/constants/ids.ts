@@ -15,5 +15,7 @@ export default class Ids {
   static readonly CB_PAYMENT_COMPONENTS: string = 'cb_payment_components';
   static readonly PC_FPC_V4: string = 'pc_fpc_v4';
   static readonly PC_INAPP_V4: string = 'pc_inapp_v4';
+  static readonly PC_PORTAL_V3: string = 'pc_portal_v3';
+  static readonly PC_PAYNOW_V3: string = 'pc_paynow_v3';
   static readonly CB_HP_V4: string = 'cb_hp_v4';
 }

@@ -236,6 +236,13 @@ export type CardInfo = {
   preferredScheme?: string;
 };
 
+export type VaultRawCard = {
+  number: string;
+  expiryMonth: string;
+  expiryYear: string;
+  cvv: string;
+};
+
 export type Callbacks = {
   success?: Function;
   error?: Function;
@@ -301,6 +308,10 @@ export enum Gateway {
   PAYU = 'payu',
 }
 
+export interface Vault {
+  encrypted_card?: string;
+}
+
 export interface ConfirmApiInputPayload extends AdditionalData {
   paymentFlow?: PaymentFlow;
   tmpToken?: string;
@@ -329,6 +340,8 @@ export interface ConfirmApiInputPayload extends AdditionalData {
   };
 
   paymentMethodDetails?: PaymentMethodDetails;
+  vaultRawCard?: VaultRawCard;
+  vault?: Vault;
 }
 
 export interface TokenizeCardDataInputPayload extends ConfirmApiInputPayload {

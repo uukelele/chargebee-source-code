@@ -1,6 +1,6 @@
 import {PaymentMethodType} from '@/internal/payment-intent/types';
+import {buildBillingPaymentMethodDetails} from '@/internal/common/utils';
 import SouthKoreanCardsHandler from './index';
-import Utils from '@/utils/payments/utils';
 
 export default class StripeSouthKoreanCardsHandler extends SouthKoreanCardsHandler {
   constructor(handler: SouthKoreanCardsHandler, ...args) {
@@ -10,9 +10,13 @@ export default class StripeSouthKoreanCardsHandler extends SouthKoreanCardsHandl
     this.isIframeMode = handler.isIframeMode;
   }
 
+
   initPayment() {
+    const paymentMethodDetails = buildBillingPaymentMethodDetails(this.paymentInfo);
+
     return Promise.resolve({
       paymentMethodType: PaymentMethodType.SOUTH_KOREAN_CARDS,
+      ...(paymentMethodDetails ? {paymentMethodDetails} : {}),
     });
   }
 }

@@ -142,7 +142,9 @@ export default class DirectApplePayHandler extends ApplepayHandler {
         referer &&
         (referrerModule === Ids.CB_PAYMENT_COMPONENTS ||
           referrerModule === Ids.PC_FPC_V4 ||
-          referrerModule === Ids.PC_INAPP_V4)
+          referrerModule === Ids.PC_INAPP_V4 ||
+          referrerModule === Ids.PC_PORTAL_V3 ||
+          referrerModule === Ids.PC_PAYNOW_V3)
       ) {
         try {
           const refererDomain = new URL(referer).hostname;

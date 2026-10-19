@@ -238,7 +238,9 @@ export default class AdyenApplepayHandler extends ApplepayHandler {
       applePayMethod.configuration &&
       (referrerModule === Ids.CB_PAYMENT_COMPONENTS ||
         referrerModule === Ids.PC_FPC_V4 ||
-        referrerModule === Ids.PC_INAPP_V4)
+        referrerModule === Ids.PC_INAPP_V4 ||
+        referrerModule === Ids.PC_PORTAL_V3 ||
+        referrerModule === Ids.PC_PAYNOW_V3)
     ) {
       config.onValidateMerchant = this.buildMerchantValidator(gwData, refererDomain, applePayMethod);
     }
@@ -290,7 +292,14 @@ export default class AdyenApplepayHandler extends ApplepayHandler {
       const cbInstance = Helpers.getCbInstance();
       const module = cbInstance && cbInstance.options && cbInstance.options.referrerModule;
 
-      if (referer && (module === Ids.CB_PAYMENT_COMPONENTS || module === Ids.PC_FPC_V4 || module === Ids.PC_INAPP_V4)) {
+      if (
+        referer &&
+        (module === Ids.CB_PAYMENT_COMPONENTS ||
+          module === Ids.PC_FPC_V4 ||
+          module === Ids.PC_INAPP_V4 ||
+          module === Ids.PC_PORTAL_V3 ||
+          module === Ids.PC_PAYNOW_V3)
+      ) {
         const domain = new URL(referer).hostname;
         this.kvl({action: 'apple_pay_referer', referer_domain: domain, gateway: 'adyen'});
         return domain;

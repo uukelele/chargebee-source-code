@@ -21,6 +21,7 @@ import Errors, {CbError} from '@/hosted_fields/common/errors';
 import {PaymentOptions} from '@/hosted_fields/common/base-types';
 import {PaymentRedirectTimeouts} from '@/constants/enums';
 import {constructPaymentIntentApiPayload} from '@/internal/common/utils';
+import Ids from '@/constants/ids';
 import {ApplePayMountOptions} from '@/plugins/payments/apple_pay/types';
 
 export default class PaymentIntentHandler extends RedirectHandler {
@@ -247,11 +248,31 @@ export default class PaymentIntentHandler extends RedirectHandler {
       Object.assign(data, {reattempt: this.reattempt});
       this.reattempt = false;
     }
+    if (
+      this.paymentInfo &&
+      typeof this.paymentInfo.retainPaymentMethod === 'boolean' &&
+      data.retainPaymentMethod === undefined &&
+      this.isPaymentComponentFlow()
+    ) {
+      data.retainPaymentMethod = this.paymentInfo.retainPaymentMethod;
+    }
     return sendToMasterIframe(
       M.Actions.ConfirmPaymentIntent,
       constructPaymentIntentApiPayload(this.paymentIntent, data),
       {timeout: 120000}
     ).then(this.handleConfirmPaymentResponse);
+  }
+
+  protected isPaymentComponentFlow(): boolean {
+    const cbInstance = Helpers.getCbInstance();
+    const referrerModule = cbInstance && cbInstance.options && cbInstance.options.referrerModule;
+    return (
+      !!this.paymentInfo.paymentComponent ||
+      referrerModule === Ids.CB_PAYMENT_COMPONENTS ||
+      referrerModule === Ids.PC_FPC_V4 ||
+      referrerModule === Ids.PC_INAPP_V4 ||
+      referrerModule === Ids.PC_PAYNOW_V3
+    );
   }
 
   protected handleConfirmPaymentResponse = (intentResponse: PaymentIntentResponse) => {

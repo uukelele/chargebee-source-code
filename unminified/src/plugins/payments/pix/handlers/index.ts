@@ -1,7 +1,18 @@
-import {PixPayment, PAYMENT_AUTH_REDIRECT_WINDOW_NAME, BasePaymentInfo} from '@/hosted_fields/common/base-types';
+import {
+  PixPayment,
+  PAYMENT_AUTH_REDIRECT_WINDOW_NAME,
+  BasePaymentInfo,
+  PaymentOptions,
+} from '@/hosted_fields/common/base-types';
 import {CbError} from '@/hosted_fields/common/errors';
 import PaymentIntentHandler from '@/internal/payment-intent/handler';
-import {PaymentMethodType, PaymentAttempt, PaymentAttemptStatus} from '@/internal/payment-intent/types';
+import {
+  Callbacks,
+  Gateway,
+  PaymentMethodType,
+  PaymentAttempt,
+  PaymentAttemptStatus,
+} from '@/internal/payment-intent/types';
 import CbWindowManager from '@/models/cb-window-manager';
 import {PaymentRedirectTimeouts} from '@/constants/enums';
 
@@ -10,6 +21,18 @@ export default class PixHandler extends PaymentIntentHandler implements PixPayme
 
   constructor(...args) {
     super(...args);
+  }
+
+  handlePayment(options: PaymentOptions | any, callbacks?: Callbacks): Promise<any> {
+    const intent = this.getPaymentIntent();
+    const isStripeBridgeCall =
+      !!intent && intent.gateway === Gateway.STRIPE && typeof (options || {}).paymentIntent !== 'function';
+
+    if (!isStripeBridgeCall) {
+      return super.handlePayment(options);
+    }
+
+    return this.getGatewayHandler(intent).then((handler) => handler.initiateAuthorization(options, callbacks));
   }
 
   initPayment() {

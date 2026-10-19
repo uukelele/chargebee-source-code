@@ -1,6 +1,6 @@
-import {PaymentMethodType} from '../../../../internal/payment-intent/types';
+import {PaymentMethodType} from '@/internal/payment-intent/types';
+import {buildBillingPaymentMethodDetails} from '@/internal/common/utils';
 import PaypayHandler from './index';
-import Utils from '@/utils/payments/utils';
 
 export default class StripePaypayHandler extends PaypayHandler {
   constructor(handler: PaypayHandler, ...args) {
@@ -11,8 +11,11 @@ export default class StripePaypayHandler extends PaypayHandler {
   }
 
   initPayment() {
+    const paymentMethodDetails = buildBillingPaymentMethodDetails(this.paymentInfo);
+
     return Promise.resolve({
       paymentMethodType: PaymentMethodType.PAYPAY,
+      ...(paymentMethodDetails ? {paymentMethodDetails} : {}),
     });
   }
 }

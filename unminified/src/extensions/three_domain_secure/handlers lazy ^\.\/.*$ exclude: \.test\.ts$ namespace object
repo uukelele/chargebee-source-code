@@ -2,12 +2,12 @@ var map = {
 	"./Common": [
 		371,
 		10,
-		98
+		100
 	],
 	"./Common/": [
 		371,
 		10,
-		98
+		100
 	],
 	"./Common/Factory/HandlerFactory": [
 		555,
@@ -22,48 +22,48 @@ var map = {
 	"./Common/RawCard3DSHandler": [
 		440,
 		10,
-		388
+		390
 	],
 	"./Common/RawCard3DSHandler.ts": [
 		440,
 		10,
-		388
+		390
 	],
 	"./Common/UnifiedGatewaySDKHandler": [
 		441,
 		10,
-		389
+		391
 	],
 	"./Common/UnifiedGatewaySDKHandler.ts": [
 		441,
 		10,
-		389
+		391
 	],
 	"./Common/index": [
 		371,
 		10,
-		98
+		100
 	],
 	"./Common/index.ts": [
 		371,
 		10,
-		98
+		100
 	],
 	"./Common/types": [
 		415,
-		469
+		470
 	],
 	"./Common/types.ts": [
 		415,
-		469
+		470
 	],
 	"./abstract": [
 		318,
-		387
+		389
 	],
 	"./abstract.ts": [
 		318,
-		387
+		389
 	],
 	"./adyen": [
 		423,
@@ -91,11 +91,11 @@ var map = {
 	],
 	"./adyen/types": [
 		729,
-		470
+		471
 	],
 	"./adyen/types.ts": [
 		729,
-		470
+		471
 	],
 	"./bank_of_america": [
 		431,
@@ -123,11 +123,11 @@ var map = {
 	],
 	"./bluesnap/BluesnapGatewayConfig": [
 		496,
-		398
+		400
 	],
 	"./bluesnap/BluesnapGatewayConfig.ts": [
 		496,
-		398
+		400
 	],
 	"./bluesnap/index": [
 		427,
@@ -139,11 +139,11 @@ var map = {
 	],
 	"./bluesnap/types": [
 		730,
-		471
+		472
 	],
 	"./bluesnap/types.ts": [
 		730,
-		471
+		472
 	],
 	"./braintree": [
 		424,
@@ -168,20 +168,20 @@ var map = {
 	"./braintree/redirect": [
 		257,
 		5,
-		399
+		401
 	],
 	"./braintree/redirect.ts": [
 		257,
 		5,
-		399
+		401
 	],
 	"./braintree/types": [
 		357,
-		472
+		473
 	],
 	"./braintree/types.ts": [
 		357,
-		472
+		473
 	],
 	"./chargebee_payments": [
 		437,

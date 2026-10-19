@@ -9,11 +9,13 @@ type RuntimeAdyenKlarnaAdditionalData = NonNullable<KlarnaPaymentInfo['additiona
   subscriptionEstimateJson?: string;
   subscriptionMandateHandle?: string;
   customer?: Customer;
+  paymentType?: string;
 };
 
 type RuntimeAdyenKlarnaPaymentInfo = KlarnaPaymentInfo & {
   additionalInfo?: Record<string, string>;
   additionalData?: RuntimeAdyenKlarnaAdditionalData;
+  retainPaymentMethod?: boolean;
 };
 
 export default class AdyenKlarnaHandler extends KlarnaHandler {
@@ -100,8 +102,6 @@ export default class AdyenKlarnaHandler extends KlarnaHandler {
     // Klarna risk checks benefit from shopper name/phone and a delivery address. OpenPay's AdyenKlarna
     // plugin maps `customer` → shopperName/shopperEmail/telephoneNumber and `shippingAddress` → Adyen
     // deliveryAddress (falling back to billing when absent). Mirrors the Stripe Klarna handler.
-    // (retainPaymentMethod is intentionally omitted: Adyen derives storage from the subscription signal
-    //  via storePaymentMethod/recurringProcessingModel, not a client flag.)
     const shippingAddress = this.getShippingAddress();
     const additionalCustomer = runtimeAdditionalData && runtimeAdditionalData.customer;
     const mergedCustomer = sanitizeCustomerInfo({
@@ -110,6 +110,14 @@ export default class AdyenKlarnaHandler extends KlarnaHandler {
     } as Customer);
     const hasCustomer =
       !isObjectEmpty(mergedCustomer) && !!(mergedCustomer.firstName || mergedCustomer.lastName || mergedCustomer.phone);
+
+    // cb-app defaults retainPaymentMethod to true and maps only `recurring` / `one_time` payment types,
+    // so a one-time Klarna reaches OpenPay's non-tokenising path only through retainPaymentMethod=false.
+    // Only false is sent: omitting the field keeps subscription checkouts storing the Klarna token.
+    const paymentType = runtimeAdditionalData && runtimeAdditionalData.paymentType;
+    const isOneTime =
+      runtimePaymentInfo.retainPaymentMethod === false ||
+      (typeof paymentType === 'string' && paymentType.toUpperCase() === 'ONETIME');
 
     return Promise.resolve({
       paymentMethodType: PaymentMethodType.KLARNA,
@@ -126,6 +134,7 @@ export default class AdyenKlarnaHandler extends KlarnaHandler {
       ...(shippingAddress && !isObjectEmpty(shippingAddress) ? {shippingAddress: {...shippingAddress}} : {}),
       ...(hasCustomer ? {customer: mergedCustomer} : {}),
       ...(hasAdditionalInfoKeys ? {additionalInfo: mergedAdditionalInfo} : {}),
+      ...(isOneTime ? {retainPaymentMethod: false} : {}),
     });
   }
 

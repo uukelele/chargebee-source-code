@@ -14,7 +14,7 @@ import {adyenRenderQrAndAwaitAuthorization} from '@/utils/payments/adyen';
 const PIX_QR_FALLBACK_TIMER_SECONDS = 15 * 60;
 
 /**
- * Pix on Adyen, one-time and Pix Automático.
+ * Pix on Adyen,  one-time and Pix Automático.
  *
  * The other Pix gateways redirect the shopper to the provider, which is why the base handler waits
  * on a `redirect_url`. Adyen answers a `qrCode` action instead, so the code is drawn in our own QR
@@ -36,6 +36,36 @@ export default class AdyenPixHandler extends PixHandler {
     this.windowManager = handler.windowManager;
     this.isRedirectMode = handler.isRedirectMode;
     this.isIframeMode = handler.isIframeMode;
+  }
+
+  /**
+   * Carries the caller's one-time intent onto the confirm payload, which `PixHandler.initPayment`
+   * builds by hand and so drops.
+   *
+   * Without this the field never leaves the browser — `initiateAuthorization` confirms with exactly
+   * what `initPayment` returns — so cb-app keeps its `retainPaymentMethod` default of true and a
+   * Pay Now Pix, paid with a freshly entered code, is vaulted as a saved payment source even though
+   * the collect asked for `retain_payment_source: false`. The collect cannot assert it on its own
+   * either: what the attempt recorded at confirm is reapplied over the collect's parameter, and the
+   * webhook consumption that settles the code later reads that same attempt.
+   *
+   * Only `false` is forwarded, as the Stripe Pix, Alipay and PayTo handlers do: omitting the field
+   * leaves the backend on its default rather than asserting a value the caller never set. An
+   * Automático enrolment is unaffected — the portal's sub_handle path sends no `paymentType` at
+   * all, and a subscription checkout sends `RECURRING`.
+   */
+  initPayment(): Promise<any> {
+    return super.initPayment().then((paymentData: any) => {
+      const paymentType = paymentData && paymentData.paymentType;
+      const {retainPaymentMethod} = (this.paymentInfo || {}) as {retainPaymentMethod?: boolean};
+      if (
+        retainPaymentMethod === false ||
+        (typeof paymentType === 'string' && paymentType.toUpperCase() === 'ONETIME')
+      ) {
+        paymentData.retainPaymentMethod = false;
+      }
+      return paymentData;
+    });
   }
 
   protected handlePaymentAttempt(paymentAttempt: PaymentAttempt): Promise<any> {

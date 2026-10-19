@@ -1,6 +1,7 @@
+import {PaymentOptions} from '@/hosted_fields/common/base-types';
 import {CbError} from '@/hosted_fields/common/errors';
 import PaymentIntentHandler from '@/internal/payment-intent/handler';
-import {PaymentAttempt, PaymentAttemptStatus, PaymentMethodType} from '@/internal/payment-intent/types';
+import {Callbacks, PaymentAttempt, PaymentAttemptStatus, PaymentMethodType} from '@/internal/payment-intent/types';
 import {loadScriptUsingPredicate} from '@/extensions/three_domain_secure/common/utils';
 import LightBox from '@/extensions/three_domain_secure/common/lightbox';
 import {isStripeV3Available} from '@/utils/payments/stripe';
@@ -50,6 +51,26 @@ export default class StripeRealTimeApmHandler extends PaymentIntentHandler {
 
   constructor(...args) {
     super(...args);
+  }
+
+  handlePayment(options: PaymentOptions | any, callbacks?: Callbacks): Promise<any> {
+    const opts = options || {};
+    const paymentInfo = opts.paymentInfo || options;
+    const resolvedCallbacks = opts.callbacks || callbacks;
+    const paymentIntent =
+      typeof opts.paymentIntent === 'function' ? opts.paymentIntent() : Promise.resolve(this.getPaymentIntent());
+
+    return paymentIntent
+      .then((intent) => {
+        this.setPaymentIntent(intent);
+        return this.getGatewayHandler(this.getPaymentIntent());
+      })
+      .then((handler) => {
+        if (opts.redirectMode !== undefined) {
+          handler.setRedirectMode(opts.redirectMode);
+        }
+        return handler.initiateAuthorization(paymentInfo, resolvedCallbacks);
+      });
   }
 
   private loadStripeJs(): Promise<any> {

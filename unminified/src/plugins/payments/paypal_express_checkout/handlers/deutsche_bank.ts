@@ -55,8 +55,10 @@ export default class DeutscheBankPayPalHandler extends PaypalHandler {
   }
 
   getSessionId() {
+    // Without reattempt, a confirm on an attempt already in requires_challenge (e.g. on remount) makes the
+    // backend verify a payment the shopper never approved, which Deutsche Bank refuses (error 9000).
     return this.initPayment().then((data) =>
-      this.confirmPayment(data).then((response: PaymentAttempt) => {
+      this.confirmPayment({...data, reattempt: true}).then((response: PaymentAttempt) => {
         return response.id_at_gateway;
       })
     );
