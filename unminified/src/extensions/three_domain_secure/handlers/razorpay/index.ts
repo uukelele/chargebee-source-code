@@ -16,14 +16,23 @@ import {Master as M} from '@/hosted_fields/common/enums';
 import Ids from '@/constants/ids';
 import {constructPaymentIntentApiPayload} from '@/internal/common/utils';
 import {ConfirmApiInputPayload, PaymentIntentResponse} from '@/internal/payment-intent/types';
+import {PAYMENT_AUTH_REDIRECT_WINDOW_NAME} from '@/hosted_fields/common/base-types';
+import CbWindowManager from '@/models/cb-window-manager';
 import Utils from '@/utils/payments/utils';
 
 export default class Razorpay3DSHandler extends AbstractThreeDSecureHandler {
   private gatewayCredential: any;
   private cardOtpFlowEnabled = false;
+  // Resolved once the pre-opened bank tab exists. Confirm waits on this so a blocked popup
+  // can be recovered by the consent overlay before the payment continues.
+  private bankWindowReady: Promise<boolean> = Promise.resolve(true);
+  // The customer closed the bank tab or the consent overlay.
+  private customerClosedBankWindow = false;
   // Set while we close the bank tab. The close watcher cannot tell that apart from the customer
   // closing it, and must not report a cancel after the payment has already finished.
   private suppressBankWindowCancel = false;
+  // The customer close is handled once. A second watcher tick must not cancel again.
+  private bankCloseHandled = false;
 
   validate(): boolean {
     const hasRawCard = !!this.paymentInfo.card;
@@ -63,6 +72,8 @@ export default class Razorpay3DSHandler extends AbstractThreeDSecureHandler {
   }
 
   handlePayment() {
+    this.customerClosedBankWindow = false;
+    this.bankCloseHandled = false;
     const paymentflow = this.getPaymentFlow();
     if (paymentflow) {
       paymentflow
@@ -82,6 +93,15 @@ export default class Razorpay3DSHandler extends AbstractThreeDSecureHandler {
   closeWindowIfOpen() {
     this.suppressBankWindowCancel = true;
     this.parent && this.parent.closeTab();
+  }
+
+  protected callCancel(): Promise<void> {
+    this.customerClosedBankWindow = true;
+    return super.callCancel();
+  }
+
+  private isCanceled(): boolean {
+    return this.customerClosedBankWindow;
   }
 
   private getAdditionalParams(): AdditionalData {
@@ -144,6 +164,10 @@ export default class Razorpay3DSHandler extends AbstractThreeDSecureHandler {
   }
 
   private confirmAfterCheckingOtpPref(payload: any): Promise<any> {
+    // Pre-open while the click's user gesture is still valid, but without the consent overlay:
+    // we don't yet know a 3DS challenge needs this tab, and a frictionless payment never will.
+    // redirectToBank shows the overlay to recover a block once a challenge actually needs it.
+    this.openNewWindowForRazorpay(false);
     return this.loadGatewayCredential()
       .catch((err) => {
         this.kvl({
@@ -158,13 +182,12 @@ export default class Razorpay3DSHandler extends AbstractThreeDSecureHandler {
           action: 'razorpay_card_otp_flow',
           card_otp_flow: this.cardOtpFlowEnabled,
         });
-        // Always pre-open the bank window so popup blockers do not block redirect.
-        // If Razorpay returns otp_generate / otp_required, we close it and use the OTP iframe.
-        this.openNewWindowForRazorpay();
-        if (!this.cardOtpFlowEnabled) {
-          return this.confirmPayment(payload);
-        }
-        return this.confirmPayment(this.withOtpBrowserContext(payload));
+        return this.bankWindowReady.then(() => {
+          if (this.isCanceled()) {
+            return;
+          }
+          return this.confirmPayment(this.cardOtpFlowEnabled ? this.withOtpBrowserContext(payload) : payload);
+        });
       });
   }
 
@@ -185,6 +208,10 @@ export default class Razorpay3DSHandler extends AbstractThreeDSecureHandler {
   protected handlePaymentAttempt(paymentAttempt: PaymentAttempt): Promise<any> {
     switch (paymentAttempt.status) {
       case PaymentAttemptStatus.REQUIRES_CHALLENGE:
+        // The customer already closed the bank tab. Do not open it again for this challenge.
+        if (this.isCanceled()) {
+          return Promise.resolve(false);
+        }
         this.callChange();
         if (this.isOtpChallenge(paymentAttempt)) {
           return this.handleOtpChallenge();
@@ -217,7 +244,7 @@ export default class Razorpay3DSHandler extends AbstractThreeDSecureHandler {
     // rather than leave a loader tab parked behind the OTP page. "Complete on bank's page" opens
     // its own tab, and the click in the iframe carries user activation up to this page, so
     // redirectToBank can still open one there without tripping the popup blocker.
-    this.closeWindowIfOpen(); 
+    this.closeWindowIfOpen();
     const intent = this.getPaymentIntent();
     const otpIframe = openOtpChallengeInIframe({
       amountLabel: intent ? this.formatOtpAmountLabel(intent) : '',
@@ -293,7 +320,13 @@ export default class Razorpay3DSHandler extends AbstractThreeDSecureHandler {
   // customer over on exactly the terms the non-OTP flow already proved: redirectToBank owns the
   // tab, and its watchClose reports the real close instead of a guess at one.
   private completeOnBankPage(paymentAttempt: PaymentAttempt): Promise<any> {
+    if (this.isCanceled()) {
+      return Promise.resolve(false);
+    }
     return this.redirectToBank(paymentAttempt).then((data) => {
+      if (this.isCanceled()) {
+        return false;
+      }
       if (data && data['version_2']) {
         this.setPaymentIntent(data.payment_intent);
         return this.handlePaymentAttempt(this.getPaymentAttempt());
@@ -340,38 +373,71 @@ export default class Razorpay3DSHandler extends AbstractThreeDSecureHandler {
   private redirectToBank(paymentAttempt: PaymentAttempt): Promise<any> {
     const redirectUrl = paymentAttempt.action_payload.redirect_url;
     // CHKOUTENGG-44063: We can't support redirectMode here because razorpay doesn't have redirect support
-    if (this.openNewWindowForRazorpay()) {
-      this.parent.windowManager.loadURL(redirectUrl);
-    }
-
-    return this.pollFor3DSCompletion()
-      .then((data) => {
-        return data;
+    // The tab is now known to be needed for the challenge: show the consent overlay to recover a
+    // block, since the pre-open's click may no longer satisfy transient activation by this point.
+    // loadBankUrl waits for that attempt to settle so a tab that only opens via the overlay still
+    // gets navigated to the real URL, instead of being left on the blank loader page. If the tab
+    // still isn't open, loadBankUrl is a no-op and polling continues regardless.
+    this.openNewWindowForRazorpay(true);
+    return this.bankWindowReady
+      .then(() => {
+        if (!this.isCanceled()) {
+          this.loadBankUrl(redirectUrl);
+        }
+        return this.pollFor3DSCompletion();
       })
       .finally(() => {
-        // Remove tab
         this.closeWindowIfOpen();
       });
   }
 
-  private handleBankWindowClosed(): void {
-    if (this.suppressBankWindowCancel || this.hasTerminalAttempt()) {
+  // loadURL throws when the loader document has already navigated cross-origin.
+  // Fall back to a fresh window.open, the same recovery CbWindowManager.open() uses.
+  private loadBankUrl(url: string): void {
+    const manager = this.parent && this.parent.windowManager;
+    if (!manager) {
       return;
     }
+    try {
+      manager.loadURL(url);
+    } catch (err) {
+      window.open(url, 'cb-pages');
+    }
+  }
+
+  private handleBankWindowClosed(): void {
+    if (this.suppressBankWindowCancel || this.hasTerminalAttempt() || this.bankCloseHandled) {
+      return;
+    }
+    this.bankCloseHandled = true;
+    // The customer closed the tab directly, so CbWindowManager's watchClose callback fires but
+    // never calls close()/resetWindow() itself (unlike every other path in this file that tears
+    // the tab down). Without this, windowManager.windowOpened stays stale at true and the next
+    // handlePayment()'s openNewWindowForRazorpay() wrongly believes a tab is already open and
+    // skips reopening one.
+    this.closeWindowIfOpen();
+    // Set before dismissing the overlay. That dismiss rejects the consent promise, and
+    // must not be reported as a second cancel.
+    this.customerClosedBankWindow = true;
     // The copy we hold is still the pre-challenge intent. Razorpay can close the tab once the
     // payment is authorized, before the 3DS poll writes that result locally.
-    fetchPaymentIntentStatus(this.getPaymentIntent()).then((intent) => {
-      if (this.suppressBankWindowCancel) {
-        return;
-      }
-      if (intent) {
-        this.setPaymentIntent(intent);
-      }
-      if (this.hasTerminalAttempt()) {
-        return;
-      }
-      this.callCancel();
-    });
+    // The main flow returns early once customerClosedBankWindow is set, so this chain is the only
+    // place a REFUSED result gets reported.
+    fetchPaymentIntentStatus(this.getPaymentIntent())
+      .then((intent) => {
+        if (intent) {
+          this.setPaymentIntent(intent);
+        }
+        // AUTHORIZED reports success and REFUSED reports the payment error. A challenge that is
+        // still open is the customer closing the tab.
+        if (this.hasTerminalAttempt()) {
+          return this.handlePaymentAttempt(this.getPaymentAttempt());
+        }
+        this.callCancel();
+      })
+      .catch((err) => {
+        this.callError(err instanceof CbError ? err : new CbError(err));
+      });
   }
 
   private hasTerminalAttempt(): boolean {
@@ -382,51 +448,76 @@ export default class Razorpay3DSHandler extends AbstractThreeDSecureHandler {
     );
   }
 
-  // In the OTP flow the bank tab is best effort: a popup blocker leaves us with no window, and
-  // embedded browsers such as Salesforce hand back one without a usable location, both of which
-  // throw once the loader URL is assigned. The OTP iframe can still carry the payment, so log the
-  // failure and report it. Without the OTP flow the tab is the only way through, so keep letting
-  // the error surface.
-  private openNewWindowForRazorpay(): boolean {
-    const openWindow = () => {
-      this.suppressBankWindowCancel = false;
-      this.parent.openNewWindow({
-        closeCallback: () => this.handleBankWindowClosed(),
-      });
-    };
-
-    if (!this.cardOtpFlowEnabled) {
-      openWindow();
-      return true;
+  // Reuses the tab already open for this attempt. windowOpened is set by CbWindowManager once
+  // openDirect succeeds and cleared on close, so redirectToBank picks up the tab pre-opened by
+  // confirmAfterCheckingOtpPref, and a tab closed for the OTP iframe gets reopened.
+  private openNewWindowForRazorpay(enablePopupConsentOverlay = false): void {
+    this.suppressBankWindowCancel = false;
+    this.bankCloseHandled = false;
+    const manager = this.parent && this.parent.windowManager;
+    if (!manager || !manager.windowOpened) {
+      this.bankWindowReady = this.openBankTabWithConsent(enablePopupConsentOverlay);
     }
-
-    try {
-      openWindow();
-    } catch (err) {
-      const cause = err as Error;
-      this.kvl({
-        action: 'razorpay_open_window_failed',
-        error: (cause && cause.message) || String(err),
-      });
-      return false;
-    }
-    if (!this.hasUsableBankWindow()) {
-      this.kvl({
-        action: 'razorpay_open_window_failed',
-        error: 'bank window is unavailable or has no location',
-      });
-      return false;
-    }
-    return true;
   }
 
-  private hasUsableBankWindow(): boolean {
-    const windowManager = this.parent && this.parent.windowManager;
-    const bankWindow = windowManager && windowManager.window;
+  private logOpenWindowFailed(err: any): void {
+    this.kvl({
+      action: 'razorpay_open_window_failed',
+      error: (err && err.message) || String(err),
+    });
+  }
+
+  // The first, speculative pre-open (confirmAfterCheckingOtpPref) keeps the overlay off: we don't
+  // yet know a challenge needs this tab, and showing "Continue to payment" for a payment that
+  // turns out frictionless would be confusing. redirectToBank re-requests this with the overlay
+  // on once a challenge actually needs the tab, which is when a blocked window should show the
+  // overlay instead of silently failing. Hosted checkout does not set enablePopupConsentOverlay
+  // itself, so this handler decides when to turn it on rather than always forcing it.
+  private openBankTabWithConsent(enablePopupConsentOverlay: boolean): Promise<boolean> {
     try {
-      return !!(bankWindow && !bankWindow.closed && bankWindow.location);
+      if (!this.parent || this.isCanceled()) {
+        return Promise.resolve(false);
+      }
+      if (!this.parent.windowManager) {
+        this.parent.setWindowManager(new CbWindowManager());
+      }
+      return Promise.resolve(
+        this.parent.windowManager.openDirectWithConsent('', PAYMENT_AUTH_REDIRECT_WINDOW_NAME, {
+          skipReferrer: true,
+          showLoader: true,
+          openInNewWindow: true,
+          enablePopupConsentOverlay,
+          closeCallback: () => this.handleBankWindowClosed(),
+        })
+      ).then(
+        () => {
+          // The customer may have cancelled while the overlay was waiting; drop the late tab.
+          if (this.isCanceled()) {
+            this.closeWindowIfOpen();
+            return false;
+          }
+          return true;
+        },
+        (err) => (this.isCanceled() ? false : this.consentOpenFailed(err))
+      );
     } catch (err) {
+      return Promise.resolve(this.consentOpenFailed(err));
+    }
+  }
+
+  private consentOpenFailed(err: any): boolean {
+    const cause = err as {code?: string; message?: string};
+    // The customer closed the consent dialog (close button or Escape). That is a cancel.
+    // A dismiss we triggered ourselves, after the bank tab closed or cancel already ran, is not.
+    if (cause && cause.code === 'popupConsentDismissed' && !this.suppressBankWindowCancel && !this.isCanceled()) {
+      this.callCancel();
+      this.closeWindowIfOpen();
       return false;
     }
+    if (this.cardOtpFlowEnabled) {
+      this.logOpenWindowFailed(err);
+    }
+    // popupBlocked is the retry-still-blocked result.
+    return !(cause && cause.code === 'popupBlocked');
   }
 }

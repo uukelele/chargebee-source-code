@@ -311,11 +311,11 @@ var map = {
 	],
 	"./USD/stripe": [
 		647,
-		45
+		46
 	],
 	"./USD/stripe.ts": [
 		647,
-		45
+		46
 	],
 	"./common": [
 		325,
