@@ -15,6 +15,8 @@ import {PaymentInfo as DirectDebitPaymentInfo} from '@/plugins/payments/direct_d
 import {PaymentInfo as BoletoPaymentInfo} from '@/plugins/payments/boleto/types';
 import {PaymentInfo as KlarnaPayNowPaymentInfo} from '@/plugins/payments/klarna_pay_now/types';
 import {PaymentInfo as KlarnaPaymentInfo} from '@/plugins/payments/klarna/types';
+import {PaymentInfo as AffirmPaymentInfo} from '@/plugins/payments/affirm_pay/types';
+import {PaymentInfo as AfterpayPaymentInfo} from '@/plugins/payments/after_pay/types';
 import {PaymentInfo as KakaoPayPaymentInfo} from '@/plugins/payments/kakao_pay/types';
 import {PaymentInfo as NaverPayPaymentInfo} from '@/plugins/payments/naver_pay/types';
 import {PaymentInfo as RevolutPayPaymentInfo} from '@/plugins/payments/revolut_pay/types';
@@ -308,6 +310,20 @@ export interface KlarnaPayment {
   updatePaymentIntent(paymentIntent: PaymentIntent);
   getPaymentIntent(): PaymentIntent;
   handlePayment(paymentInfo: KlarnaPaymentInfo, callbacks?: Callbacks): Promise<any>;
+}
+
+export interface AffirmPayment {
+  setPaymentIntent(paymentIntent: PaymentIntent, options: Options);
+  updatePaymentIntent(paymentIntent: PaymentIntent);
+  getPaymentIntent(): PaymentIntent;
+  handlePayment(paymentInfo: AffirmPaymentInfo, callbacks?: Callbacks): Promise<any>;
+}
+
+export interface AfterpayPayment {
+  setPaymentIntent(paymentIntent: PaymentIntent, options: Options);
+  updatePaymentIntent(paymentIntent: PaymentIntent);
+  getPaymentIntent(): PaymentIntent;
+  handlePayment(paymentInfo: AfterpayPaymentInfo, callbacks?: Callbacks): Promise<any>;
 }
 
 export interface RevolutPayPayment {
@@ -650,6 +666,8 @@ export enum TabRedirectPayments {
   qpay,
   momo,
   rakuten_pay,
+  after_pay,
+  affirm_pay,
 }
 
 export const PAYMENT_AUTH_REDIRECT_WINDOW_NAME = 'cb_payment_auth_redirect_window';

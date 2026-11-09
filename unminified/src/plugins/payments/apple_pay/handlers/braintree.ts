@@ -151,6 +151,7 @@ export default class BraintreeApplePayHandler extends ApplepayHandler {
         (referrerModule === Ids.CB_PAYMENT_COMPONENTS ||
           referrerModule === Ids.PC_FPC_V4 ||
           referrerModule === Ids.PC_INAPP_V4 ||
+          referrerModule === Ids.PC_MPS_V4 ||
           referrerModule === Ids.PC_PORTAL_V3 ||
           referrerModule === Ids.PC_PAYNOW_V3)
       ) {

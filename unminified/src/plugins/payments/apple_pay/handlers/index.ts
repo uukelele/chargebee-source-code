@@ -303,6 +303,8 @@ export default class ApplepayHandler extends PaymentIntentHandler implements App
         return this.getCommonHandler(paymentIntent);
       case Gateway.MOYASAR:
         return this.getCommonHandler(paymentIntent);
+      case Gateway.MOLLIE:
+        return this.getCommonHandler(paymentIntent);
       default:
         return this.getCommonHandler(paymentIntent, true);
     }

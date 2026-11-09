@@ -239,6 +239,7 @@ export default class AdyenApplepayHandler extends ApplepayHandler {
       (referrerModule === Ids.CB_PAYMENT_COMPONENTS ||
         referrerModule === Ids.PC_FPC_V4 ||
         referrerModule === Ids.PC_INAPP_V4 ||
+        referrerModule === Ids.PC_MPS_V4 ||
         referrerModule === Ids.PC_PORTAL_V3 ||
         referrerModule === Ids.PC_PAYNOW_V3)
     ) {
@@ -297,6 +298,7 @@ export default class AdyenApplepayHandler extends ApplepayHandler {
         (module === Ids.CB_PAYMENT_COMPONENTS ||
           module === Ids.PC_FPC_V4 ||
           module === Ids.PC_INAPP_V4 ||
+          module === Ids.PC_MPS_V4 ||
           module === Ids.PC_PORTAL_V3 ||
           module === Ids.PC_PAYNOW_V3)
       ) {

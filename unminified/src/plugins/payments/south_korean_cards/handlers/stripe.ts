@@ -10,7 +10,6 @@ export default class StripeSouthKoreanCardsHandler extends SouthKoreanCardsHandl
     this.isIframeMode = handler.isIframeMode;
   }
 
-
   initPayment() {
     const paymentMethodDetails = buildBillingPaymentMethodDetails(this.paymentInfo);
 

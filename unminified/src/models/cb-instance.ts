@@ -58,6 +58,8 @@ import {
   SepaInstantTransferPayment,
   KlarnaPayNowPayment,
   KlarnaPayment,
+  AffirmPayment,
+  AfterpayPayment,
   OnlineBankingPolandPayment,
   PayconiqByBancontactPayment,
   KakaoPayPayment,
@@ -144,6 +146,8 @@ import {
 import {Checkout} from '@/hosted_page/host/checkout';
 import KlarnaPayNowLoaderInterface from '@/plugins/payments/klarna_pay_now/loader/interface';
 import KlarnaPaymentLoaderInterface from '@/plugins/payments/klarna/loader/interface';
+import AffirmPaymentLoaderInterface from '@/plugins/payments/affirm_pay/loader/interface';
+import AfterpayPaymentLoaderInterface from '@/plugins/payments/after_pay/loader/interface';
 import OnlineBankingPolandPaymentLoaderInterface from '@/plugins/payments/online_banking_poland/loader/interface';
 import {Components} from '@chargebee/components';
 import EnvConstants from '@/constants/environment';
@@ -358,6 +362,12 @@ export default class CbInstance {
   klarnaPaymentLoader: KlarnaPaymentLoaderInterface;
 
   /** @internal */
+  affirmPaymentLoader: AffirmPaymentLoaderInterface;
+
+  /** @internal */
+  afterpayPaymentLoader: AfterpayPaymentLoaderInterface;
+
+  /** @internal */
   onlineBankingPolandPaymentLoader: OnlineBankingPolandPaymentLoaderInterface;
 
   /** @internal */
@@ -543,6 +553,10 @@ export default class CbInstance {
         return this.loadKlarnaPayNow();
       case 'klarna':
         return this.loadKlarna();
+      case 'affirm_pay':
+        return this.loadAffirm();
+      case 'after_pay':
+        return this.loadAfterpay();
       case 'online_banking_poland':
         return this.loadOnlineBankingPoland();
       case 'payconiq_by_bancontact':
@@ -943,6 +957,22 @@ export default class CbInstance {
     return import(/* webpackChunkName: "klarna-loader" */ '@/plugins/payments/klarna/loader')
       .then(() => this.klarnaPaymentLoader.loaderPromise)
       .then(() => this.klarnaPaymentLoader.init());
+  }
+
+  /** @internal */
+  loadAffirm(): Promise<AffirmPayment> {
+    if (this.affirmPaymentLoader) return Promise.resolve(this.affirmPaymentLoader.init());
+    return import(/* webpackChunkName: "affirm-loader" */ '@/plugins/payments/affirm_pay/loader')
+      .then(() => this.affirmPaymentLoader.loaderPromise)
+      .then(() => this.affirmPaymentLoader.init());
+  }
+
+  /** @internal */
+  loadAfterpay(): Promise<AfterpayPayment> {
+    if (this.afterpayPaymentLoader) return Promise.resolve(this.afterpayPaymentLoader.init());
+    return import(/* webpackChunkName: "afterpay-loader" */ '@/plugins/payments/after_pay/loader')
+      .then(() => this.afterpayPaymentLoader.loaderPromise)
+      .then(() => this.afterpayPaymentLoader.init());
   }
 
   /** @internal */
@@ -1429,6 +1459,8 @@ export default class CbInstance {
       case 'sepa_instant_transfer':
       case 'klarna_pay_now':
       case 'klarna':
+      case 'affirm_pay':
+      case 'after_pay':
       case 'online_banking_poland':
       case 'payconiq_by_bancontact':
       case 'stablecoin':

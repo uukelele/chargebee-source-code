@@ -27,6 +27,8 @@ export enum PaymentMethodType {
   SEPA_INSTANT_TRANSFER = 'sepa_instant_transfer',
   KLARNA_PAY_NOW = 'klarna_pay_now',
   KLARNA = 'klarna',
+  AFFIRM_PAY = 'affirm_pay',
+  AFTER_PAY = 'after_pay',
   ONLINE_BANKING_POLAND = 'online_banking_poland',
   AMAZON_PAYMENTS = 'amazon_payments',
   APPLE_PAY = 'apple_pay',
@@ -402,6 +404,13 @@ export type StripePaymentIntentParams = {
   obj_type: string;
   publishable_key: string;
   redirect_url?: string;
+  /**
+   * Stripe PaymentIntent confirmation_method. `automatic` means 3DS must be driven with
+   * handleNextAction; Stripe confirms the intent itself once that action completes.
+   * Absent or `manual` keeps handleCardAction, which leaves the intent in requires_confirmation
+   * for a second server confirm.
+   */
+  confirmation_method?: string;
 };
 
 export enum Orchestrator {

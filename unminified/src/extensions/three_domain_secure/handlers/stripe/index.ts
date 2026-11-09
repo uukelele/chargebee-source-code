@@ -204,6 +204,12 @@ export default class Stripe3DSHandler extends AbstractThreeDSecureHandler {
   }
 
   private stripeHandleCardAction(payload: StripePaymentIntentParams) {
+    // automatic: the PaymentIntent was already confirmed on the server. handleNextAction only
+    // runs 3DS; Stripe confirms the intent itself when that action completes. handleCardAction
+    // is the manual-confirmation API and leaves the intent in requires_confirmation.
+    if (payload.confirmation_method === 'automatic') {
+      return this.stripeV3.handleNextAction({clientSecret: payload.client_secret});
+    }
     return this.stripeV3.handleCardAction(payload.client_secret);
   }
 

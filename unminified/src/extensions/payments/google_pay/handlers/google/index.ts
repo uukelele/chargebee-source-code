@@ -336,6 +336,8 @@ export default class DirectGooglePayHandler extends AbstractGooglePayHandler {
       }
       if (payload && payload.obj_type === 'setup_intent') {
         return this.stripeV3.handleCardSetup(payload.client_secret);
+      } else if (payload && payload.confirmation_method === 'automatic') {
+        return this.stripeV3.handleNextAction({clientSecret: payload.client_secret});
       } else {
         return this.stripeV3.handleCardAction(payload.client_secret);
       }
