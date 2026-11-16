@@ -1,6 +1,7 @@
 import PaypalHandler from '@/plugins/payments/paypal_express_checkout/handlers';
 import {loadScriptUsingPredicate} from '@/extensions/three_domain_secure/common/utils';
 import {isStripeV3Available, getStripe} from '@/utils/payments/stripe';
+import {createStripe} from '@/utils/payments/stripe-instance';
 import {
   StripeGatewayCredential,
   StripeInstance,
@@ -61,7 +62,7 @@ export default class StripePaypalHandler extends PaypalHandler {
    * Create Stripe instance with publishable key
    */
   private createStripeInstance() {
-    const stripe = window['Stripe'](this.gatewayCredential.public_key);
+    const stripe = createStripe(this.gatewayCredential.public_key, this.gatewayCredential.stripe_js_api_version);
     return stripe;
   }
 

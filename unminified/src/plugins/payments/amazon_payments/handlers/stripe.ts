@@ -10,6 +10,7 @@ import {
   PaymentMethodType,
 } from '@/internal/payment-intent/types';
 import {isStripeV3Available, getStripe} from '@/utils/payments/stripe';
+import {createStripe} from '@/utils/payments/stripe-instance';
 import IframeClientLoader from '@/hosted_fields/host/iframe-client-loader';
 import {Master as M} from '@/hosted_fields/common/enums';
 import Ids from '@/constants/ids';
@@ -67,7 +68,7 @@ export default class StripeAmazonPayHandler extends AmazonPayHandler {
    * Create Stripe instance with publishable key
    */
   private createStripeInstance() {
-    const stripe = window['Stripe'](this.gatewayCredential.publishable_key);
+    const stripe = createStripe(this.gatewayCredential.publishable_key, this.gatewayCredential.stripe_js_api_version);
     return stripe;
   }
 
@@ -298,7 +299,14 @@ export default class StripeAmazonPayHandler extends AmazonPayHandler {
     } else {
       if (result && result.paymentIntent) {
         const stripePI = result.paymentIntent;
-        if (stripePI && (stripePI.status === 'requires_challenge' || stripePI.status === 'requires_source_action')) {
+        // 'requires_action' is the status name on newer Stripe API versions (e.g. 2026-01-28.clover);
+        // 'requires_source_action' is the older name of the same status, so both are kept.
+        if (
+          stripePI &&
+          (stripePI.status === 'requires_action' ||
+            stripePI.status === 'requires_challenge' ||
+            stripePI.status === 'requires_source_action')
+        ) {
           return this.handleExpressElementChallenge(stripePI.client_secret);
         }
       }

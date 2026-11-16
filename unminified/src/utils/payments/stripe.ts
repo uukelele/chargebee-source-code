@@ -1,6 +1,7 @@
 import {loadScriptUsingPredicate} from '@/extensions/three_domain_secure/common/utils';
 import {CbError} from '@/hosted_fields/common/errors';
 import {fetchGatewayCredential} from '@/utils/payments/gateway-credential';
+import {createStripe} from '@/utils/payments/stripe-instance';
 
 /** Progressive polling: first at 30s, then 45s, then 1min, then every 5s */
 const POLL_DELAYS_MS = [30 * 1000, 15 * 1000, 15 * 1000, 10 * 1000];
@@ -181,7 +182,7 @@ export const checkNLoadScript = (paymentIntent): Promise<any> => {
   return new Promise<void>((resolve, reject) => {
     Promise.all(promises)
       .then((args) => {
-        window['stripeV3'] = getStripe()(args[0].publishable_key);
+        window['stripeV3'] = createStripe(args[0].publishable_key, args[0].stripe_js_api_version);
         resolve(window['stripeV3']);
       })
       .catch((error) => {

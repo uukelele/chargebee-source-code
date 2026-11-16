@@ -14,12 +14,14 @@ import {
 import Errors, {CbError, ErrorType} from '@/hosted_fields/common/errors';
 import {validateRawCardDetails, loadScriptUsingPredicate} from '@/extensions/three_domain_secure/common/utils';
 import {gwJsonify} from '@/utils/utility-functions';
+import {createStripe} from '@/utils/payments/stripe-instance';
 import IframeClientLoader from '@/hosted_fields/host/iframe-client-loader';
 import {Master as M} from '@/hosted_fields/common/enums';
 import Ids from '@/constants/ids';
 export default class Stripe3DSHandler extends AbstractThreeDSecureHandler {
   private stripeV3: any;
   private publishableKey: string;
+  private stripeApiVersion?: string;
 
   constructor(parent: ThreeDSecureHandler) {
     super(parent);
@@ -333,6 +335,7 @@ export default class Stripe3DSHandler extends AbstractThreeDSecureHandler {
     }
     return this.fetchGatewayCredential().then((data) => {
       this.publishableKey = data.publishable_key;
+      this.stripeApiVersion = data.stripe_js_api_version;
       return Promise.resolve(this.publishableKey);
     });
   }
@@ -364,7 +367,7 @@ export default class Stripe3DSHandler extends AbstractThreeDSecureHandler {
       Promise.all(promises)
         .then((args) => {
           this.getStripe().setPublishableKey(args[0]);
-          this.stripeV3 = this.getStripe()(args[0]);
+          this.stripeV3 = createStripe(args[0], this.stripeApiVersion);
           resolve(true);
         })
         .catch((error) => {

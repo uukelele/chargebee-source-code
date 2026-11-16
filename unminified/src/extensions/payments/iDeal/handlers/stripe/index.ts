@@ -7,6 +7,7 @@ import IframeClientLoader from '@/hosted_fields/host/iframe-client-loader';
 import Ids from '@/constants/ids';
 import IDealHandler from '@/extensions/payments/iDeal';
 import {loadScriptUsingPredicate} from '@/extensions/three_domain_secure/common/utils';
+import {createStripe} from '@/utils/payments/stripe-instance';
 
 // TODO: REFACTOR, move common types out from 3DS and update imports
 import {Adyen} from '@/extensions/three_domain_secure/handlers/adyen/types';
@@ -17,6 +18,7 @@ declare var Chargebee;
 export default class StripeIDealHandler extends AbstractIDealHandler {
   private stripeInstance: any;
   private publishableKey: string;
+  private stripeApiVersion?: string;
   private selectedBank: string;
   private component: any;
 
@@ -107,7 +109,7 @@ export default class StripeIDealHandler extends AbstractIDealHandler {
     return new Promise<void>((resolve, reject) => {
       Promise.all(promises)
         .then((args) => {
-          this.stripeInstance = this.getStripe()(args[0]);
+          this.stripeInstance = createStripe(args[0], this.stripeApiVersion);
           resolve();
         })
         .catch((error) => {
@@ -118,6 +120,7 @@ export default class StripeIDealHandler extends AbstractIDealHandler {
 
   setClientConfig(config) {
     this.publishableKey = config.publishable_key;
+    this.stripeApiVersion = config.stripe_js_api_version;
   }
 
   private fetchPublishableKey() {
@@ -126,6 +129,7 @@ export default class StripeIDealHandler extends AbstractIDealHandler {
     }
     return this.fetchGatewayCredential().then((data) => {
       this.publishableKey = data.publishable_key;
+      this.stripeApiVersion = data.stripe_js_api_version;
       return Promise.resolve(this.publishableKey);
     });
   }

@@ -4,6 +4,7 @@ export interface StripeInstance {
 
 export interface StripeGatewayCredential {
   publishable_key: string;
+  stripe_js_api_version?: string;
   apple_pay?: {
     merchant_country_code?: string;
     stripe_account_id?: string;

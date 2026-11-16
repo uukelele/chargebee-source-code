@@ -11,6 +11,7 @@ import Errors, {CbError, ErrorType} from '@/hosted_fields/common/errors';
 import {ButtonOption, PaymentData, PaymentRequestOptions} from '@/plugins/payments/google_pay/types';
 import {safeGet, jsonify, isObjectEmpty, gwJsonify} from '@/utils/utility-functions';
 import {createAdyenInstance, adyenHandlePaymentAttempt} from '@/utils/payments/adyen';
+import {createStripe} from '@/utils/payments/stripe-instance';
 import {worldpayGPayDDC, worldpayHandleRequiresChallenge} from '@/utils/payments/worldpay';
 import IframeClientLoader from '@/hosted_fields/host/iframe-client-loader';
 import {Master as M} from '@/hosted_fields/common/enums';
@@ -335,7 +336,11 @@ export default class DirectGooglePayHandler extends AbstractGooglePayHandler {
         return this.handleRedirectMode(payload);
       }
       if (payload && payload.obj_type === 'setup_intent') {
-        return this.stripeV3.handleCardSetup(payload.client_secret);
+        // handleCardSetup is removed in newer Stripe API versions; confirmCardSetup has the same result shape.
+        // Gated on the backend-provided API version so sites without it keep the existing behaviour.
+        return this.gatewayCredential.stripe_js_api_version && typeof this.stripeV3.confirmCardSetup === 'function'
+          ? this.stripeV3.confirmCardSetup(payload.client_secret)
+          : this.stripeV3.handleCardSetup(payload.client_secret);
       } else if (payload && payload.confirmation_method === 'automatic') {
         return this.stripeV3.handleNextAction({clientSecret: payload.client_secret});
       } else {
@@ -617,7 +622,15 @@ export default class DirectGooglePayHandler extends AbstractGooglePayHandler {
       }
       return returnObj;
     } else {
-      return {tmpToken: token, paymentMethodType: 'google_pay'};
+      // Stripe reads tmpToken and email from the top level of the confirm payload, not from paymentMethodDetails.
+      const returnObj: {tmpToken: string; paymentMethodType: string; email?: string} = {
+        tmpToken: token,
+        paymentMethodType: 'google_pay',
+      };
+      if (_email) {
+        returnObj.email = _email;
+      }
+      return returnObj;
     }
   }
 
@@ -659,7 +672,7 @@ export default class DirectGooglePayHandler extends AbstractGooglePayHandler {
       Promise.all(promises)
         .then((args) => {
           // this.getStripe().setPublishableKey(payload.publishable_key);
-          this.stripeV3 = this.getStripe()(payload.publishable_key);
+          this.stripeV3 = createStripe(payload.publishable_key, this.gatewayCredential.stripe_js_api_version);
           resolve(true);
         })
         .catch((error) => {

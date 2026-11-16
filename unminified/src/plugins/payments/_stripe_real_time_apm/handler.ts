@@ -5,6 +5,7 @@ import {Callbacks, PaymentAttempt, PaymentAttemptStatus, PaymentMethodType} from
 import {loadScriptUsingPredicate} from '@/extensions/three_domain_secure/common/utils';
 import LightBox from '@/extensions/three_domain_secure/common/lightbox';
 import {isStripeV3Available} from '@/utils/payments/stripe';
+import {createStripe} from '@/utils/payments/stripe-instance';
 
 /**
  * Stripe.js stripe.handleNextAction({ clientSecret }) behavior
@@ -45,7 +46,7 @@ const STRIPE_POLL_MAX_DURATION_MS = 15 * 60 * 1000;
 
 export default class StripeRealTimeApmHandler extends PaymentIntentHandler {
   protected stripe: any;
-  private gatewayCredential: {publishable_key: string};
+  private gatewayCredential: {publishable_key: string; stripe_js_api_version?: string};
   private qrLightbox: LightBox | null = null;
   private stripePollTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
@@ -96,7 +97,10 @@ export default class StripeRealTimeApmHandler extends PaymentIntentHandler {
             message: 'Stripe gateway credential or publishable key is missing',
           });
         }
-        this.stripe = window['Stripe'](this.gatewayCredential.publishable_key);
+        this.stripe = createStripe(
+          this.gatewayCredential.publishable_key,
+          this.gatewayCredential.stripe_js_api_version
+        );
         if (!this.stripe) {
           throw new CbError({name: 'GATEWAY_ERROR', message: 'Stripe instance could not be created'});
         }

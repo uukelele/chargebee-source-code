@@ -21,6 +21,7 @@ import {
 
 import {mountApplePayButton} from '../utils';
 import {isStripeV3Available, getStripe} from '@/utils/payments/stripe';
+import {createStripe} from '@/utils/payments/stripe-instance';
 
 export default class StripeApplePayHandler extends ApplepayHandler {
   private gatewayCredential: StripeGatewayCredential;
@@ -36,11 +37,12 @@ export default class StripeApplePayHandler extends ApplepayHandler {
   }
 
   private createStripeInstance() {
-    const stripe = this.gatewayCredential.apple_pay.stripe_account_id
-      ? window['Stripe'](this.gatewayCredential.publishable_key, {
-          stripeAccount: this.gatewayCredential.apple_pay.stripe_account_id,
-        })
-      : window['Stripe'](this.gatewayCredential.publishable_key);
+    const {publishable_key, stripe_js_api_version, apple_pay} = this.gatewayCredential;
+    const stripe = createStripe(
+      publishable_key,
+      stripe_js_api_version,
+      apple_pay.stripe_account_id ? {stripeAccount: apple_pay.stripe_account_id} : undefined
+    );
     return stripe;
   }
 

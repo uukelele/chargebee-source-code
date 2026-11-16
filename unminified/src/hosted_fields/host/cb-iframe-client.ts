@@ -57,6 +57,8 @@ class CbIframeClient implements CbIframeClientInterface {
     const url = new URL(`${EnvConstants.ASSET_PATH}/master.html`);
     url.searchParams.set('site', site);
     url.searchParams.set('env', jsEnv);
+    const brandId = Helpers.getBrandId();
+    if (brandId) url.searchParams.set('brand_id', brandId);
     if (jsEnv === 'predev' || jsEnv === 'predev1') {
       url.searchParams.set('domain', Helpers.getCbInstance().options.domain);
     }
@@ -107,6 +109,8 @@ class CbIframeClient implements CbIframeClientInterface {
     const url = new URL(`${EnvConstants.ASSET_PATH}/component.html`);
     url.searchParams.set('site', site);
     url.searchParams.set('env', jsEnv);
+    const brandId = Helpers.getBrandId();
+    if (brandId) url.searchParams.set('brand_id', brandId);
     if (jsEnv === 'predev' || jsEnv === 'predev1') {
       url.searchParams.set('domain', Helpers.getCbInstance().options.domain);
     }
@@ -135,6 +139,8 @@ class CbIframeClient implements CbIframeClientInterface {
     const url = new URL(`${EnvConstants.ASSET_PATH}/component.html`);
     url.searchParams.set('site', site);
     url.searchParams.set('env', jsEnv);
+    const brandId = Helpers.getBrandId();
+    if (brandId) url.searchParams.set('brand_id', brandId);
     if (jsEnv === 'predev' || jsEnv === 'predev1') {
       url.searchParams.set('domain', Helpers.getCbInstance().options.domain);
     }

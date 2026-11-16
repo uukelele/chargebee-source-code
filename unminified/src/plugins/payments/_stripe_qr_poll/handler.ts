@@ -1,6 +1,7 @@
 import {loadScriptUsingPredicate} from '@/extensions/three_domain_secure/common/utils';
 import Errors, {CbError} from '@/hosted_fields/common/errors';
 import {getStripe, isStripeV3Available, startPollingForStripePaymentIntentCompletion} from '@/utils/payments/stripe';
+import {createStripe} from '@/utils/payments/stripe-instance';
 import {retrievePaymentIntent} from '@/internal/payment-intent/handler';
 import PaymentIntentHandler from '@/internal/payment-intent/handler';
 import {PaymentAttempt, PaymentAttemptStatus} from '@/internal/payment-intent/types';
@@ -21,7 +22,7 @@ type QrBaseHandler = PaymentIntentHandler & {
  */
 export interface StripeQrHandlerAdditions {
   pollingTimeoutMessage: string;
-  gatewayCredential: {publishable_key: string};
+  gatewayCredential: {publishable_key: string; stripe_js_api_version?: string};
   stripe: any;
   loadStripeJS(): Promise<any>;
   preloadConfig(): Promise<void>;
@@ -54,7 +55,7 @@ export function StripeQrPollingMixin<TBase extends GConstructor<QrBaseHandler>>(
     // Set as a property in the concrete subclass.
     pollingTimeoutMessage!: string;
 
-    gatewayCredential: {publishable_key: string};
+    gatewayCredential: {publishable_key: string; stripe_js_api_version?: string};
     stripe: any;
 
     loadStripeJS(): Promise<any> {
@@ -70,7 +71,7 @@ export function StripeQrPollingMixin<TBase extends GConstructor<QrBaseHandler>>(
     }
 
     createStripeInstance(): any {
-      return window['Stripe'](this.gatewayCredential.publishable_key);
+      return createStripe(this.gatewayCredential.publishable_key, this.gatewayCredential.stripe_js_api_version);
     }
 
     initiateAuthorization(paymentInfo: any, callbacks?: any): Promise<any> {
