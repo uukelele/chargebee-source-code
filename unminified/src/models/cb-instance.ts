@@ -212,6 +212,8 @@ export default class CbInstance {
 
   /** @internal */
   publishableKey: string;
+  // Whether syncPortalPaymentComponentKey gave the master iframe a key that is still to be cleared.
+  private portalPaymentComponentKeyOnMaster = false;
 
   /** @internal */
   recaptchaKey: string;
@@ -1224,7 +1226,38 @@ export default class CbInstance {
   setReferrerModule(referrerModule: string) {
     if (typeof referrerModule == 'string' && referrerModule.trim()) {
       this.options.referrerModule = referrerModule;
+      if (referrerModule !== Ids.PC_PORTAL_V3) {
+        this.clearPortalPaymentComponentKey();
+      }
     }
+  }
+
+  /**
+   * @internal
+   * Portal inits Chargebee.js without a key, and the master iframe copies the key only once, when it
+   * registers. Under the pc_portal_v3 referrer Portal puts its hp_ credential on this instance;
+   * this hands that key to the master before a Payment Component card is tokenized there. Does
+   * nothing for any other referrer.
+   */
+  syncPortalPaymentComponentKey(): Promise<ResponseInnerMessage | void> {
+    if (this.options.referrerModule !== Ids.PC_PORTAL_V3 || !this.publishableKey) {
+      return Promise.resolve();
+    }
+    this.portalPaymentComponentKeyOnMaster = true;
+    return sendToMasterIframe(Master.Actions.SetPublishableKey, {
+      publishableKey: this.publishableKey,
+    });
+  }
+
+  // Portal left its Payment Component page: the master goes back to the key it registered with, so
+  // the legacy Portal flows that follow do not send the hp_ credential.
+  private clearPortalPaymentComponentKey() {
+    if (!this.portalPaymentComponentKeyOnMaster) {
+      return;
+    }
+    this.portalPaymentComponentKeyOnMaster = false;
+    // Best effort: a master that cannot be reached has no key to clear.
+    sendToMasterIframe(Master.Actions.SetPublishableKey, {}).catch(() => undefined);
   }
 
   setPortalSession(ssoToken: (() => Promise<PortalSession>) | string): void {

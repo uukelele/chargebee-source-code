@@ -2,7 +2,7 @@ import {Callbacks, PaymentIntent, PaymentAttempt, PaymentInfo} from '@/internal/
 import {jsonify} from '@/utils/utility-functions';
 import {sendToMasterIframe} from '@/hosted_fields/host/iframe-client-loader';
 import {Master as M} from '@/hosted_fields/common/enums';
-import {CbError as ClientError} from '@/hosted_fields/common/errors';
+import {CbError as ClientError, ErrorType} from '@/hosted_fields/common/errors';
 import {Locale} from '@/hosted_fields/common/types';
 import sanitizeError from '@/internal/common/error-sanitizer';
 import Helpers from '@/helpers';
@@ -92,14 +92,18 @@ export default class CallbackHandler {
   intentError(): ClientError {
     const intent = this.getPaymentIntent();
     const attempt = intent.active_payment_attempt;
+    const detail = attempt.error_detail;
+    const detailMessage = detail && detail.error_message;
+    const detailCode = detail && detail.error_code;
 
-    if (attempt.error_code || attempt.error_text || attempt.error_msg) {
-      let message = attempt.error_text || attempt.error_msg || '';
+    if (attempt.error_code || attempt.error_text || attempt.error_msg || detailMessage || detailCode) {
+      let message = attempt.error_text || attempt.error_msg || detailMessage || '';
       message = message.split('request-id')[0].trim();
       return new ClientError({
         name: `PAYMENT_ATTEMPT_${attempt.status.toUpperCase()}`,
-        code: attempt.error_code,
+        code: attempt.error_code || detailCode,
         message,
+        detail: detail || {},
       });
     }
   }

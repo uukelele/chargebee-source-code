@@ -12,6 +12,7 @@ export namespace Master {
     CaptureKVL = 'captureKVL',
     SetBusinessEntity = 'setBusinessEntity',
     SetBrand = 'setBrand',
+    SetPublishableKey = 'setPublishableKey',
 
     /** Field related actions */
     RegisterField = 'registerField',

@@ -3,6 +3,7 @@ import {UpiPayment} from '@/hosted_fields/common/base-types';
 import PaymentIntentHandler from '@/internal/payment-intent/handler';
 import {Callbacks} from '@/extensions/three_domain_secure/common/types';
 import {PaymentAttemptStatus, PaymentAttempt, PaymentMethodType, Gateway} from '@/internal/payment-intent/types';
+import {isObjectEmpty} from '@/utils/utility-functions';
 import {PaymentInfo} from '../types';
 import {
   isDocumentIdValidationRequired as checkDocumentIdValidationRequired,
@@ -43,6 +44,22 @@ export default class UpiHandler extends PaymentIntentHandler implements UpiPayme
     } else {
       paymentData.planId = this.paymentInfo.additionalData && this.paymentInfo.additionalData.planId;
       paymentData.vpa = this.paymentInfo.vpa;
+    }
+
+    // customer.billingAddress is not re-read here: it already travels inside `customer`.
+    const billingAddress = this.paymentInfo.additionalData && this.paymentInfo.additionalData.billingAddress;
+    if (!isObjectEmpty(billingAddress)) {
+      paymentData.billingAddress = billingAddress;
+
+      // customer.billingAddress if being passed: we won't re-assign it here.
+      // if empty, customer.billingaddress is assigned here.
+      if (paymentData.customer && isObjectEmpty(paymentData.customer.billingAddress)) {
+        paymentData.customer.billingAddress = billingAddress;
+      }
+    }
+    const customerBillingAddress = this.getCustomerBillingAddress();
+    if (!isObjectEmpty(customerBillingAddress)) {
+      paymentData.customerBillingAddress = customerBillingAddress;
     }
 
     return Promise.resolve(paymentData);

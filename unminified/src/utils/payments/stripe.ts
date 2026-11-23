@@ -1,5 +1,5 @@
 import {loadScriptUsingPredicate} from '@/extensions/three_domain_secure/common/utils';
-import {CbError} from '@/hosted_fields/common/errors';
+import {CbError, ErrorType} from '@/hosted_fields/common/errors';
 import {fetchGatewayCredential} from '@/utils/payments/gateway-credential';
 import {createStripe} from '@/utils/payments/stripe-instance';
 
@@ -31,6 +31,38 @@ export function isStripeRateLimitError(err: any): boolean {
   );
 }
 
+const PAYMENT_FAILURE_MESSAGE = 'Payment could not be completed. Please try again.';
+
+function errorText(error: any, field: string): string | undefined {
+  const value = error && error[field];
+  return typeof value === 'string' && value.trim() ? value : undefined;
+}
+
+/** Copy only diagnostic fields: Stripe errors can also contain billing data and client secrets. */
+function stripePollError(error: any, name: string, fallback: string): CbError {
+  const detail: {[key: string]: string} = {};
+  const fields = {
+    type: 'error_category',
+    code: 'error_code',
+    message: 'error_message',
+    decline_code: 'decline_code',
+    network_decline_code: 'network_error_code',
+    advice_code: 'processor_advice_code',
+    param: 'error_field',
+  };
+  Object.keys(fields).forEach((field) => {
+    const value = errorText(error, field);
+    if (value) detail[fields[field]] = value;
+  });
+  return new CbError({
+    name,
+    code: errorText(error, 'code'),
+    message: errorText(error, 'message') || fallback,
+    type: ErrorType.GatewayError,
+    detail,
+  });
+}
+
 export type StripePaymentIntentPollOptions = {
   onSuccess: (paymentIntent: any) => Promise<any>;
   onTerminalFailure?: () => void;
@@ -51,14 +83,26 @@ export function startPollingForStripePaymentIntentCompletion(
   const {onSuccess, onTerminalFailure, timeoutMessage = 'Payment polling timed out. Please try again.'} = options;
 
   return new Promise((resolve, reject) => {
+    let settled = false;
+    let retrieving = false;
+    let retryTimeoutId: ReturnType<typeof setTimeout> | null = null;
     let pollTimeoutId: ReturnType<typeof setTimeout> | null = null;
     const pollStartTime = Date.now();
     let pollIndex = 0;
     let rateLimitRetryCount = 0;
     let inRateLimitRetry = false;
     let nextPollTimeoutId: ReturnType<typeof setTimeout> | null = null;
+    let deadlineTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
     const clearPoll = () => {
+      if (settled && deadlineTimeoutId != null) {
+        clearTimeout(deadlineTimeoutId);
+        deadlineTimeoutId = null;
+      }
+      if (retryTimeoutId != null) {
+        clearTimeout(retryTimeoutId);
+        retryTimeoutId = null;
+      }
       if (nextPollTimeoutId != null) {
         clearTimeout(nextPollTimeoutId);
         nextPollTimeoutId = null;
@@ -70,15 +114,24 @@ export function startPollingForStripePaymentIntentCompletion(
     };
 
     const doRetrieveAndHandle = async (): Promise<void> => {
+      if (settled || retrieving) return;
+      retrieving = true;
       try {
-        const {paymentIntent} = await stripe.retrievePaymentIntent(clientSecret);
+        const response = await stripe.retrievePaymentIntent(clientSecret);
+        // A request can finish after the polling deadline. Never emit success/error twice.
+        if (settled) return;
+        if (response && response.error) throw response.error;
+        const paymentIntent = response && response.paymentIntent;
+        if (!paymentIntent || typeof paymentIntent.status !== 'string') {
+          throw new CbError('Unable to retrieve payment status. Please try again.');
+        }
         inRateLimitRetry = false;
 
         if (TERMINAL_SUCCESS_STATUSES.includes(paymentIntent.status)) {
+          settled = true;
           clearPoll();
           try {
-            const result = await onSuccess(paymentIntent);
-            resolve(result);
+            resolve(await onSuccess(paymentIntent));
           } catch (err) {
             reject(err);
           }
@@ -86,52 +139,63 @@ export function startPollingForStripePaymentIntentCompletion(
         }
 
         if (TERMINAL_FAILURE_STATUSES.includes(paymentIntent.status)) {
+          settled = true;
           clearPoll();
-          if (onTerminalFailure) {
-            onTerminalFailure();
-          }
-          reject(new CbError('Payment could not be completed. Please try again.'));
+          if (onTerminalFailure) onTerminalFailure();
+          const lastError = paymentIntent.last_payment_error;
+          // A canceled intent can retain an earlier confirmation's error; do not present it as a new decline.
+          const hasDecline =
+            paymentIntent.status !== 'canceled' &&
+            (errorText(lastError, 'message') || errorText(lastError, 'code') || errorText(lastError, 'decline_code'));
+          reject(
+            hasDecline
+              ? stripePollError(lastError, 'PAYMENT_ATTEMPT_REFUSED', PAYMENT_FAILURE_MESSAGE)
+              : new CbError(PAYMENT_FAILURE_MESSAGE)
+          );
           return;
         }
-
-        // Other statuses (processing, requires_action, requires_confirmation, etc.): keep polling
+        // processing / requires_action / requires_confirmation: wait for a current terminal result.
       } catch (err) {
+        if (settled) {
+          // Also settle the promise if terminal UI cleanup itself throws.
+          reject(err);
+          return;
+        }
         if (isStripeRateLimitError(err) && rateLimitRetryCount < RATE_LIMIT_MAX_RETRIES) {
           rateLimitRetryCount += 1;
           inRateLimitRetry = true;
-          if (nextPollTimeoutId != null) {
-            clearTimeout(nextPollTimeoutId);
-            nextPollTimeoutId = null;
-          }
-          const backoff = RATE_LIMIT_BACKOFF_MS * rateLimitRetryCount;
-          setTimeout(() => {
-            doRetrieveAndHandle().then(
-              () => {},
-              (retryErr) => {
-                if (!isStripeRateLimitError(retryErr) || rateLimitRetryCount >= RATE_LIMIT_MAX_RETRIES) {
-                  clearPoll();
-                  inRateLimitRetry = false;
-                  const message =
-                    rateLimitRetryCount >= RATE_LIMIT_MAX_RETRIES
-                      ? 'Payment status check is temporarily unavailable. Please try again shortly.'
-                      : retryErr && (retryErr.message || (retryErr.error && retryErr.error.message));
-                  reject(retryErr instanceof CbError ? retryErr : new CbError(message || retryErr));
-                }
+          clearPoll();
+          retryTimeoutId = setTimeout(() => {
+            retryTimeoutId = null;
+            doRetrieveAndHandle().then(() => {
+              if (!settled && !inRateLimitRetry) {
+                nextPollTimeoutId = setTimeout(runPollCycle, getPollDelayMs(pollIndex + 1));
+                pollIndex += 1;
               }
-            );
-          }, backoff);
+            });
+          }, RATE_LIMIT_BACKOFF_MS * rateLimitRetryCount);
         } else {
+          settled = true;
           clearPoll();
           inRateLimitRetry = false;
-          reject(err instanceof CbError ? err : new CbError(err));
+          reject(
+            isStripeRateLimitError(err)
+              ? new CbError('Payment status check is temporarily unavailable. Please try again shortly.')
+              : err instanceof CbError
+              ? err
+              : stripePollError(err, 'STRIPE_RETRIEVAL_ERROR', 'Unable to retrieve payment status. Please try again.')
+          );
         }
+      } finally {
+        retrieving = false;
       }
     };
 
     const runPollCycle = () => {
-      if (inRateLimitRetry) return;
+      if (settled || inRateLimitRetry) return;
 
       if (Date.now() - pollStartTime > MAX_POLL_DURATION_MS) {
+        settled = true;
         clearPoll();
         reject(new CbError(timeoutMessage));
         return;
@@ -147,6 +211,12 @@ export function startPollingForStripePaymentIntentCompletion(
       doRetrieveAndHandle();
     };
 
+    // Keep the deadline independent of requests/backoff, including a retrieval that never resolves.
+    deadlineTimeoutId = setTimeout(() => {
+      settled = true;
+      clearPoll();
+      reject(new CbError(timeoutMessage));
+    }, MAX_POLL_DURATION_MS);
     pollTimeoutId = setTimeout(() => {
       pollTimeoutId = null;
       runPollCycle();

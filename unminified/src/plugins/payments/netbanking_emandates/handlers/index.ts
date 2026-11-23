@@ -10,6 +10,7 @@ import {Master as M} from '@/hosted_fields/common/enums';
 import CbWindowManager from '@/models/cb-window-manager';
 import {PAYMENT_AUTH_REDIRECT_WINDOW_NAME} from '@/hosted_fields/common/base-types';
 import {fetchPaymentIntentStatus} from '@/utils/payments/razorpay';
+import {isObjectEmpty} from '@/utils/utility-functions';
 
 export default class NetbankingHandler extends PaymentIntentHandler implements NetbankingPayment {
   protected declare paymentInfo: PaymentInfo;
@@ -69,13 +70,30 @@ export default class NetbankingHandler extends PaymentIntentHandler implements N
   }
 
   initPayment() {
-    return Promise.resolve({
+    const paymentData: any = {
       paymentMethodType: PaymentMethodType.Netbanking_EMANDATES,
       bankAccount: this.paymentInfo.bankAccount,
       customer: this.paymentInfo.customer,
       paymentType: this.paymentInfo.additionalData && this.paymentInfo.additionalData.paymentType,
       shippingAddress: this.getShippingAddress(),
-    });
+    };
+
+    const billingAddress = this.paymentInfo.additionalData && this.paymentInfo.additionalData.billingAddress;
+    if (!isObjectEmpty(billingAddress)) {
+      paymentData.billingAddress = billingAddress;
+
+      // customer.billingAddress if being passed: we won't re-assign it here.
+      // if empty, customer.billingaddress is assigned here.
+      if (paymentData.customer && isObjectEmpty(paymentData.customer.billingAddress)) {
+        paymentData.customer.billingAddress = billingAddress;
+      }
+    }
+    const customerBillingAddress = this.getCustomerBillingAddress();
+    if (!isObjectEmpty(customerBillingAddress)) {
+      paymentData.customerBillingAddress = customerBillingAddress;
+    }
+
+    return Promise.resolve(paymentData);
   }
 
   setWindowPopup() {

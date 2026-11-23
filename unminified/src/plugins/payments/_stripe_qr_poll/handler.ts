@@ -90,14 +90,18 @@ export function StripeQrPollingMixin<TBase extends GConstructor<QrBaseHandler>>(
       if (this.lightbox) {
         this.lightbox.close();
         this.lightbox.destroy();
+        this.lightbox = null;
       }
     }
 
     startPollingForCompletion(clientSecret: string): Promise<any> {
       return startPollingForStripePaymentIntentCompletion(this.stripe, clientSecret, {
         onSuccess: (paymentIntent) => this.onPaymentComplete(paymentIntent),
-        onTerminalFailure: () => this.closeLightbox(),
         timeoutMessage: this.pollingTimeoutMessage,
+      }).catch((error) => {
+        // Poll declines and SDK retrieval errors bypass onPaymentComplete; both must close the QR.
+        this.closeLightbox();
+        throw error;
       });
     }
 
@@ -126,9 +130,7 @@ export function StripeQrPollingMixin<TBase extends GConstructor<QrBaseHandler>>(
             });
           }
           this.closeLightbox();
-          if (!this.callbackTriggered) {
-            this.callbackHandler.triggerErrorCallback(err instanceof CbError ? err : new CbError(err));
-          }
+          // The authorization chain owns error delivery; firing here would repeat it in its catch.
           throw err;
         }
       );
@@ -152,11 +154,13 @@ export function StripeQrPollingMixin<TBase extends GConstructor<QrBaseHandler>>(
         }
         case PaymentAttemptStatus.AUTHORIZED: {
           this.closeLightbox();
+          this.callbackTriggered = true;
           this.callbackHandler.triggerSuccessCallback();
           return Promise.resolve(this.getPaymentIntent());
         }
         case PaymentAttemptStatus.REFUSED: {
           this.closeLightbox();
+          this.callbackTriggered = true;
           this.callbackHandler.triggerErrorCallback(this.callbackHandler.intentError());
           return Promise.reject(this.callbackHandler.intentError());
         }

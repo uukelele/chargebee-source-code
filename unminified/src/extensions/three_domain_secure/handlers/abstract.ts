@@ -291,16 +291,23 @@ export default abstract class AbstractThreeDSecureHandler {
       Object.assign(data, {reattempt: this.reattempt});
       this.reattempt = false;
     }
-    return IframeClientLoader.then((cbIframeClient) =>
-      cbIframeClient.send(
-        {
-          action: M.Actions.tokenizePaymentComponentCard,
-          data: constructPaymentIntentApiPayload(this.getPaymentIntent(), data),
-        },
-        Ids.MASTER_FRAME,
-        {timeout: 120000}
-      )
-    );
+    // Portal PC: the master iframe tokenizes with the instance's hp_ credential, handed over first.
+    // Without an instance, or if the hand-over fails, the card is tokenized as before.
+    const cbInstance = Helpers.getCbInstance();
+    const keySync = cbInstance ? cbInstance.syncPortalPaymentComponentKey() : Promise.resolve();
+    return keySync
+      .catch(() => undefined)
+      .then(() => IframeClientLoader)
+      .then((cbIframeClient) =>
+        cbIframeClient.send(
+          {
+            action: M.Actions.tokenizePaymentComponentCard,
+            data: constructPaymentIntentApiPayload(this.getPaymentIntent(), data),
+          },
+          Ids.MASTER_FRAME,
+          {timeout: 120000}
+        )
+      );
   }
 
   protected fetchGatewayCredential(): Promise<any> {
